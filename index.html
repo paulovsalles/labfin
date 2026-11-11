@@ -1,187 +1,385 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#ebe7fb" />
-<meta name="description" content="Pouler Finance — Laboratório Pluggy separado para testes." />
-<title>Pluggy Lab · Pouler Finance BETA</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#f7f5fc"/>
+<meta name="description" content="Pouler Finance Lab — extratos, cartões, dashboard, contas do mês e mensal livre."/>
+<title>Pouler Finance · Painel Pluggy</title>
 <style>
-:root{--bg:#f7f7fc;--ink:#24243e;--muted:#74758d;--line:#e6e4f0;--white:#fff;--purple:#7953bd;--purpledeep:#5936a0;--pale:#f1edfb;--green:#168768;--red:#c3546a;--yellow:#b17821;--shadow:0 18px 44px rgba(50,36,92,.075)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);font-size:14px;line-height:1.55}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}a{color:var(--purpledeep)}.wrap{max-width:1380px;margin:auto;padding:0 26px}.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}.top .wrap{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}.logo{height:40px;width:40px;border-radius:13px;background:linear-gradient(140deg,#a18ae0,#5d3b9f);display:grid;place-items:center;color:#fff;font-weight:900;font-size:17px;letter-spacing:-2px;box-shadow:0 8px 15px #8c6cd52b}.brand strong{font-size:16px;display:block;letter-spacing:-.5px}.brand small{font-size:11px;color:var(--muted);display:block;line-height:1.1}.topend{display:flex;align-items:center;gap:10px}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #d9d0ee;color:var(--purpledeep);background:#f5f2fd;border-radius:100px;padding:5px 11px;font-size:11px;font-weight:750}.dot{width:7px;height:7px;border-radius:50%;background:#b5aec8;display:inline-block}.dot.ok{background:#1ba37a}.btn{border:1px solid #dcd7e8;color:#473c5d;background:#fff;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.18s}.btn:hover:not(:disabled){border-color:#ab97d0;background:#faf8ff}.btn.prime{color:white;background:var(--purple);border-color:var(--purple)}.btn.prime:hover:not(:disabled){background:var(--purpledeep)}.btn.soft{background:var(--pale);color:var(--purpledeep);border-color:#e0d6f4}.btn.red{color:var(--red)}.hero{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:36px 0 22px}.eyebrow{font-weight:850;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:6px}.hero h1{margin:0;font-size:clamp(25px,3vw,38px);letter-spacing:-1.4px;line-height:1.2}.hero p{max-width:690px;color:var(--muted);font-size:13px;margin:10px 0 0}.heroaside{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.notice{border:1px solid #e7d8fa;background:linear-gradient(120deg,#f5f0ff,#fff);padding:13px 17px;border-radius:12px;font-size:12px;color:#594f77;display:flex;align-items:center;gap:12px;margin-bottom:20px}.notice b{color:var(--purpledeep)}.gate{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 22px}.card{border:1px solid var(--line);border-radius:17px;background:var(--white);box-shadow:var(--shadow)}.cardpad{padding:20px}.ctitle{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.ctitle h2{font-size:15px;letter-spacing:-.25px;margin:0}.sub{color:var(--muted);font-size:12px}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0 12px}.field label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:850}.input{background:#fbfbff;border:1px solid #e0deeb;color:var(--ink);border-radius:9px;min-height:40px;padding:9px 12px;width:100%;outline:none;min-width:0}.input:focus{border-color:#987bcd;box-shadow:0 0 0 3px #aa8dd729}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.hint{margin:9px 0 0;font-size:11px;color:var(--muted)}.user{font-size:12px;margin-top:9px;color:var(--muted);word-break:break-all}.section{margin:22px 0}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}.metric{padding:19px;border:1px solid var(--line);border-radius:15px;background:white}.metric .lab{font-size:12px;color:var(--muted);font-weight:600}.metric .value{font-weight:850;font-size:clamp(18px,2.2vw,28px);letter-spacing:-.75px;white-space:nowrap;margin:4px 0}.metric .meta{font-size:11px;color:var(--muted)}.metric .value.neg{color:var(--red)}.metric .value.pos{color:var(--green)}.barhead{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:24px 0 14px}.barhead h2{font-size:19px;letter-spacing:-.65px;margin:0}.barhead p{color:var(--muted);margin:1px 0 0;font-size:12px}.filters{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.filters .input{width:auto;min-width:140px}.tabs{display:flex;gap:7px;overflow-x:auto;margin:18px 0 14px;scrollbar-width:thin;padding-bottom:3px}.tab{white-space:nowrap;border:1px solid #e5e0ed;background:white;color:#6c627c;border-radius:10px;padding:10px 15px;font-weight:750;font-size:12px}.tab.active{border-color:#9d86d0;background:var(--pale);color:var(--purpledeep)}.panel{display:none}.panel.active{display:block}.list{display:grid;gap:9px}.account{border:1px solid var(--line);border-radius:12px;background:#fff;padding:15px 17px;display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:12px}.accounticon{height:40px;width:40px;display:grid;place-items:center;border-radius:11px;background:var(--pale);font-size:19px}.account strong{font-size:13px}.account small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.money{font-variant-numeric:tabular-nums;font-weight:800;white-space:nowrap}.muted{color:var(--muted)}.datahead{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap}.tablewrap{overflow-x:auto}.trans{width:100%;border-collapse:collapse;min-width:600px}.trans th{text-align:left;color:var(--muted);font-weight:750;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:11px 14px;border-bottom:1px solid var(--line);background:#fcfbff}.trans td{padding:13px 14px;font-size:12px;border-bottom:1px solid #efedf5}.trans tr:last-child td{border-bottom:0}.trans td:last-child,.trans th:last-child{text-align:right}.trans .desc{font-weight:700;color:#3b3455;max-width:350px}.badge{display:inline-flex;background:#f1eff7;border-radius:5px;padding:3px 7px;color:#706780;font-size:10px;font-weight:750}.badge.warn{background:#fff2dd;color:#926525}.badge.good{background:#e5f6f0;color:#177659}.empty{text-align:center;padding:52px 15px;color:var(--muted);font-size:13px}.empty .emoji{font-size:29px;display:block;margin-bottom:8px}.foot{border-top:1px solid var(--line);color:#89849a;font-size:11px;text-align:center;margin-top:44px;padding:25px 0 40px}.status{margin:10px 0 0;display:none;border-radius:9px;padding:11px 13px;background:#eff8f2;color:#246b51;font-size:12px;border:1px solid #d9efdf}.status.bad{display:block;border-color:#f4dce0;background:#fff3f5;color:#b04158}.status.info{display:block}.warning{background:#fff8e9;border:1px solid #f2e4c4;color:#785a2d;font-size:12px;border-radius:10px;padding:10px 14px;margin:12px 0}.hidden{display:none!important}.compact{margin-top:10px;font-size:11px;color:var(--muted)}.link{background:transparent;border:0;color:var(--purpledeep);text-decoration:underline;padding:0;font-size:12px}.loading{display:inline-block;width:13px;height:13px;border:2px solid #ddd2f4;border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:940px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.gate{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.heroaside{margin-top:0}.top .wrap{height:66px}}
-@media(max-width:570px){.wrap{padding:0 14px}.top .wrap{gap:7px}.brand strong{font-size:13px}.logo{height:34px;width:34px;font-size:15px}.topend .pill{display:none}.hero{padding:22px 0 15px}.hero h1{font-size:26px}.metrics{gap:8px}.metric{padding:13px 12px}.metric .lab{font-size:10px}.metric .value{font-size:18px}.metric .meta{font-size:10px}.cardpad{padding:15px}.notice{align-items:flex-start}.barhead{margin:20px 0 12px}.filters{width:100%}.filters .input{flex:1;min-width:0}.filters input[type=month]{min-width:128px}.account{grid-template-columns:35px minmax(0,1fr) auto;padding:12px;gap:8px}.accounticon{height:34px;width:34px}.account strong{font-size:12px}.money{font-size:12px}.tab{padding:9px 12px}}
-
-/* LOGIN PRIVADO */
-.remember{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--muted);margin:9px 0 16px;cursor:pointer}
-.remember input{width:16px;height:16px;accent-color:var(--purple)}
-.signin-ok{display:inline-flex;align-items:center;color:#13795c;background:#e5f6ee;padding:8px 12px;border-radius:9px;font-size:13px;font-weight:750}
-.connection-address{background:#f8f6fc;border:1px solid #eee7fa;border-radius:9px;padding:11px;margin:18px 0 12px;color:#655a7c;font-size:12px;overflow-wrap:anywhere}
-#login-btn{min-height:42px}#logged-in .btn{margin-top:13px}
-@media(max-width:570px){.connection-address{font-size:11px}.gate{gap:12px}}
+:root{--bg:#f7f6fb;--paper:#fff;--panel:#fbfaff;--line:#e9e5f1;--ink:#26233b;--muted:#7e7892;--accent:#7350c7;--accentd:#5633ac;--lav:#f0eafb;--pink:#d85e9d;--green:#168969;--greenbg:#e7f7f0;--red:#ce5470;--redbg:#fff0f3;--blue:#4c74c7;--shadow:0 14px 40px rgba(45,31,87,.045);--round:17px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}a{color:var(--accent)}.hidden{display:none!important}.muted{color:var(--muted)}.tiny{font-size:11px}.sm{font-size:12px}.w100{width:100%}.line{height:1px;background:var(--line);margin:14px 0}.pill{display:inline-flex;gap:6px;align-items:center;background:var(--lav);color:var(--accentd);border-radius:99px;padding:5px 10px;font-size:11px;font-weight:650;white-space:nowrap}.pill.good{background:var(--greenbg);color:var(--green)}.pill.red{background:var(--redbg);color:var(--red)}.pill.plain{background:#f3f1f8;color:#655f79}.btn{background:#fff;border:1px solid #e0d9ed;border-radius:10px;padding:10px 14px;color:var(--ink);font-weight:650;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;transition:background .15s,transform .15s,box-shadow .15s}.btn:hover{background:#f6f2fe}.btn:focus-visible,.navbtn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(115,80,199,.27);outline-offset:2px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.primary:hover{background:var(--accentd)}.btn.soft{color:var(--accentd);background:var(--lav);border-color:#e5d9fb}.btn.danger{color:var(--red)}.btn.sm{padding:7px 10px;min-height:32px}.btn.icon{width:36px;padding:0}.input,.select,.textarea{border:1px solid #e3deee;border-radius:10px;background:#fff;color:var(--ink);padding:10px 12px;min-width:0;width:100%;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:var(--accent)}.textarea{resize:vertical;min-height:73px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label,.field .label{font-size:11px;font-weight:650;color:var(--muted)}.stack{display:flex;flex-direction:column;gap:12px}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.wraprows{display:flex;gap:9px;flex-wrap:wrap}.grow{flex:1;min-width:0}.right{margin-left:auto}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--round);box-shadow:var(--shadow)}.cardpad{padding:20px}.cardtitle{font-size:13px;font-weight:750}.over{font-size:10px;text-transform:uppercase;letter-spacing:.11em;font-weight:800;color:var(--accent)}
+#app{display:flex;min-height:100vh}.side{width:248px;background:#fff;border-right:1px solid var(--line);position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;z-index:15;padding:22px 12px}.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 24px}.brandicon{height:38px;width:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#a883e1,#6240b7);color:white;font-weight:900;font-size:16px;box-shadow:0 8px 18px #b09bd955}.brandname{font-size:15px;font-weight:800;letter-spacing:-.035em}.brandsub{font-size:10px;color:var(--muted);margin-top:2px}.navgroup{font-size:10px;letter-spacing:.12em;color:#a19aac;font-weight:800;margin:18px 14px 7px}.navbtn{width:100%;border:0;background:transparent;color:#665f78;padding:11px 13px;text-align:left;border-radius:11px;display:flex;align-items:center;gap:11px;font-size:12.5px;font-weight:625}.navbtn .ic{width:20px;text-align:center;font-size:16px}.navbtn:hover{background:#f8f5fc}.navbtn.active{background:var(--lav);color:var(--accentd);font-weight:790}.sidebottom{margin-top:auto;padding:10px;border-top:1px solid var(--line)}.sidebottom .hint{padding:8px 2px;font-size:11px;line-height:1.5;color:var(--muted)}.sidebottom .btn{width:100%}.aside-note{margin:10px;padding:11px;border:1px solid #eaddfb;background:#f9f6ff;border-radius:12px;color:#78679a;font-size:11px;line-height:1.5}.stage{margin-left:248px;min-width:0;width:calc(100% - 248px);padding:20px clamp(16px,3vw,46px) 70px;max-width:1920px}.topbar{display:flex;align-items:center;gap:13px;min-height:55px;margin-bottom:28px}.topbar .page-title{font-size:22px;letter-spacing:-.045em;font-weight:820;margin:0}.topbar .page-sub{color:var(--muted);font-size:12px;margin-top:4px}.navtoggle{display:none}.topactions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:nowrap}.monthinput{max-width:174px;min-height:38px;padding:8px 10px;font-size:12px}.banner{display:flex;align-items:flex-start;gap:11px;background:#f1eafd;border:1px solid #e6ddf8;padding:13px 17px;border-radius:13px;color:#5f4c92;margin-bottom:18px;font-size:12px;line-height:1.55}.banner.warn{background:#fff8e9;border-color:#f4e5bf;color:#966a32}.banner.good{background:var(--greenbg);border-color:#cbece0;color:#196e58}.banner.bad{background:var(--redbg);border-color:#f6cfda;color:#ae3553}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.kpi{min-width:0;padding:19px 20px;display:flex;flex-direction:column;gap:9px}.kpi .iconbox{height:34px;width:34px;display:grid;place-items:center;border-radius:10px;background:#f6f0ff;font-size:17px}.kpi .label{color:var(--muted);font-size:11px;font-weight:650}.kpi .number{font-size:clamp(19px,2vw,26px);font-weight:830;letter-spacing:-.04em;white-space:nowrap}.kpi .foot{font-size:10px;color:var(--muted);line-height:1.4}.cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);gap:14px;margin-top:14px}.col2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.cardpad{min-width:0}.charthead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}.charthead h3{font-size:14px;margin:0;letter-spacing:-.01em}.chartcap{color:var(--muted);font-size:11px;margin-top:4px}.chartbody{min-height:165px}.barrow{display:grid;grid-template-columns:minmax(80px,145px) 1fr auto;gap:10px;align-items:center;margin:12px 0;font-size:11px}.barrow .track{background:#f1eef7;border-radius:99px;height:9px;overflow:hidden}.barrow .fill{height:100%;border-radius:99px;background:var(--accent)}.barrow .amt{min-width:77px;text-align:right;font-weight:750}.donutrow{display:flex;align-items:center;gap:26px}.donut{width:160px;height:160px;border-radius:50%;position:relative;flex-shrink:0;background:conic-gradient(#e4dff1 0 100%);display:grid;place-items:center}.donut::before{content:"";position:absolute;inset:29px;border-radius:50%;background:#fff}.donut .center{position:relative;text-align:center;font-weight:850;font-size:15px;max-width:95px;line-height:1.15}.legend{flex:1;min-width:0}.legend .entry{display:flex;gap:8px;align-items:center;font-size:11px;margin:9px 0}.legend .dot{width:8px;height:8px;flex-shrink:0;border-radius:50%}.legend .amount{margin-left:auto;font-weight:800}.trendbox{width:100%;height:166px;display:block}.chartnote{font-size:11px;color:var(--muted)}.tabletools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0}.tabletools .search{width:250px;max-width:100%}.tabletools .select{max-width:210px;font-size:12px}.tablewrap{border:1px solid var(--line);border-radius:15px;overflow-x:auto;background:#fff}.tbl{width:100%;border-collapse:collapse;text-align:left;font-size:12px}.tbl th{font-weight:720;font-size:10px;color:var(--muted);letter-spacing:.03em;padding:13px 14px;background:#faf9fc;white-space:nowrap}.tbl td{padding:13px 14px;border-top:1px solid #f0edf5;vertical-align:middle}.tbl .desc{font-weight:740;max-width:280px}.tbl .desc small{display:block;font-weight:450;color:var(--muted);margin-top:4px;font-size:10px}.money{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:800}.money.neg{color:var(--red)}.money.pos{color:var(--green)}.empty{padding:40px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}.empty .icon{font-size:29px;margin-bottom:9px}.accountlist{display:grid;gap:10px}.account{border:1px solid var(--line);padding:15px;background:#fff;border-radius:13px;display:flex;align-items:center;gap:12px}.account .bankicon{display:grid;place-items:center;border-radius:11px;width:40px;height:40px;background:#f5f0fc;font-size:19px;flex-shrink:0}.account strong{font-size:13px}.account small{font-size:11px;color:var(--muted);display:block;margin-top:4px}.account .money{margin-left:auto;text-align:right}.account .money small{font-weight:400}.splithead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:15px}.splithead h2{margin:0;font-size:18px;letter-spacing:-.03em}.splithead p{margin:5px 0 0;color:var(--muted);font-size:12px}.hstack{display:flex;gap:10px;flex-wrap:wrap}.divider{height:1px;background:var(--line);margin:16px 0}.monthlist{display:flex;flex-direction:column;gap:8px}.monthitem{display:flex;gap:12px;align-items:center;border:1px solid var(--line);padding:13px 14px;border-radius:12px;background:#fff;min-width:0}.monthitem .name{font-size:12px;font-weight:750;overflow:hidden;text-overflow:ellipsis}.monthitem .detail{font-size:10px;color:var(--muted);margin-top:5px}.monthitem .amount{margin-left:auto;font-size:13px;white-space:nowrap;font-weight:800}.monthitem .actions{display:flex;gap:5px;align-items:center}.monthitem .btn{padding:5px 7px;min-height:31px}.mutelabel{font-size:10px;color:var(--muted);font-weight:700}.subhead{font-size:12px;font-weight:750;margin:17px 0 10px}.pilltoggle{display:inline-flex;gap:4px;background:#f0edf6;padding:4px;border-radius:11px}.pilltoggle button{background:none;border:0;color:var(--muted);padding:8px 11px;border-radius:8px;font-size:11px;font-weight:700}.pilltoggle button.active{color:var(--accentd);background:#fff;box-shadow:0 2px 8px #2b184012}.switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:var(--muted);font-size:11px}.switch input{accent-color:var(--accent)}.miniinfo{font-size:11px;line-height:1.6;color:var(--muted)}.compact{font-size:11px;color:var(--muted);line-height:1.6}.hiddenvalue{filter:blur(8px);user-select:none}.mobile-bottom{display:none}
+#login-screen{position:fixed;inset:0;background:linear-gradient(125deg,#f5f1fc,#fff8fc 55%,#f5f7fd);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}#login-screen .loginbox{width:min(420px,100%);padding:30px}#login-screen h1{font-size:25px;margin:20px 0 6px;letter-spacing:-.04em}#login-screen p{font-size:12px;color:var(--muted);line-height:1.6}#login-screen .field{margin-top:14px}#login-screen .btn{margin-top:18px}#login-screen .sub{margin-top:13px;font-size:11px;color:var(--muted)}.status{font-size:12px;border-radius:10px;padding:10px 12px;background:#f2ecfb;color:#6040a5;margin-top:10px;line-height:1.5}.status:empty{display:none}.status.bad{background:var(--redbg);color:#a42a48}.status.good{background:var(--greenbg);color:#146b53}.modalback{position:fixed;inset:0;background:#21163c77;backdrop-filter:blur(3px);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px}.modal{width:min(550px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:21px;padding:23px;box-shadow:0 24px 80px #27153e40}.modal h2{font-size:19px;margin:0;letter-spacing:-.03em}.modal p{font-size:11px;color:var(--muted);line-height:1.55}.modal .fields{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:18px 0}.modal .field.wide{grid-column:1/-1}.modal .footer{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap}.modal .note{font-size:11px;background:#faf6ff;padding:10px 12px;color:#725ca0;border-radius:10px;margin:12px 0}.checkrow{display:flex;align-items:center;gap:8px;font-size:12px;color:#625979}.checkrow input{accent-color:var(--accent)}.mobileonly{display:none}
+@media(max-width:1270px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}.stage{padding-left:24px;padding-right:24px}}@media(max-width:850px){.side{transform:translateX(-100%);transition:transform .2s ease;box-shadow:0 0 0 transparent}.side.open{transform:translateX(0);box-shadow:10px 0 50px #2013321b}.stage{margin-left:0;width:100%;padding:14px 15px 86px}.navtoggle,.mobileonly{display:inline-flex}.topbar{margin-bottom:18px}.topbar .page-title{font-size:20px}.topactions .btn span{display:none}.mobile-bottom{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;padding:7px 6px max(7px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);z-index:12;box-shadow:0 -8px 25px #22132f0a}.mobile-bottom button{border:none;background:transparent;color:#736c83;border-radius:9px;font-size:9px;padding:6px 1px;display:flex;align-items:center;flex-direction:column;gap:5px}.mobile-bottom button span{font-size:18px}.mobile-bottom button.active{color:var(--accentd);background:var(--lav)}.donutrow{gap:15px}}@media(max-width:550px){.stage{padding-left:12px;padding-right:12px}.topbar{flex-wrap:wrap;gap:10px}.topactions{margin-left:0;width:100%;flex-wrap:nowrap}.topactions .monthinput{flex:1;max-width:none}.grid4{gap:9px}.kpi{padding:14px 12px;gap:7px}.kpi .number{font-size:20px}.kpi .foot{font-size:10px}.cardpad{padding:15px}.cols,.col2{gap:10px}.barrow{grid-template-columns:80px 1fr auto;gap:7px}.barrow .amt{min-width:62px;font-size:10px}.donut{height:125px;width:125px}.donut::before{inset:24px}.donut .center{font-size:12px;max-width:80px}.tablewrap{border:0;background:transparent;overflow:visible}.tbl thead{display:none}.tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}.tbl tr{background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px 11px;margin-bottom:8px}.tbl td{border:0;padding:4px 2px;font-size:11px}.tbl td[data-label]:before{content:attr(data-label) ' · ';font-size:10px;color:var(--muted)}.tbl .desc{max-width:none;font-size:12px}.tbl .money{font-size:13px}.tbl td.tableaction{display:flex;gap:6px}.tabletools .search{flex:1;width:140px}.tabletools .select{width:100%;max-width:100%}.monthitem{flex-wrap:wrap;padding:12px}.monthitem .name{max-width:80%}.monthitem .amount{margin-left:auto}.monthitem .actions{width:100%;justify-content:flex-end}.modalback{padding:8px;align-items:flex-end}.modal{max-height:94vh;border-radius:19px 19px 5px 5px;padding:19px}.modal .fields{gap:10px}.modal .footer .btn{flex:1}.account{flex-wrap:wrap}.account .money{width:100%;text-align:left;margin-left:52px}.pill{font-size:10px}.subhead{font-size:11px}}@media(max-width:360px){.cols,.col2{grid-template-columns:minmax(0,1fr)}.donutrow{flex-wrap:wrap;justify-content:center}.legend{flex-basis:100%}.kpi .number{font-size:18px}.barrow{grid-template-columns:74px 1fr auto;gap:4px}.topactions .monthinput{max-width:156px}.cardpad{padding:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap"><div class="brand"><div class="logo">pf</div><div><strong>Pouler Finance <span style="color:var(--purple)">Lab</span></strong><small>Open Finance · ambiente independente</small></div></div><div class="topend"><span class="pill"><span class="dot" id="online-dot"></span><span id="source-label">SEM CONEXÃO</span></span><button class="btn" id="hide-values">◉ Ocultar valores</button></div></div></header>
-<main class="wrap">
-<section class="hero"><div><div class="eyebrow">Laboratório independente / versão beta</div><h1>Seus bancos. Uma visão simples.</h1><p>Teste saldos, movimentações, cartões e faturas usando a Pluggy. Sem misturar nada com o Pouler Finance original.</p></div><div class="heroaside"><span class="pill">🧪 BETA ISOLADO</span><span class="pill">🔒 Somente leitura</span></div></section>
-<div class="notice">🛡️ <span><b>Laboratório sem Firebase:</b> seus dados bancários são consultados somente pelo Cloudflare Worker. O acesso agora usa login com e-mail e senha. A senha fica protegida na Cloudflare, separada do Client Secret da Pluggy. O site não grava extratos nem interfere no Pouler Finance original.</span></div>
-<section class="gate" aria-label="Login e conexão">
-  <article class="card cardpad">
-    <div class="ctitle"><h2>01 · Minha conta</h2><span class="pill" id="auth-label">🔒 Login privado</span></div>
-    <div id="logged-out">
-      <div class="sub">Entre com o seu e-mail e sua senha. Depois disso, os bancos são consultados automaticamente.</div>
-      <form id="login-form" autocomplete="on">
-        <div class="field"><label for="login-email">E-mail</label><input class="input" id="login-email" type="email" required maxlength="254" autocomplete="username" placeholder="seu@email.com" /></div>
-        <div class="field"><label for="login-password">Senha</label><input class="input" id="login-password" type="password" minlength="14" required autocomplete="current-password" placeholder="Sua senha privada" /></div>
-        <label class="remember"><input id="remember-login" type="checkbox" checked /> Lembrar neste dispositivo por 12 horas</label>
-        <div class="row"><button class="btn prime" id="login-btn" type="submit">🔓 Entrar e carregar bancos</button></div>
-      </form>
-    </div>
-    <div id="logged-in" class="hidden">
-      <div class="signin-ok">✓ Você está conectado</div>
-      <div id="signed-email" class="user"></div>
-      <p class="hint">Sessão protegida com validade de até 12 horas. Suas credenciais bancárias continuam na Cloudflare.</p>
-      <button class="btn red" id="logout-btn" type="button">Sair da conta</button>
-    </div>
-    <div class="status" id="login-status" role="status" aria-live="polite"></div>
-  </article>
-  <article class="card cardpad">
-    <div class="ctitle"><h2>02 · Conexão bancária</h2><span class="pill">Cloudflare + Pluggy</span></div>
-    <div class="sub">Este laboratório usa o Worker que você já configurou. Nada de Firebase, código manual ou credenciais da Pluggy no HTML.</div>
-    <div class="connection-address">☁️ <span>pouler-pluggy-lab.paulossray.workers.dev</span></div>
-    <div class="row"><button class="btn soft" id="test-worker" type="button">Verificar conexão</button></div>
-    <div class="status" id="worker-status" role="status"></div>
-    <p class="hint">Os dados bancários ficam apenas nesta página durante a consulta. Seu Pouler Finance original não é alterado.</p>
-  </article>
-</section>
-<section class="section hidden" id="finance-section"><div class="barhead"><div><h2>Visão financeira</h2><p id="subtitle">Entre para consultar seus bancos reais.</p></div><div class="filters"><input type="month" id="month" class="input" aria-label="Mês de consulta"/><button class="btn" id="demo-btn">✨ Exemplo</button><button class="btn prime" id="sync-btn">↻ Consultar bancos</button><button class="btn red" id="clear-btn">Limpar</button></div></div><div class="metrics">
-<div class="metric"><div class="lab">Saldo em contas</div><div class="value" id="m-balance">—</div><div class="meta">Contas bancárias, não inclui limite</div></div>
-<div class="metric"><div class="lab">Entradas bancárias</div><div class="value pos" id="m-income">—</div><div class="meta">Créditos no mês escolhido</div></div>
-<div class="metric"><div class="lab">Saídas bancárias</div><div class="value neg" id="m-spent">—</div><div class="meta">Inclui pagamentos de faturas</div></div>
-<div class="metric"><div class="lab">Compras no cartão</div><div class="value neg" id="m-credit">—</div><div class="meta">Não some de novo às saídas</div></div>
-</div><div class="status" id="sync-status" role="status"></div><div id="warning-area"></div>
-<div class="tabs" role="tablist" aria-label="Seções do laboratório"><button class="tab active" data-tab="transacoes" role="tab">↔ Movimentações</button><button class="tab" data-tab="contas" role="tab">▣ Contas</button><button class="tab" data-tab="cartoes" role="tab">▤ Cartões</button><button class="tab" data-tab="faturas" role="tab">▦ Faturas</button><button class="tab" data-tab="conexoes" role="tab">⌁ Conexões</button></div>
-<div class="panel active" id="panel-transacoes"><div class="card cardpad"><div class="datahead"><div><strong>Extrato consolidado</strong><div class="sub" id="txn-caption">Nenhuma movimentação carregada</div></div><div class="row"><select class="input" id="account-filter" aria-label="Filtrar conta"><option value="">Todas as contas</option></select><input class="input" id="search" type="search" placeholder="Buscar descrição" style="max-width:190px"/><button class="btn" id="export-btn">↓ CSV</button></div></div><div class="tablewrap" id="txn-table"><div class="empty"><span class="emoji">🧪</span>Seu laboratório está zerado.<br/>Carregue o exemplo ou conecte seus bancos.</div></div></div></div>
-<div class="panel" id="panel-contas"><div class="list" id="bank-list"></div></div>
-<div class="panel" id="panel-cartoes"><div class="list" id="card-list"></div></div>
-<div class="panel" id="panel-faturas"><div class="list" id="bill-list"></div></div>
-<div class="panel" id="panel-conexoes"><div class="list" id="item-list"></div></div>
-<p class="compact">💡 Compras de cartão e pagamento de fatura são movimentos diferentes. Esta versão exibe os dois separadamente para evitar interpretar uma compra duas vezes como despesa. Transferências entre contas ainda precisam de conciliação manual.</p>
-</section></main>
-<footer class="foot wrap">Pouler Finance Lab · Projeto de teste · Sem Firebase e sem gravação de dados bancários no site antigo · 2026</footer>
+<div id="login-screen">
+  <div class="loginbox card">
+    <div class="brandicon">pf</div>
+    <div class="over" style="margin-top:18px">Pouler Finance · Pluggy Lab</div>
+    <h1>Suas finanças, do seu jeito.</h1>
+    <p>Entre com seu e-mail e senha para acessar seus bancos e organizar o planejamento. Sem Firebase. Ambiente separado do Pouler Finance original.</p>
+    <form id="login-form">
+      <div class="field"><label for="login-email">E-mail</label><input class="input" id="login-email" type="email" autocomplete="username" required placeholder="seu@email.com"/></div>
+      <div class="field"><label for="login-password">Senha</label><input class="input" id="login-password" type="password" autocomplete="current-password" minlength="14" required placeholder="Sua senha da Cloudflare"/></div>
+      <label class="checkrow" style="margin-top:13px"><input id="remember-login" type="checkbox" checked/> Lembrar neste dispositivo por 12 horas</label>
+      <button class="btn primary w100" type="submit" id="login-btn">Entrar no painel</button>
+    </form>
+    <div id="login-status" class="status" role="status"></div>
+    <div class="line"></div><button class="btn soft w100" id="preview-btn">✨ Explorar com dados fictícios</button>
+    <div class="sub">Acesso protegido pelo Worker. Nenhuma credencial bancária é enviada para o GitHub.</div>
+  </div>
+</div>
+<div id="app" class="hidden">
+  <aside class="side" id="sidebar">
+    <div class="brand"><div class="brandicon">pf</div><div><div class="brandname">Pouler Finance</div><div class="brandsub">LAB · seu painel financeiro</div></div></div>
+    <div class="navgroup">VISÃO GERAL</div>
+    <button class="navbtn active" data-view="dashboard"><span class="ic">▦</span> Dashboard</button>
+    <button class="navbtn" data-view="extrato"><span class="ic">↔</span> Extrato vinculado</button>
+    <button class="navbtn" data-view="cartoes"><span class="ic">▤</span> Cartões de crédito</button>
+    <div class="navgroup">PLANEJAMENTO</div>
+    <button class="navbtn" data-view="mensal-pluggy"><span class="ic">▥</span> Mensal Pluggy</button>
+    <button class="navbtn" data-view="mensal-livre"><span class="ic">✎</span> Mensal livre</button>
+    <button class="navbtn" data-view="contas"><span class="ic">⌂</span> Bancos e faturas</button>
+    <div class="navgroup">PREFERÊNCIAS</div>
+    <button class="navbtn" data-view="config"><span class="ic">⚙</span> Configurações</button>
+    <div class="aside-note">🔒 Extrato original preservado. Suas descrições, categorias e valores planejados são ajustes separados.</div>
+    <div class="sidebottom"><div id="side-email" class="hint" style="word-break:break-word"></div><button class="btn" id="logout-btn">Sair da conta</button></div>
+  </aside>
+  <main class="stage">
+    <header class="topbar">
+      <button class="btn icon navtoggle" id="menu-toggle" title="Abrir menu">☰</button>
+      <div class="grow"><h1 class="page-title" id="page-title">Dashboard</h1><div class="page-sub" id="page-sub">Seu panorama financeiro</div></div>
+      <div class="topactions"><span class="pill plain" id="connection-pill">Sem dados</span><input class="input monthinput" type="month" id="month" aria-label="Mês de referência"/><button class="btn primary" id="sync-btn">↻ <span>Sincronizar</span></button></div>
+    </header>
+    <div class="banner" id="status-banner"><span>ℹ</span><span id="status-text">Carregue suas contas ou use os dados fictícios para explorar.</span></div>
+    <div id="view-content"></div>
+    <footer style="margin:24px 2px 0;font-size:10px;color:var(--muted)">Pouler Finance Lab · Banco conectado em somente leitura · Seus ajustes não alteram a Pluggy · Sem Firebase</footer>
+  </main>
+</div>
+<div class="mobile-bottom hidden" id="mobile-nav">
+  <button data-view="dashboard" class="active"><span>▦</span>Início</button><button data-view="extrato"><span>↔</span>Extrato</button><button data-view="cartoes"><span>▤</span>Cartões</button><button data-view="mensal-livre"><span>✎</span>Mensal livre</button><button data-view="config"><span>⚙</span>Mais</button>
+</div>
+<div id="modal-backdrop" class="modalback hidden" aria-hidden="true"><div id="modal-content" class="modal" role="dialog" aria-modal="true" aria-label="Editar lançamento"></div></div>
+<input type="file" accept=".json,application/json" id="import-file" class="hidden"/>
 <script>
-// Nenhuma dependência do Firebase. Sem uso de banco de dados neste laboratório.
-const $=s=>document.querySelector(s);let source=null,visible=true,loaded=null;
-const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);
-const text=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const masked=n=>visible?money(n):'R$ •••••';
-const day=s=>s?String(s).slice(0,10).split('-').reverse().join('/'):'—';
+// Pouler Finance Lab v2 • dados brutos da Pluggy nunca são gravados no KV ou no localStorage.
+const WORKER='https://pouler-pluggy-lab.paulossray.workers.dev';
+const TOKEN_KEY='pouler-pluggy-lab-login-v1';
+const STATE_KEY='pouler-lab-v2-ajustes-locais';
+const $=q=>document.querySelector(q);
+const $$=q=>Array.from(document.querySelectorAll(q));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const currency=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);
+const fmtDate=v=>{let s=String(v||'').slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(s)?s.split('-').reverse().join('/'):s||'—'};
+const monthNow=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit'}).format(new Date());
+const colors=['#7952d2','#d66aa8','#4e8bca','#e8ac5e','#39a78b','#a29bc3','#e2767b','#79a8a2','#ab86e9','#aeb0bb'];
+const categories=['Alimentação','Moradia','Transporte','Saúde','Educação','Lazer','Assinaturas','Compras','Salário','Renda extra','Investimentos','Dívidas','Impostos','Família','Presentes','Outros'];
+const emptyState=()=>({version:2,manual:[],overrides:{}});
+let finance=emptyState(), demoFinance=emptyState(), data=null, mode='none', currentView='dashboard', token='', sessionEmail='', cloudEnabled=false, saveTimer=null, saveInFlight=false, savedLocally=false, busy=false, hiddenValues=false, activeTypeFilter='all', currentSearch='', currentAccount='', stateRead=false;
+const displayedMoney=n=>hiddenValues?'R$ •••••':currency(n);
+const state=()=>mode==='demo'?demoFinance:finance;
 const period=()=>$('#month').value;
-const accountBy=id=>loaded?.accounts?.find(a=>a.id===id)||null;
-const accountTitle=a=>a?.name||'Conta desconhecida';
-const isCharge=(t,a)=>a?.type==='CREDIT' ? (t.type?t.type==='DEBIT':t.amount>0) : (t.type?t.type==='DEBIT':t.amount<0);
-const isIncome=(t,a)=>a?.type==='BANK' && (t.type?t.type==='CREDIT':t.amount>0);
-const signed=(t,a)=>isCharge(t,a)?-Math.abs(t.amount):Math.abs(t.amount);
-function status(target,message,kind='info'){$(target).textContent=message;$(target).className='status '+kind;}
-function accountHtml(a){return `<div class="account"><div class="accounticon">${a.type==='CREDIT'?'💳':'🏦'}</div><div><strong>${text(a.name)}</strong><small>${a.type==='CREDIT'?'Cartão':'Conta bancária'} ${a.lastDigits?'· final '+text(a.lastDigits):''}</small></div><div style="text-align:right"><div class="money">${a.balance===null?'—':masked(a.balance)}</div><small>${a.type==='CREDIT'?'Saldo devedor informado':'Saldo informado pelo banco'}</small></div></div>`;}
-function render(){const has=!!loaded;const data=loaded||{accounts:[],transactions:[],bills:[],items:[]};const banks=data.accounts.filter(a=>a.type!=='CREDIT');const cards=data.accounts.filter(a=>a.type==='CREDIT');const trans=data.transactions.filter(t=>String(t.date||'').slice(0,7)===period());const bal=banks.reduce((s,a)=>s+(Number(a.balance)||0),0);const inc=trans.filter(t=>isIncome(t,accountBy(t.accountId))).reduce((s,t)=>s+Math.abs(t.amount),0);const out=trans.filter(t=>{const a=accountBy(t.accountId);return a?.type==='BANK'&&isCharge(t,a)}).reduce((s,t)=>s+Math.abs(t.amount),0);const cred=trans.filter(t=>{const a=accountBy(t.accountId);return a?.type==='CREDIT'&&isCharge(t,a)}).reduce((s,t)=>s+Math.abs(t.amount),0);$('#m-balance').textContent=has?masked(bal):'—';$('#m-income').textContent=has?masked(inc):'—';$('#m-spent').textContent=has?masked(out):'—';$('#m-credit').textContent=has?masked(cred):'—';$('#online-dot').classList.toggle('ok',has);$('#source-label').textContent=source==='real'?'PLUGGY REAL':source==='demo'?'DADOS DE EXEMPLO':'SEM CONEXÃO';$('#subtitle').textContent=has?(source==='demo'?'Dados fictícios para testar a interface.':'Dados consultados da Pluggy, somente nesta sessão.'):'Entre para consultar seus bancos reais.';
-const oldFilter=$('#account-filter').value;$('#account-filter').innerHTML='<option value="">Todas as contas</option>'+data.accounts.map(a=>`<option value="${text(a.id)}">${text(a.name)}</option>`).join('');if(data.accounts.some(a=>a.id===oldFilter))$('#account-filter').value=oldFilter;
-$('#bank-list').innerHTML=banks.map(accountHtml).join('')||'<div class="card empty">Nenhuma conta bancária retornada.</div>';$('#card-list').innerHTML=cards.map(accountHtml).join('')||'<div class="card empty">Nenhum cartão retornado.</div>';
-$('#bill-list').innerHTML=(data.bills||[]).slice().sort((a,b)=>String(b.dueDate||'').localeCompare(String(a.dueDate||''))).map(b=>{const a=accountBy(b.accountId);return `<div class="account"><div class="accounticon">🧾</div><div><strong>${text(accountTitle(a))}</strong><small>Vencimento ${day(b.dueDate)} · fechamento ${day(b.closingDate)}</small></div><span class="money">${masked(b.totalAmount)}</span></div>`;}).join('')||'<div class="card empty">Nenhuma fatura retornada.</div>';
-$('#item-list').innerHTML=(data.items||[]).map(i=>`<div class="account"><div class="accounticon">🔗</div><div><strong>${text(i.institution||'Instituição')}</strong><small>ID ${text(String(i.id||'').slice(0,8))}… · atualizado ${day(i.lastUpdatedAt)}</small></div><span class="badge ${i.status==='UPDATED'?'good':'warn'}">${text(i.status||'Desconhecido')}</span></div>`).join('')||'<div class="card empty">Nenhuma conexão consultada.</div>';
-renderTrans();}
-function renderTrans(){const data=loaded||{transactions:[]};const filter=$('#account-filter').value;const search=$('#search').value.toLocaleLowerCase('pt-BR').trim();const rows=(data.transactions||[]).filter(t=>String(t.date||'').slice(0,7)===period()).filter(t=>!filter||t.accountId===filter).filter(t=>!search||String(t.description||'').toLocaleLowerCase('pt-BR').includes(search)).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));$('#txn-caption').textContent=`${rows.length} movimentação(ões) em ${period()}`;if(!rows.length){$('#txn-table').innerHTML='<div class="empty"><span class="emoji">📭</span>Nenhuma movimentação para os filtros escolhidos.</div>';return;}$('#txn-table').innerHTML=`<table class="trans"><thead><tr><th>Data</th><th>Descrição</th><th>Conta</th><th>Categoria</th><th>Valor</th></tr></thead><tbody>${rows.map(t=>{const a=accountBy(t.accountId);const value=signed(t,a);return `<tr><td class="muted">${day(t.date)}</td><td><div class="desc">${text(t.description)}</div><div class="muted">${t.status==='PENDING'?'Pendente':'Confirmada'}</div></td><td>${text(accountTitle(a))}</td><td><span class="badge">${text(t.category||'Sem categoria')}</span></td><td class="money" style="color:${value<0?'var(--red)':'var(--green)'}">${visible?(value<0?'− ':'+ ')+money(Math.abs(value)):'R$ •••••'}</td></tr>`;}).join('')}</tbody></table>`;}
-function demo(){const y=period()||new Date().toISOString().slice(0,7);loaded={source:'demo',month:y,items:[{id:'exemplo',status:'UPDATED',institution:'Banco Exemplo',lastUpdatedAt:new Date().toISOString()}],accounts:[{id:'a1',type:'BANK',name:'Conta do dia a dia',balance:3652.40,lastDigits:'1234'},{id:'a2',type:'BANK',name:'Reserva financeira',balance:5100,lastDigits:'6500'},{id:'c1',type:'CREDIT',name:'Cartão principal',balance:896.80,lastDigits:'9988'}],bills:[{id:'b1',accountId:'c1',totalAmount:896.80,dueDate:y+'-20',closingDate:y+'-12'}],transactions:[{id:'t1',accountId:'a1',date:y+'-03',description:'Salário',amount:3850,type:'CREDIT',category:'Renda'},{id:'t2',accountId:'a1',date:y+'-06',description:'Supermercado',amount:-245.60,type:'DEBIT',category:'Alimentação'},{id:'t3',accountId:'a1',date:y+'-09',description:'Pagamento de fatura',amount:-860,type:'DEBIT',category:'Transferências e pagamentos'},{id:'t4',accountId:'c1',date:y+'-05',description:'Compra no cartão',amount:135.90,type:'DEBIT',category:'Compras'},{id:'t5',accountId:'c1',date:y+'-08',description:'Restaurante',amount:72.50,type:'DEBIT',category:'Alimentação'},{id:'t6',accountId:'a2',date:y+'-11',description:'Rendimento',amount:32.41,type:'CREDIT',category:'Investimentos'}]};source='demo';$('#warning-area').innerHTML='';status('#sync-status','Exemplo carregado: todos os valores são fictícios.','info');render();}
-function clear(){loaded=null;source=null;$('#search').value='';$('#warning-area').innerHTML='';status('#sync-status','Laboratório limpo. Nenhuma informação bancária foi salva.','info');render();}
-// URL pública fixa: ninguém precisa copiá-la a cada acesso.
-const WORKER_URL = 'https://pouler-pluggy-lab.paulossray.workers.dev';
-const STORAGE_TOKEN = 'pouler-pluggy-lab-login-v1';
-let sessionToken = '';
-async function workerFetch(path,needAuth,options={}){
-  const headers={'Accept':'application/json'};
-  if(options.json){headers['Content-Type']='application/json';}
-  if(needAuth){
-    if(!sessionToken) throw Error('Entre com seu e-mail e senha para consultar os bancos.');
-    headers.Authorization='Bearer '+sessionToken;
-  }
-  let res;
-  try {res=await fetch(WORKER_URL+path,{method:options.json?'POST':'GET',headers,
-    body:options.json?JSON.stringify(options.json):undefined,cache:'no-store',referrerPolicy:'no-referrer'});}
-  catch(e){throw Error('Não foi possível alcançar a Cloudflare. Confira a conexão com a internet.');}
-  const body=await res.json().catch(()=>({}));
-  if(!res.ok){const ex=new Error(body.error||'Erro HTTP '+res.status);ex.httpStatus=res.status;throw ex;}
-  return body;
+const account=id=>data?.accounts?.find(a=>a.id===id)||null;
+const isCard=a=>a?.type==='CREDIT';
+const signed=(t)=>{
+  const x=Math.abs(Number(t.amount)||0);
+  if(t.type==='DEBIT')return -x;
+  if(t.type==='CREDIT')return x;
+  return Number(t.amount)||0;
+};
+const txKey=t=>String(t.id||'').replace(/[^A-Za-z0-9_:\-.]/g,'').slice(0,125);
+function baseKind(t){
+ const label=String(t.description||'').toLocaleLowerCase('pt-BR');
+ if(/pagamento (de |da |do )?fatura|pagamento (do |de )?cart[aã]o|pgto.*fatura|fatura.*pagamento/.test(label))return 'cardpayment';
+ if(/transfer[eê]ncia entre contas|aplica[cç][aã]o financeira|resgate de investimento|transferencia interna/.test(label))return 'transfer';
+ return 'normal';
 }
-function showLoggedIn(email){
-  $('#logged-out').classList.add('hidden');$('#logged-in').classList.remove('hidden');
-  $('#finance-section').classList.remove('hidden');$('#signed-email').textContent=email;
-  $('#auth-label').textContent='✓ Conectado';
+function annotation(t){
+ const v=state().overrides[txKey(t)]||{};
+ return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',note:v.note||'',kind:v.kind||baseKind(t),includeFree:!!v.includeFree,planValue:v.planValue==null?'':Number(v.planValue)};
 }
-function showLoggedOut(message=''){
-  $('#logged-in').classList.add('hidden');$('#logged-out').classList.remove('hidden');
-  $('#finance-section').classList.add('hidden');$('#auth-label').textContent='🔒 Login privado';
-  if(message)status('#login-status',message,'bad');
+function valueForPlanning(t){const a=annotation(t);return a.planValue===''?Math.abs(signed(t)):a.planValue;}
+const moveType=t=>signed(t)>=0?'income':'expense';
+const typeName=t=>moveType(t)==='income'?'Entrada':'Saída';
+const transactions=()=>data?.transactions?.filter(t=>String(t.date||'').slice(0,7)===period())||[];
+const isInternal=t=>annotation(t).kind!=='normal';
+const isBank=t=>!isCard(account(t.accountId));
+const isDebit=t=>signed(t)<0;
+const isCredit=t=>signed(t)>0;
+function linkedTotals(){
+ const rows=transactions();const normal=rows.filter(t=>!isInternal(t));
+ const bankIn=normal.filter(t=>isBank(t)&&isCredit(t)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const bankOut=rows.filter(t=>isBank(t)&&isDebit(t)&&!['transfer','ignore'].includes(annotation(t).kind)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const bankPurchases=normal.filter(t=>isBank(t)&&isDebit(t)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const cards=normal.filter(t=>!isBank(t)&&isDebit(t)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const cardPayments=rows.filter(t=>isBank(t)&&isDebit(t)&&annotation(t).kind==='cardpayment').reduce((s,t)=>s+valueForPlanning(t),0);
+ const totalBalance=(data?.accounts||[]).filter(a=>!isCard(a)).reduce((s,a)=>s+Number(a.balance||0),0);
+ return {bankIn,bankOut,bankPurchases,cards,cardPayments,consumption:bankPurchases+cards,cashFlow:bankIn-bankOut,totalBalance};
 }
-function forgetSession(message=''){
-  sessionToken='';
-  try{localStorage.removeItem(STORAGE_TOKEN);sessionStorage.removeItem(STORAGE_TOKEN);}catch{}
-  clear();showLoggedOut(message);
+function countCategories(){let map=new Map();for(const t of transactions())if(signed(t)<0&&!isInternal(t)){
+ const a=annotation(t);const k=a.category||'Outros';map.set(k,(map.get(k)||0)+valueForPlanning(t));
+ }return [...map.entries()].sort((a,b)=>b[1]-a[1]);}
+function monthlyEntries(){
+ const month=period(); const out=[];
+ for(const m of state().manual){
+  if(m.recurring){if(month< m.date.slice(0,7))continue;
+   const d=Math.min(Number(m.date.slice(-2)),new Date(Number(month.slice(0,4)),Number(month.slice(5)),0).getDate());
+   out.push({...m,effectiveDate:month+'-'+String(d).padStart(2,'0'),effectiveStatus:m.monthlyStatus?.[month]||'pending',ref:'manual',recurring:true});
+  }else if(m.date.slice(0,7)===month)out.push({...m,effectiveDate:m.date,effectiveStatus:m.status,ref:'manual'});
+ }
+ for(const t of transactions()){
+  const an=annotation(t); if(!an.includeFree)continue;
+  out.push({id:txKey(t),title:an.title,type:moveType(t),amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:an.category,note:an.note,kind:an.kind,effectiveStatus:'paid',ref:'linked',accountId:t.accountId,transaction:t});
+ }
+ return out.sort((a,b)=>String(a.effectiveDate).localeCompare(String(b.effectiveDate)));
 }
-async function consultBanks(){
-  setLoading(true);status('#sync-status','Buscando informações na Pluggy…','info');
-  try{
-    const data=await workerFetch('/data?month='+encodeURIComponent(period()),true);
-    loaded=data;source='real';
-    $('#warning-area').innerHTML=(data.warnings||[]).map(w=>`<div class="warning">⚠️ ${text(w)}</div>`).join('');
-    status('#sync-status',`Consulta concluída às ${new Date(data.readAt).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}. ${data.accounts.length} conta(s), ${data.transactions.length} movimentação(ões).`,'info');
-    render();
-  }catch(e){
-    if(e.httpStatus===401)forgetSession('Sua sessão expirou ou foi invalidada. Entre novamente.');
-    else status('#sync-status',e.message,'bad');
-  }finally{setLoading(false);}
+const counted=e=>e.ref==='manual'||e.kind==='normal';
+function freeTotals(){const list=monthlyEntries().filter(counted);
+ const filter=(type,status)=>list.filter(e=>e.type===type&&(status?e.effectiveStatus===status:true)).reduce((s,e)=>s+Number(e.amount||0),0);
+ const incomes=filter('income'),expenses=filter('expense'),received=filter('income','paid'),paid=filter('expense','paid'),toPay=filter('expense','pending'),toReceive=filter('income','pending');
+ return {incomes,expenses,received,paid,toPay,toReceive,planned:incomes-expenses,actual:received-paid};}
+function notice(msg,kind='info'){
+ const el=$('#status-banner'); if(!el)return; el.className='banner'+(kind==='info'?'':' '+kind);$('#status-text').textContent=msg;
 }
-async function restoreSession(){
-  let saved='';try{saved=sessionStorage.getItem(STORAGE_TOKEN)||localStorage.getItem(STORAGE_TOKEN)||'';}catch{}
-  if(!saved)return;
-  sessionToken=saved;
-  try{const session=await workerFetch('/session',true);showLoggedIn(session.email);await consultBanks();}
-  catch{forgetSession('Sua sessão anterior não é mais válida. Entre novamente.');}
+function localSave(){try{localStorage.setItem(STATE_KEY,JSON.stringify(finance));savedLocally=true;return true}catch{notice('Não foi possível salvar no navegador. Exporte um backup JSON para não perder as alterações.','bad');return false}}
+function localRead(){try{const raw=localStorage.getItem(STATE_KEY);if(raw){const f=JSON.parse(raw);if(f&&Array.isArray(f.manual)&&f.overrides)finance={version:2,manual:f.manual,overrides:f.overrides};}}catch{}}
+function savedStatus(){const el=$('#save-indicator');if(el)el.textContent=mode==='demo'?'Exemplo · não salvo':cloudEnabled?'☁ Sincronizado com Cloudflare KV':'▣ Salvo neste navegador';}
+function scheduleSave(){
+ if(mode==='demo'){notice('Alteração feita nos dados fictícios. Ela não será salva na nuvem.','info');render();return;}
+ localSave();savedStatus();clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,2200);render();
 }
-function setLoading(value){$('#sync-btn').disabled=value;$('#test-worker').disabled=value;$('#sync-btn').innerHTML=value?'<span class="loading"></span> Consultando…':'↻ Consultar bancos';}
-$('#demo-btn').addEventListener('click',demo);$('#clear-btn').addEventListener('click',clear);
-$('#hide-values').addEventListener('click',()=>{visible=!visible;$('#hide-values').textContent=visible?'◉ Ocultar valores':'◉ Mostrar valores';render();});
-$('#test-worker').addEventListener('click',async()=>{
-  setLoading(true);
-  try{
-    const r=await workerFetch('/health',false);
-    status('#worker-status',r.status==='online'?(r.configured?'✓ Worker online. Login e Pluggy configurados.':
-      !r.loginConfigured?'⚠ Falta cadastrar seu e-mail e senha na Cloudflare.':'⚠ Faltam credenciais da Pluggy na Cloudflare.'):
-      'Resposta inesperada do Worker.',r.configured?'info':'bad');
-  }catch(e){status('#worker-status',e.message,'bad');}finally{setLoading(false);}
+async function persistCloud(){
+ if(!token||!cloudEnabled||saveInFlight)return;
+ saveInFlight=true;const snapshot=JSON.stringify(finance);
+ try{const ans=await api('/finance-state',true,{body:{state:JSON.parse(snapshot)}});if(ans.success)notice('Seu planejamento foi salvo na Cloudflare. O extrato bancário original não foi alterado.','good');}
+ catch(e){notice('Suas edições estão salvas neste navegador, mas a nuvem não confirmou: '+e.message,'warn');}
+ finally{saveInFlight=false; if(JSON.stringify(finance)!==snapshot){clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,2500);}}
+}
+async function loadStoredState(){
+ localRead(); if(!token){savedStatus();return;}
+ try{const r=await api('/finance-state',true);cloudEnabled=!!r.available;
+  if(r.available&&r.state&&Array.isArray(r.state.manual)&&r.state.overrides){finance={version:2,manual:r.state.manual,overrides:r.state.overrides};localSave();}
+  else if(r.available&&(finance.manual.length||Object.keys(finance.overrides).length)){setTimeout(persistCloud,2300);}
+  stateRead=true;savedStatus();
+  if(!r.available)notice('Salvamento local ativo. Para manter as edições também no celular, vincule FINANCE_KV na Cloudflare.','warn');
+ }catch(e){cloudEnabled=false;stateRead=true;notice('Ajustes carregados deste navegador. KV indisponível: '+e.message,'warn');}
+}
+async function api(path,authorized=false,options={}){
+ const h={Accept:'application/json'};if(authorized){if(!token)throw Error('Entre novamente para acessar os bancos.');h.Authorization='Bearer '+token;}
+ if(options.body)h['Content-Type']='application/json';
+ let r;try{r=await fetch(WORKER+path,{method:options.body?'POST':'GET',headers:h,body:options.body?JSON.stringify(options.body):undefined,cache:'no-store',referrerPolicy:'no-referrer'});}catch{throw Error('Não foi possível conectar à Cloudflare. Confira a internet.');}
+ const result=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(result.error||'Erro HTTP '+r.status);e.httpStatus=r.status;throw e;}return result;
+}
+function setBusy(value){busy=value;const sync=$('#sync-btn');if(sync){sync.disabled=value;sync.innerHTML=value?'⏳ <span>Buscando...</span>':'↻ <span>Sincronizar</span>';}}
+async function loadMonth(){
+ if(mode==='demo'){data=demoData(period());render();return;}
+ if(!token){render();return;}
+ const requested=period();setBusy(true);notice('Consultando os dados disponíveis na Pluggy para '+requested+'…');
+ try{const fresh=await api('/data?month='+encodeURIComponent(requested),true);if(requested!==period())return;data=fresh;mode='real';
+  const n=(fresh.warnings||[]).length;
+  notice('Atualizado às '+new Date(fresh.readAt||Date.now()).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'. '+fresh.transactions.length+' movimentações encontradas.'+(n?' '+n+' aviso(s) de conexão.':''),n?'warn':'good');
+ }catch(e){if(e.httpStatus===401){logout('Sessão expirada. Entre novamente.');return;}notice('Falha ao consultar a Pluggy: '+e.message,'bad');}
+ finally{setBusy(false);render();}
+}
+function demoData(month){const d=day=>month+'-'+String(day).padStart(2,'0');return {source:'demo',readAt:new Date().toISOString(),month,
+ items:[{id:'demo1',status:'UPDATED',institution:'Banco Exemplo',lastUpdatedAt:new Date().toISOString()},{id:'demo2',status:'UPDATED',institution:'Cartão Exemplo',lastUpdatedAt:new Date().toISOString()}],
+ accounts:[{id:'bank1',itemId:'demo1',type:'BANK',name:'Conta principal',lastDigits:'1234',balance:5320.75},{id:'bank2',itemId:'demo1',type:'BANK',name:'Conta reserva',lastDigits:'8890',balance:2430.90},{id:'card1',itemId:'demo2',type:'CREDIT',name:'Cartão principal',lastDigits:'4567',balance:1318.90,creditLimit:5000,availableCreditLimit:3681.1}],
+ bills:[{id:'b1',accountId:'card1',dueDate:d(25),closingDate:d(17),totalAmount:1318.90}],transactions:[
+ {id:'d1',accountId:'bank1',date:d(3),description:'Pagamento SEDU',amount:3650,type:'CREDIT',category:'Salário',status:'POSTED'},
+ {id:'d2',accountId:'bank1',date:d(5),description:'Pagamento Monte Alvo',amount:3240,type:'CREDIT',category:'Salário',status:'POSTED'},
+ {id:'d3',accountId:'bank1',date:d(5),description:'Supermercado Vitória',amount:487.60,type:'DEBIT',category:'Alimentação',status:'POSTED'},
+ {id:'d4',accountId:'bank1',date:d(6),description:'Conta de energia',amount:216.30,type:'DEBIT',category:'Moradia',status:'POSTED'},
+ {id:'d5',accountId:'bank1',date:d(10),description:'Pagamento da fatura',amount:988.80,type:'DEBIT',category:'Dívidas',status:'POSTED'},
+ {id:'d6',accountId:'bank1',date:d(12),description:'Combustível',amount:166.50,type:'DEBIT',category:'Transporte',status:'POSTED'},
+ {id:'d7',accountId:'bank2',date:d(12),description:'Rendimento',amount:12.40,type:'CREDIT',category:'Investimentos',status:'POSTED'},
+ {id:'d8',accountId:'card1',date:d(3),description:'Compra 7234',amount:124.90,type:'DEBIT',category:'Compras',status:'POSTED'},
+ {id:'d9',accountId:'card1',date:d(6),description:'Cinema',amount:72.90,type:'DEBIT',category:'Lazer',status:'POSTED'},
+ {id:'d10',accountId:'card1',date:d(9),description:'Restaurante',amount:146.70,type:'DEBIT',category:'Alimentação',status:'POSTED'},
+ {id:'d11',accountId:'card1',date:d(13),description:'Netflix',amount:44.90,type:'DEBIT',category:'Assinaturas',status:'POSTED'},
+ {id:'d12',accountId:'bank1',date:d(14),description:'Transferência entre contas',amount:450,type:'DEBIT',category:'Outros',status:'POSTED'}]};}
+function openApp(){
+ $('#login-screen').classList.add('hidden');$('#app').classList.remove('hidden');$('#mobile-nav').classList.remove('hidden');
+ $('#side-email').textContent=mode==='demo'?'🧪 Prévia com dados fictícios':sessionEmail||'Conta conectada';
+ $('#month').value=period()||monthNow();savedStatus();render();
+}
+async function loggedIn(session){token=session.token;sessionEmail=session.email||'';mode='real';openApp();await loadStoredState();await loadMonth();}
+function logout(message=''){token='';sessionEmail='';mode='none';data=null;cloudEnabled=false;finance=emptyState();stateRead=false;
+ try{localStorage.removeItem(TOKEN_KEY);sessionStorage.removeItem(TOKEN_KEY)}catch{}
+ $('#app').classList.add('hidden');$('#mobile-nav').classList.add('hidden');$('#login-screen').classList.remove('hidden');
+ $('#login-status').textContent=message;$('#login-status').className='status'+(message?' bad':'');
+}
+async function restore(){let t='';try{t=sessionStorage.getItem(TOKEN_KEY)||localStorage.getItem(TOKEN_KEY)||'';}catch{}
+ if(!t)return;token=t;
+ try{const sess=await api('/session',true);sessionEmail=sess.email;mode='real';openApp();await loadStoredState();await loadMonth();}
+ catch{logout('Sessão encerrada. Entre novamente.');}
+}
+const titles={dashboard:['Dashboard','Um panorama claro dos seus bancos e gastos.'],extrato:['Extrato vinculado','Identifique compras, categorias e observações sem alterar o banco.'],cartoes:['Cartões de crédito','Organize e identifique suas compras no cartão.'],'mensal-pluggy':['Mensal Pluggy','Movimentações bancárias do mês, sem lançamentos manuais.'],'mensal-livre':['Mensal livre','Misture extratos escolhidos com receitas e contas feitas por você.'],contas:['Bancos e faturas','Saldos, limites, vencimentos e qualidade das conexões.'],config:['Configurações','Sincronização, backup e privacidade.']};
+function kpi(label,value,foot,icon='◈',tone=''){return `<div class="card kpi"><div class="iconbox">${icon}</div><div class="label">${esc(label)}</div><div class="number ${tone}">${displayedMoney(value)}</div><div class="foot">${esc(foot)}</div></div>`;}
+function noData(title='Nenhum dado para mostrar',hint='Consulte seus bancos ou abra a prévia fictícia.'){return `<div class="empty"><div class="icon">◌</div><strong>${esc(title)}</strong><div>${esc(hint)}</div></div>`;}
+function categoriesUI(){const d=countCategories();if(!d.length)return noData('Sem despesas classificadas','As categorias aparecerão depois da consulta.');
+ const total=d.reduce((s,e)=>s+e[1],0);let offset=0;const stops=d.slice(0,8).map((entry,i)=>{let start=offset;offset+=entry[1]/total*100;return `${colors[i%colors.length]} ${start.toFixed(2)}% ${offset.toFixed(2)}%`;});
+ if(offset<100)stops.push(`${colors[8]} ${offset}% 100%`);
+ return `<div class="donutrow"><div class="donut" style="background:conic-gradient(${stops.join(',')})"><div class="center">${displayedMoney(total)}<div class="tiny muted" style="margin-top:5px;font-weight:500">consumo</div></div></div><div class="legend">${d.slice(0,6).map(([cat,amt],i)=>`<div class="entry"><i class="dot" style="background:${colors[i%colors.length]}"></i><span>${esc(cat)}</span><span class="amount">${displayedMoney(amt)}</span></div>`).join('')}</div></div>`;
+}
+function categoryBars(limit=6){const rows=countCategories().slice(0,limit);if(!rows.length)return noData('Sem despesas no mês');const max=Math.max(1,...rows.map(r=>r[1]));return rows.map(([cat,amt],i)=>`<div class="barrow"><span>${esc(cat)}</span><div class="track"><div class="fill" style="width:${Math.max(1,amt/max*100)}%;background:${colors[i%colors.length]}"></div></div><span class="amt">${displayedMoney(amt)}</span></div>`).join('');}
+function trendChart(){const month=period();const n=new Date(Number(month.slice(0,4)),Number(month.slice(5)),0).getDate();let expenses=Array(n).fill(0);
+ for(const t of transactions()){if(signed(t)>=0||isInternal(t))continue;const dd=Number(String(t.date).slice(8,10));if(dd>0&&dd<=n)expenses[dd-1]+=valueForPlanning(t);}
+ let run=0;const total=expenses.reduce((s,x)=>s+x,0);const max=Math.max(total,1);
+ const coords=expenses.map((val,i)=>{run+=val;return [22+i*616/(n-1),142-(run/max)*110]});
+ const path=coords.map(([x,y],i)=>(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1)).join(' ');
+ const area=path+' L638,148 L22,148 Z';
+ return `<svg class="trendbox" role="img" aria-label="Evolução acumulada dos gastos no mês" viewBox="0 0 660 166" preserveAspectRatio="none"><defs><linearGradient id="gtrend" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#cbb0f1" stop-opacity=".5"/><stop offset="100%" stop-color="#cbb0f1" stop-opacity="0"/></linearGradient></defs><line x1="22" y1="148" x2="640" y2="148" stroke="#e8e0f0"/><line x1="22" y1="87" x2="640" y2="87" stroke="#e8e0f0" stroke-dasharray="4 4"/><path d="${area}" fill="url(#gtrend)"/><path d="${path}" fill="none" stroke="#7653c6" stroke-width="3.1" stroke-linejoin="round" stroke-linecap="round"/><text x="24" y="163" font-size="10" fill="#9187a3">01</text><text x="617" y="163" font-size="10" fill="#9187a3">${n}</text></svg>`;
+}
+function billsUI(limit=6){const bills=(data?.bills||[]).filter(b=>String(b.dueDate||'').slice(0,7)===period()).sort((a,b)=>String(a.dueDate||'').localeCompare(String(b.dueDate||''))).slice(0,limit);
+ if(!bills.length)return noData('Nenhuma fatura informada','Alguns bancos não disponibilizam as faturas pela Pluggy.');
+ return `<div class="accountlist">${bills.map(b=>`<div class="account"><div class="bankicon">▤</div><div class="grow"><strong>${esc(account(b.accountId)?.name||'Cartão')}</strong><small>Vencimento ${fmtDate(b.dueDate)} · fechamento ${fmtDate(b.closingDate)}</small></div><div class="money">${displayedMoney(b.totalAmount)}</div></div>`).join('')}</div>`;
+}
+function dashboard(){const t=linkedTotals();const f=freeTotals();const accountCount=data?.accounts?.length||0;return `
+<div class="grid4">${kpi('Saldo em bancos',t.totalBalance,'Saldo informado pelas contas; não inclui limites','⌂')}${kpi('Receitas bancárias',t.bankIn,'Entradas de conta, excluindo transferências','↗')}${kpi('Consumo identificado',t.consumption,'Compras de conta + cartão, sem fatura duplicada','↘')}${kpi('Saldo mensal livre',f.planned,'Receitas previstas menos contas previstas','✎')}</div>
+<div class="cols"><section class="card cardpad"><div class="charthead"><div><h3>Despesas por categoria</h3><div class="chartcap">Você pode renomear e classificar cada transação</div></div><span class="pill plain">${transactions().length} movimentos</span></div><div class="chartbody">${categoriesUI()}</div></section>
+<section class="card cardpad"><div class="charthead"><div><h3>Movimento do mês</h3><div class="chartcap">Gasto acumulado, excluindo transferências e faturas</div></div></div>${trendChart()}<div class="row" style="justify-content:space-between"><span class="chartnote">Despesas reconhecidas</span><strong>${displayedMoney(t.consumption)}</strong></div></section></div>
+<div class="cols"><section class="card cardpad"><div class="charthead"><div><h3>Onde seu dinheiro foi usado</h3><div class="chartcap">Categorias com maior peso no mês</div></div><button class="btn sm" data-open="extrato">Editar extrato →</button></div>${categoryBars()}</section>
+<section class="card cardpad"><div class="charthead"><div><h3>Faturas do período</h3><div class="chartcap">Valores disponibilizados pelas instituições</div></div><span class="pill">${accountCount} contas</span></div>${billsUI(4)}<div class="line"></div><button class="btn soft w100" data-open="mensal-livre">✎ Abrir contas do mês</button></section></div>`;}
+function pickMenu(){return `<div class="tabletools"><input class="input search" id="txn-search" placeholder="Pesquisar no extrato…" value="${esc(currentSearch)}"/><select id="txn-account" class="select"><option value="">Todas as contas</option>${(data?.accounts||[]).map(a=>`<option value="${esc(a.id)}" ${a.id===currentAccount?'selected':''}>${esc(a.name)}</option>`).join('')}</select><select id="txn-type" class="select"><option value="all">Todos os movimentos</option><option value="card" ${activeTypeFilter==='card'?'selected':''}>Compras no cartão</option><option value="bank" ${activeTypeFilter==='bank'?'selected':''}>Movimentos bancários</option><option value="unlabeled" ${activeTypeFilter==='unlabeled'?'selected':''}>Sem classificação</option></select></div>`;}
+function filteredTx(){return transactions().filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,annotation(t).title,annotation(t).category,account(t.accountId)?.name].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
+function kindPill(kind){if(kind==='cardpayment')return `<span class="pill red">Fatura</span>`;if(kind==='transfer')return `<span class="pill plain">Transferência</span>`;if(kind==='ignore')return `<span class="pill plain">Ignorar</span>`;return '';}
+function txTable(rows,opts={}){if(!rows.length)return noData('Nenhuma movimentação encontrada','Mude os filtros ou sincronize os dados do mês.');
+ return `<div class="tablewrap"><table class="tbl"><thead><tr><th>Data</th><th>Descrição editável</th><th>Conta</th><th>Categoria</th><th>Valor original</th><th>Mensal livre</th><th>Ações</th></tr></thead><tbody>${rows.map(t=>{const a=annotation(t),signedV=signed(t),linked=!!a.includeFree;return `<tr><td data-label="Data">${fmtDate(t.date)}</td><td><div class="desc">${esc(a.title)}${a.title!==t.description?'<small>Banco: '+esc(t.description)+'</small>':''}</div><div class="wraprows" style="margin-top:5px">${kindPill(a.kind)}${a.note?'<span class="pill plain">✎ nota</span>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</div></td><td data-label="Conta" class="muted">${esc(account(t.accountId)?.name||'Conta')}</td><td data-label="Categoria"><span class="pill plain">${esc(a.category)}</span></td><td data-label="Original" class="money ${signedV<0?'neg':'pos'}">${displayedMoney(signedV)}${a.planValue!==''?`<small style="display:block;font-size:10px;color:var(--muted)">Plano: ${displayedMoney(a.planValue)}</small>`:''}</td><td data-label="Mensal livre"><button class="btn sm ${linked?'soft':''}" data-include="${esc(txKey(t))}">${linked?'✓ Incluído':'+ Incluir'}</button></td><td class="tableaction"><button class="btn sm" data-edit-tx="${esc(txKey(t))}">✎ Editar</button></td></tr>`;}).join('')}</tbody></table></div>`;}
+function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Transações bancárias permanecem intactas. Você edita apenas nomes, categorias, notas e valor planejado.</p></div><div class="wraprows"><span class="pill">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Exemplo: a compra que aparece no cartão como “COMPRA 7234” pode virar “Tênis de corrida”, com categoria, nota e opção de levar para o Mensal Livre.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
+function cardsView(){const cards=(data?.accounts||[]).filter(isCard);const all=transactions().filter(t=>isCard(account(t.accountId)));return `<div class="splithead"><div><h2>Seus cartões, organizados</h2><p>Edite a descrição de cada compra e veja faturas e limites disponíveis.</p></div><span class="pill">${cards.length} cartões</span></div>
+<div class="col2">${cards.map(a=>{const spent=all.filter(t=>t.accountId===a.id&&isDebit(t)&&!isInternal(t)).reduce((s,t)=>s+valueForPlanning(t),0);const pct=a.creditLimit?Math.min(100,100*(Number(a.creditLimit)-Number(a.availableCreditLimit||0))/Number(a.creditLimit)):0;return `<div class="card cardpad"><div class="row"><div class="bankicon">▤</div><div class="grow"><strong>${esc(a.name)}</strong><div class="tiny muted">Final ${esc(a.lastDigits||'••••')}</div></div><span class="pill plain">Crédito</span></div><div class="line"></div><div class="mutelabel">Compras identificadas no mês</div><div style="font-size:22px;font-weight:850;margin:7px 0">${displayedMoney(spent)}</div><div class="row" style="justify-content:space-between;font-size:11px"><span class="muted">Limite disponível</span><b>${a.availableCreditLimit==null?'Não informado':displayedMoney(a.availableCreditLimit)}</b></div><div class="barrow" style="display:block;margin:8px 0 0"><div class="track"><div class="fill" style="width:${pct}%"></div></div></div></div>`;}).join('')||`<div class="card">${noData('Nenhum cartão encontrado')}</div>`}</div>
+<div class="card cardpad" style="margin-top:14px"><div class="charthead"><div><h3>Compras no cartão</h3><div class="chartcap">Clique em Editar para identificar cada compra.</div></div><span class="pill">${all.length} compras e créditos</span></div>${txTable(all.sort((a,b)=>String(b.date).localeCompare(String(a.date))))}</div>
+<div class="card cardpad" style="margin-top:14px"><div class="charthead"><h3>Faturas disponíveis</h3></div>${billsUI(40)}</div>`;}
+function linkedMonthly(){const t=linkedTotals(),rows=transactions().sort((a,b)=>String(a.date).localeCompare(String(b.date)));return `<div class="splithead"><div><h2>Mensal Pluggy</h2><p>Somente valores provenientes dos extratos. Sem lançamentos manuais.</p></div><span class="pill good">✓ Vinculado</span></div>
+<div class="grid4">${kpi('Entradas bancárias',t.bankIn,'Créditos reconhecidos nas contas','↗')}${kpi('Saídas de caixa',t.bankOut,'Inclui pagamento de faturas','↘')}${kpi('Compras no cartão',t.cards,'Não somadas às saídas bancárias','▤')}${kpi('Saldo de caixa do mês',t.cashFlow,'Entradas menos saídas bancárias','◈')}</div>
+<div class="cols"><div class="card cardpad"><div class="charthead"><div><h3>Consumo reconhecido</h3><div class="chartcap">Compras da conta e do cartão; fatura paga não conta duas vezes</div></div><strong>${displayedMoney(t.consumption)}</strong></div>${categoryBars(8)}<div class="line"></div><div class="chartnote">Saídas de caixa incluem ${displayedMoney(t.cardPayments)} de pagamentos de faturas identificados. Você pode corrigir essa classificação no Extrato.</div></div>
+<div class="card cardpad"><div class="charthead"><h3>Resumo de faturas</h3></div>${billsUI(10)}</div></div>
+<div class="card cardpad" style="margin-top:14px"><div class="charthead"><div><h3>Movimentações reconhecidas</h3><div class="chartcap">Alterações aqui afetam somente o painel</div></div><button class="btn sm" data-open="extrato">Ver extrato completo</button></div>${txTable(rows)}</div>`;}
+function entryList(entries,section){if(!entries.length)return noData('Nenhum lançamento','Adicione uma conta ou inclua uma movimentação do extrato.');return `<div class="monthlist">${entries.map(e=>`<div class="monthitem"><div style="width:33px;height:33px;flex-shrink:0;border-radius:9px;display:grid;place-items:center;background:${e.type==='income'?'#e7f7f0':'#fff0f3'};color:${e.type==='income'?'var(--green)':'var(--red)'}">${e.type==='income'?'↗':'↘'}</div><div class="grow"><div class="name">${esc(e.title)} ${e.recurring?'<span class="pill plain">↻ mensal</span>':''} ${e.ref==='linked'?'<span class="pill">↔ Pluggy</span>':''}</div><div class="detail">${fmtDate(e.effectiveDate)} · ${esc(e.category||'Outros')} · ${e.effectiveStatus==='paid'?'Realizado':'Pendente'} ${e.ref==='linked'&&e.kind!=='normal'?' · não contabilizado':''}</div></div><div class="amount ${e.type==='income'?'money pos':'money neg'}">${e.type==='income'?'+ ':'− '}${displayedMoney(e.amount)}</div><div class="actions">${e.ref==='manual'?`<button class="btn sm" data-toggle-paid="${esc(e.id)}">${e.effectiveStatus==='paid'?'↶ Pendente':'✓ Pago'}</button>`:''}<button class="btn sm" data-edit-entry="${esc(e.id)}" data-entry-type="${e.ref}">✎ Editar</button>${e.ref==='linked'?`<button class="btn sm danger" data-drop-linked="${esc(e.id)}">Retirar</button>`:`<button class="btn sm danger" data-delete-manual="${esc(e.id)}">Excluir</button>`}</div></div>`).join('')}</div>`;}
+function freeMonthly(){const totals=freeTotals();const entries=monthlyEntries();const toPay=entries.filter(e=>e.type==='expense'&&e.effectiveStatus==='pending'&&counted(e));const receive=entries.filter(e=>e.type==='income'&&e.effectiveStatus==='pending'&&counted(e));const real=entries.filter(e=>e.effectiveStatus==='paid');return `<div class="splithead"><div><h2>Seu mês, suas regras</h2><p>Adicione contas e receitas, repita todo mês e misture com transações selecionadas da Pluggy.</p></div><button class="btn primary" data-add-manual>+ Novo lançamento</button></div>
+<div class="grid4">${kpi('Recebido',totals.received,'Entradas já recebidas e selecionadas','↗')}${kpi('Pago / gasto',totals.paid,'Saídas realizadas e reconhecidas','↘')}${kpi('Ainda a receber',totals.toReceive,'Receitas previstas, mas não recebidas','◌')}${kpi('Contas pendentes',totals.toPay,'Despesas previstas ainda não pagas','◷')}</div>
+<div class="cols"><section class="card cardpad"><div class="charthead"><div><h3>Previsão do mês</h3><div class="chartcap">Receitas previstas menos despesas previstas</div></div><span class="pill ${totals.planned>=0?'good':'red'}">${displayedMoney(totals.planned)}</span></div><div style="display:grid;gap:17px"><div><div class="row" style="justify-content:space-between"><span class="mutelabel">Receitas previstas</span><strong>${displayedMoney(totals.incomes)}</strong></div><div class="barrow" style="display:block;margin:7px 0 0"><div class="track"><div class="fill" style="background:var(--green);width:${totals.incomes+totals.expenses?100*totals.incomes/(totals.incomes+totals.expenses):0}%"></div></div></div></div><div><div class="row" style="justify-content:space-between"><span class="mutelabel">Despesas previstas</span><strong>${displayedMoney(totals.expenses)}</strong></div><div class="barrow" style="display:block;margin:7px 0 0"><div class="track"><div class="fill" style="background:var(--red);width:${totals.incomes+totals.expenses?100*totals.expenses/(totals.incomes+totals.expenses):0}%"></div></div></div></div></div><div class="line"></div><p class="miniinfo">Você decide o que entra no planejamento. Compras importadas entram somente quando você clica em “+ Incluir” no extrato.</p></section>
+<section class="card cardpad"><div class="charthead"><div><h3>Próximas contas</h3><div class="chartcap">Pendências do mês selecionado</div></div><span class="pill">${toPay.length} a pagar</span></div>${entryList(toPay.slice(0,5))}</section></div>
+<div class="card cardpad" style="margin-top:14px"><div class="charthead"><div><h3>Todos os lançamentos do mês</h3><div class="chartcap">${entries.length} lançamento(s): ${entries.filter(e=>e.ref==='linked').length} da Pluggy e ${entries.filter(e=>e.ref==='manual').length} manuais</div></div><div class="row"><button class="btn sm" data-open="extrato">+ Importar do extrato</button><button class="btn primary sm" data-add-manual>+ Lançamento</button></div></div>
+${entryList(entries)}
+<div class="line"></div><p class="compact">✓ Lançamentos Pluggy representam movimentos realizados. Transferências e pagamento de faturas não entram na soma de consumo, para evitar dupla contagem. Para despesas que não constam no banco (aluguel futuro, dízimo, boletos etc.), use Novo lançamento.</p></div>`;}
+function banksPage(){const accounts=data?.accounts||[];return `<div class="splithead"><div><h2>Contas conectadas</h2><p>Saldos, cartões e horário da última sincronização disponibilizada pela Pluggy.</p></div><span class="pill">${accounts.length} contas</span></div><div class="col2">${accounts.map(a=>`<div class="card cardpad"><div class="row"><div class="bankicon" style="font-size:22px">${isCard(a)?'▤':'⌂'}</div><div class="grow"><strong>${esc(a.name)}</strong><div class="tiny muted">${isCard(a)?'Cartão de crédito':'Conta bancária'} · final ${esc(a.lastDigits||'••••')}</div></div></div><div class="line"></div><div class="mutelabel">${isCard(a)?'Saldo devedor informado':'Saldo disponível informado'}</div><div style="font-size:24px;font-weight:850;margin:5px 0">${a.balance===null?'Não informado':displayedMoney(a.balance)}</div>${isCard(a)?`<span class="miniinfo">Limite total: ${a.creditLimit==null?'—':displayedMoney(a.creditLimit)} · disponível: ${a.availableCreditLimit==null?'—':displayedMoney(a.availableCreditLimit)}</span>`:''}</div>`).join('')||`<div class="card">${noData('Sem contas consultadas')}</div>`}</div><div class="cols"><div class="card cardpad"><div class="charthead"><h3>Faturas</h3></div>${billsUI(40)}</div><div class="card cardpad"><div class="charthead"><h3>Conexões Pluggy</h3></div><div class="accountlist">${(data?.items||[]).map(i=>`<div class="account"><div class="bankicon">↔</div><div class="grow"><strong>${esc(i.institution||'Instituição')}</strong><small>Última sincronização: ${fmtDate(i.lastUpdatedAt)}</small></div><span class="pill ${i.status==='UPDATED'?'good':'plain'}">${esc(i.status||'—')}</span></div>`).join('')||noData('Sem conexões consultadas')}</div></div></div>`;}
+function settingsPage(){return `<div class="cols"><section class="card cardpad"><div class="splithead"><div><h2>Seus dados e segurança</h2><p>O banco original é somente leitura; salvamos ajustes, seleções e lançamentos manuais, não o extrato completo.</p></div></div><div class="subhead">Armazenamento do planejamento</div><div class="row"><span class="pill ${cloudEnabled?'good':'plain'}" id="save-indicator">${cloudEnabled?'Cloudflare KV':'Local'}</span><button class="btn sm" data-sync-settings>Verificar nuvem</button></div><p class="miniinfo">${cloudEnabled?'Cloudflare KV conectado. Seus ajustes podem ser vistos em outro dispositivo com o mesmo login.':'Você está usando armazenamento local neste navegador. Para sincronizar as edições no celular e no computador, vincule FINANCE_KV ao Worker na Cloudflare.'}</p><div class="divider"></div><div class="subhead">Segurança financeira</div><p class="miniinfo">Seu login é validado no Cloudflare Worker. Não salve o Client Secret no HTML ou GitHub. Os extratos completos são consultados na Pluggy e não são gravados pelo painel. Alguns nomes de operações podem constar nos ajustes salvos.</p><button class="btn" data-toggle-values>${hiddenValues?'◉ Mostrar valores':'◉ Ocultar valores'}</button><div class="divider"></div><div class="subhead">Edição</div><p class="miniinfo">${state().manual.length} lançamentos manuais • ${Object.keys(state().overrides).length} transações ajustadas • ${monthlyEntries().filter(e=>e.ref==='linked').length} importações neste mês.</p></section><section class="card cardpad"><h2 style="font-size:18px;margin:0">Backup e testes</h2><p class="miniinfo">Faça cópia das suas anotações e lançamentos para não depender de um único dispositivo.</p><div class="stack" style="margin-top:18px"><button class="btn primary w100" data-export-json>↓ Exportar meu planejamento (JSON)</button><button class="btn w100" data-export-csv>↓ Exportar lançamentos do mês (CSV)</button><button class="btn w100" data-import-json>↑ Restaurar backup (JSON)</button><button class="btn w100" data-demo>✨ Abrir dados fictícios</button><button class="btn w100" data-refresh>↻ Consultar Pluggy novamente</button><button class="btn danger w100" data-clear-planning>Limpar meus lançamentos e ajustes</button></div><div class="line"></div><p class="compact">Este laboratório não modifica o Pouler Finance original. No plano Cloudflare Workers Free e KV Free, chamadas acima dos limites deixam de funcionar até a renovação da cota, sem cobrança automática pelo plano Free.</p></section></div>`;}
+function render(){
+ if($('#app').classList.contains('hidden'))return;
+ const [title,sub]=titles[currentView]||titles.dashboard;$('#page-title').textContent=title;$('#page-sub').textContent=sub;
+ $('#connection-pill').textContent=mode==='demo'?'🧪 Exemplo':data?'● Pluggy conectada':'Sem dados';$('#connection-pill').className='pill '+(data?'good':'plain');
+ const all=$$('.navbtn, #mobile-nav button');all.forEach(btn=>btn.classList.toggle('active',btn.dataset.view===currentView));
+ const contents={dashboard:dashboard,extrato:extractView,cartoes:cardsView,'mensal-pluggy':linkedMonthly,'mensal-livre':freeMonthly,contas:banksPage,config:settingsPage};
+ $('#view-content').innerHTML=(contents[currentView]||dashboard)();savedStatus();
+}
+function changeView(to){if(!titles[to])return;currentView=to;$('#sidebar').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});render();}
+function showModal(content){$('#modal-content').innerHTML=content;$('#modal-backdrop').classList.remove('hidden');$('#modal-backdrop').setAttribute('aria-hidden','false');const inp=$('#modal-content input:not([type=checkbox])');inp?.focus();}
+function closeModal(){$('#modal-backdrop').classList.add('hidden');$('#modal-backdrop').setAttribute('aria-hidden','true');$('#modal-content').innerHTML='';}
+function choices(items,selected){return items.map(c=>`<option value="${esc(c)}" ${c===selected?'selected':''}>${esc(c)}</option>`).join('');}
+const categoryList=()=>`<datalist id="categories-list">${categories.map(c=>`<option value="${esc(c)}"></option>`).join('')}</datalist>`;
+function editTransaction(id){const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;const a=annotation(t);const signedV=signed(t);
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">TRANSAÇÃO VINCULADA</div><h2>Identificar movimentação</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Banco: ${esc(t.description)} · ${fmtDate(t.date)} · ${displayedMoney(signedV)}</p><form id="tx-form" data-id="${esc(id)}"><div class="fields"><div class="field wide"><label>O que realmente foi essa compra?</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" required/></div><div class="field"><label>Categoria</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" required/>${categoryList()}</div><div class="field"><label>Classificar como</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Valor para planejamento (opcional)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="Original: ${Math.abs(signedV).toFixed(2)}" /></div><div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''} /> Incluir no Mensal livre</label></div><div class="field wide"><label>Observação pessoal</label><textarea name="note" class="textarea" maxlength="500" placeholder="Ex.: parcela 2/3 da viagem, presente, compra dividida...">${esc(a.note)}</textarea></div></div><div class="note">🔒 O extrato e o valor original da Pluggy ficam intactos. Aqui você edita somente o planejamento.</div><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Salvar ajustes</button></div></form>`);
+}
+function editManual(id=null){const m=state().manual.find(x=>x.id===id)||{id:'',title:'',amount:'',type:'expense',category:'Moradia',date:period()+'-'+String(Math.min(new Date().getDate(),28)).padStart(2,'0'),status:'pending',recurring:false,note:''};const isNew=!id;
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?'Novo lançamento':'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Use para salário previsto, aluguel, dízimo, assinaturas, contas e qualquer valor que não conste no extrato.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><div class="field"><label>Tipo</label><select class="select" name="type">${choices(['expense','income'],m.type).replace(/>expense</,'>Despesa<').replace(/>income</,'>Receita<')}</select></div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label><input class="input" name="category" list="categories-list" required maxlength="60" value="${esc(m.category)}"/>${categoryList()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
+}
+function downloadFile(filename,body,mime){const blob=new Blob([body],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
+function exportJson(){const s=state();downloadFile('Pouler-Lab-backup-'+period()+'.json',JSON.stringify({format:'POULER-LAB-FINANCE-V2',exportedAt:new Date().toISOString(),state:s},null,2),'application/json');notice('Backup exportado. Guarde-o em local privado: contém suas anotações e valores planejados.','good');}
+function exportCsv(){const entries=monthlyEntries();const lines=[['Data','Descricao','Origem','Categoria','Tipo','Valor','Status','Observacao'],...entries.map(e=>[e.effectiveDate,e.title,e.ref==='linked'?'Pluggy':'Manual',e.category,e.type,e.amount,e.effectiveStatus,e.note||''])];const csv=lines.map(row=>row.map(x=>'"'+String(x??'').replace(/^([=+@\-\t\r])/,'\'$1').replace(/"/g,'""')+'"').join(';')).join('\r\n');downloadFile('Pouler-Lab-Mensal-'+period()+'.csv','\ufeff'+csv,'text/csv;charset=utf-8');}
+function uniqueId(){return 'm_'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'_'+Math.random().toString(36).slice(2));}
+// Ações dinâmicas do painel.
+$('#view-content').addEventListener('click',async e=>{
+ const btn=e.target.closest('button');if(!btn)return;
+ if(btn.hasAttribute('data-open'))return changeView(btn.dataset.open);
+ if(btn.hasAttribute('data-edit-tx'))return editTransaction(btn.dataset.editTx);
+ if(btn.hasAttribute('data-edit-entry')){return btn.dataset.entryType==='manual'?editManual(btn.dataset.editEntry):editTransaction(btn.dataset.editEntry);}
+ if(btn.hasAttribute('data-add-manual'))return editManual();
+ if(btn.hasAttribute('data-include')){
+  const id=btn.dataset.include;const t=data?.transactions?.find(x=>txKey(x)===id);if(!t)return;
+  const a=annotation(t);state().overrides[id]={...a,includeFree:!a.includeFree};scheduleSave();return;
+ }
+ if(btn.hasAttribute('data-drop-linked')){const id=btn.dataset.dropLinked;const t=data?.transactions?.find(x=>txKey(x)===id);if(!t)return;state().overrides[id]={...annotation(t),includeFree:false};scheduleSave();return;}
+ if(btn.hasAttribute('data-toggle-paid')){
+  const id=btn.dataset.togglePaid,m=state().manual.find(v=>v.id===id);if(!m)return;
+  if(m.recurring){m.monthlyStatus=m.monthlyStatus||{};m.monthlyStatus[period()]=(m.monthlyStatus[period()]==='paid'?'pending':'paid');}
+  else m.status=m.status==='paid'?'pending':'paid';scheduleSave();return;
+ }
+ if(btn.hasAttribute('data-delete-manual')){
+  if(!confirm('Excluir este lançamento? Se for recorrente, ele será retirado de todos os meses.'))return;
+  const s=state();s.manual=s.manual.filter(v=>v.id!==btn.dataset.deleteManual);scheduleSave();return;
+ }
+ if(btn.hasAttribute('data-toggle-values')){hiddenValues=!hiddenValues;render();return;}
+ if(btn.hasAttribute('data-export-json'))return exportJson();
+ if(btn.hasAttribute('data-export-csv'))return exportCsv();
+ if(btn.hasAttribute('data-include-all')){let count=0;for(const t of transactions()){const a=annotation(t);if(a.kind!=='normal'||a.includeFree)continue;state().overrides[txKey(t)]={...a,includeFree:true};count++;}scheduleSave();notice(count+' movimentações normais incluídas no Mensal Livre. Transferências e faturas foram ignoradas.','good');return;}
+ if(btn.hasAttribute('data-import-json'))return $('#import-file').click();
+ if(btn.hasAttribute('data-demo'))return switchToDemo();
+ if(btn.hasAttribute('data-refresh')){if(!token){notice('Entre com e-mail e senha para acessar a Pluggy.','warn');return;}mode='real';return loadMonth();}
+ if(btn.hasAttribute('data-sync-settings')){if(!token){notice('Prévia fictícia: sem armazenamento na nuvem.','info');return;}await loadStoredState();return render();}
+ if(btn.hasAttribute('data-clear-planning')){
+  if(!confirm('Excluir TODOS os lançamentos manuais e ajustes do laboratório? Os dados da Pluggy não serão apagados.'))return;
+  const s=state();s.manual=[];s.overrides={};scheduleSave();return;
+ }
 });
-$('#login-form').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const email=$('#login-email').value.trim().toLowerCase();
-  const password=$('#login-password').value;
-  $('#login-btn').disabled=true;$('#login-btn').textContent='Entrando…';
-  try{
-    const session=await workerFetch('/login',false,{json:{email,password}});
-    sessionToken=session.token;$('#login-password').value='';
-    try{($('#remember-login').checked?localStorage:sessionStorage).setItem(STORAGE_TOKEN,sessionToken);}catch{}
-    $('#login-status').className='status';
-    showLoggedIn(session.email);await consultBanks();
-  }catch(err){status('#login-status',err.message,'bad');}
-  finally{$('#login-btn').disabled=false;$('#login-btn').textContent='🔓 Entrar e carregar bancos';}
+$('#view-content').addEventListener('input',e=>{
+ if(e.target.id==='txn-search'){currentSearch=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
 });
-$('#logout-btn').addEventListener('click',()=>{forgetSession();$('#login-password').value='';status('#login-status','Você saiu. Entre novamente para consultar seus bancos.','info');});
-$('#sync-btn').addEventListener('click',consultBanks);
-$('#account-filter').addEventListener('change',renderTrans);$('#search').addEventListener('input',renderTrans);
-$('#month').addEventListener('change',()=>{if(source==='real'){loaded=null;source=null;status('#sync-status','Mês alterado. Clique em “Consultar bancos” para buscar os dados deste período.','info');}else if(source==='demo'){demo();return;}render();});
-for(const btn of document.querySelectorAll('.tab'))btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.panel').forEach(t=>t.classList.remove('active'));btn.classList.add('active');$('#panel-'+btn.dataset.tab).classList.add('active');});
-$('#export-btn').addEventListener('click',()=>{if(!loaded)return status('#sync-status','Não há dados para exportar.','bad');const rows=loaded.transactions.filter(t=>String(t.date||'').slice(0,7)===period()).map(t=>[t.date,t.description,accountTitle(accountBy(t.accountId)),t.category,t.amount,t.type,t.status]);const csv=[['Data','Descrição','Conta','Categoria','Valor original Pluggy','Tipo','Status'],...rows].map(row=>row.map(x=>'"'+String(x??'').replace(/^([=+@\-\t\r])/,'\'$1').replace(/"/g,'""')+'"').join(';')).join('\r\n');const url=URL.createObjectURL(new Blob(['\ufeff',csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='pouler-pluggy-'+period()+(source==='demo'?'-EXEMPLO':'')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
-$('#month').value=new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}).slice(0,7);
-restoreSession();
-render();
+$('#view-content').addEventListener('change',e=>{
+ if(e.target.id==='txn-account'){currentAccount=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+ if(e.target.id==='txn-type'){activeTypeFilter=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+});
+$('#modal-backdrop').addEventListener('click',e=>{if(e.target===$('#modal-backdrop')||e.target.closest('[data-close-modal]'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+$('#modal-backdrop').addEventListener('submit',e=>{
+ if(e.target.id==='tx-form'){
+  e.preventDefault();const f=new FormData(e.target),id=e.target.dataset.id;const t=data?.transactions?.find(t=>txKey(t)===id);if(!t)return;
+  const val=String(f.get('planValue')??'').trim();const num=val===''?null:Number(val);
+  if(num!==null&&(!Number.isFinite(num)||num<0||num>999999999)){alert('Informe um valor válido.');return;}
+  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',note:String(f.get('note')).trim().slice(0,500),kind:String(f.get('kind')),includeFree:f.get('includeFree')==='on',planValue:num};
+  closeModal();scheduleSave();return;
+ }
+ if(e.target.id==='manual-form'){
+  e.preventDefault();const f=new FormData(e.target),s=state(),oldId=e.target.dataset.id;
+  const amount=Number(f.get('amount'));
+  if(!Number.isFinite(amount)||amount<0||amount>999999999){alert('Informe um valor válido.');return;}
+  const recur=f.get('recurring')==='on';const paid=f.get('paid')==='on'?'paid':'pending';
+  const base=oldId?s.manual.find(v=>v.id===oldId):null;
+  const row={id:oldId||uniqueId(),title:String(f.get('title')).trim().slice(0,160),type:String(f.get('type'))==='income'?'income':'expense',amount,date:String(f.get('date')),category:String(f.get('category')).trim().slice(0,60)||'Outros',status:paid,recurring:recur,note:String(f.get('note')||'').slice(0,500),monthlyStatus:base?.monthlyStatus||{}};
+  if(!/^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(row.date)||!row.title){alert('Informe nome e data válidos.');return;}
+  if(recur)row.monthlyStatus[period()]=paid;
+  if(base){const index=s.manual.findIndex(v=>v.id===oldId);if(index!==-1)s.manual[index]=row;}
+  else s.manual.push(row);
+  closeModal();scheduleSave();return;
+ }
+});
+$('#import-file').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ if(file.size>240000){alert('Backup muito grande. Limite de 240 KB.');e.target.value='';return;}
+ try{const obj=JSON.parse(await file.text());if(obj.format!=='POULER-LAB-FINANCE-V2'||!Array.isArray(obj.state?.manual)||!obj.state?.overrides)throw Error('O arquivo não é um backup do Pouler Lab v2.');
+  if(!confirm('Substituir seus lançamentos e ajustes atuais pelo backup? Isso não altera o extrato da Pluggy.'))return;
+  const s=state();s.manual=obj.state.manual;s.overrides=obj.state.overrides;
+  scheduleSave();notice('Backup importado. Revise seus lançamentos.','good');}
+ catch(err){alert('Não foi possível importar: '+err.message);}finally{e.target.value='';}
+});
+function switchToDemo(){mode='demo';demoFinance=emptyState();data=demoData(period());openApp();notice('Prévia com dados fictícios. Nenhuma informação bancária ou edição real foi alterada.','info');}
+$('#preview-btn').addEventListener('click',switchToDemo);
+$('#login-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('#login-btn');btn.disabled=true;btn.textContent='Entrando...';
+ try{const session=await api('/login',false,{body:{email:$('#login-email').value.trim().toLowerCase(),password:$('#login-password').value}});
+  $('#login-password').value='';try{($('#remember-login').checked?localStorage:sessionStorage).setItem(TOKEN_KEY,session.token);}catch{}
+  await loggedIn(session);
+ }catch(err){$('#login-status').textContent=err.message;$('#login-status').className='status bad';}
+ finally{btn.disabled=false;btn.textContent='Entrar no painel';}
+});
+$('#logout-btn').addEventListener('click',()=>logout('Você saiu do laboratório.'));
+$('#menu-toggle').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]');if(nav)changeView(nav.dataset.view);});
+$('#month').addEventListener('change',()=>{if(mode==='demo'){data=demoData(period());render();return;}data=null;render();if(token)loadMonth();});
+$('#sync-btn').addEventListener('click',()=>{if(token){mode='real';loadMonth();}else if(mode==='demo'){notice('Você está na prévia. Entre com seu login para conectar os bancos.','warn');}else notice('Entre na sua conta antes de consultar a Pluggy.','warn');});
+$('#month').value=monthNow();restore();
 </script>
-</body></html>
+</body>
+</html>
