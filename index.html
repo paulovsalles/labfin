@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#f7f5fc"/>
 <meta name="description" content="Pouler Finance Lab — extratos, cartões, dashboard, contas do mês e mensal livre."/>
-<title>Pouler Finance · Controle Mensal Pluggy 3.3</title>
+<title>Pouler Finance · Controle Mensal Pluggy 3.4</title>
 <style>
 :root{--bg:#f7f6fb;--paper:#fff;--panel:#fbfaff;--line:#e9e5f1;--ink:#26233b;--muted:#7e7892;--accent:#7350c7;--accentd:#5633ac;--lav:#f0eafb;--pink:#d85e9d;--green:#168969;--greenbg:#e7f7f0;--red:#ce5470;--redbg:#fff0f3;--blue:#4c74c7;--shadow:0 14px 40px rgba(45,31,87,.045);--round:17px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}a{color:var(--accent)}.hidden{display:none!important}.muted{color:var(--muted)}.tiny{font-size:11px}.sm{font-size:12px}.w100{width:100%}.line{height:1px;background:var(--line);margin:14px 0}.pill{display:inline-flex;gap:6px;align-items:center;background:var(--lav);color:var(--accentd);border-radius:99px;padding:5px 10px;font-size:11px;font-weight:650;white-space:nowrap}.pill.good{background:var(--greenbg);color:var(--green)}.pill.red{background:var(--redbg);color:var(--red)}.pill.plain{background:#f3f1f8;color:#655f79}.btn{background:#fff;border:1px solid #e0d9ed;border-radius:10px;padding:10px 14px;color:var(--ink);font-weight:650;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;transition:background .15s,transform .15s,box-shadow .15s}.btn:hover{background:#f6f2fe}.btn:focus-visible,.navbtn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(115,80,199,.27);outline-offset:2px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.primary:hover{background:var(--accentd)}.btn.soft{color:var(--accentd);background:var(--lav);border-color:#e5d9fb}.btn.danger{color:var(--red)}.btn.sm{padding:7px 10px;min-height:32px}.btn.icon{width:36px;padding:0}.input,.select,.textarea{border:1px solid #e3deee;border-radius:10px;background:#fff;color:var(--ink);padding:10px 12px;min-width:0;width:100%;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:var(--accent)}.textarea{resize:vertical;min-height:73px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label,.field .label{font-size:11px;font-weight:650;color:var(--muted)}.stack{display:flex;flex-direction:column;gap:12px}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.wraprows{display:flex;gap:9px;flex-wrap:wrap}.grow{flex:1;min-width:0}.right{margin-left:auto}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--round);box-shadow:var(--shadow)}.cardpad{padding:20px}.cardtitle{font-size:13px;font-weight:750}.over{font-size:10px;text-transform:uppercase;letter-spacing:.11em;font-weight:800;color:var(--accent)}
@@ -193,6 +193,45 @@
  .pm .pm-sort-select{width:100%;flex:1;min-width:160px}
 }
 @media(max-width:360px){.pm .pm-line,.pm .pm-group-content .pm-line{grid-template-columns:30px minmax(0,1fr) 100px}.pm .pm-amount{width:100px;max-width:100px}.pm .pm-day.pm-date-full{min-width:112px;font-size:10px}}
+
+
+/* 3.4 — receitas agrupáveis e layout mensal em duas colunas no desktop */
+.pm .pm-income-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 15px;background:#f9fcfb;border-bottom:1px solid #e5efe9}
+.pm .pm-income-toolbar .select{font-size:11px;width:auto;min-height:32px;padding:6px 10px;max-width:178px}
+.pm .pm-income-toolbar .btn{font-size:10.5px;min-height:32px;padding:6px 9px}
+.pm .pm-income-toolbar [data-pm-bulk-income]{background:#eef9f4;color:#167b60;border:1px solid #c9e9dc;font-weight:760}
+.pm .pm-income-toolbar [data-pm-bulk-income]:hover{background:#e4f5ed}
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-icon{background:#e8f7ef;color:#157956}
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-button:hover,
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-button[aria-expanded=true]{background:#f3faf6}
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-total{color:#13805f}
+.pm-bulk-list{max-height:44vh;overflow-y:auto;border:1px solid #e6e4ed;border-radius:12px;margin-top:7px}
+.pm-bulk-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0 8px;color:#7d748f;font-size:11px}
+.pm-bulk-option{display:flex;gap:11px;align-items:center;padding:11px;border-bottom:1px solid #f0edf5;cursor:pointer;font-size:12px}
+.pm-bulk-option:last-child{border-bottom:0}
+.pm-bulk-option:has(input:checked){background:#f0faf5}
+.pm-bulk-option input{accent-color:#178d6a;width:17px;height:17px;flex-shrink:0}
+.pm-bulk-option span{min-width:0;flex:1}
+.pm-bulk-option strong{display:block;color:#30283f;font-size:12px;overflow-wrap:anywhere}
+.pm-bulk-option small{display:block;margin-top:4px;color:#8c8399;line-height:1.5}
+.pm-bulk-option b{white-space:nowrap;color:#148363;font-variant-numeric:tabular-nums;font-size:11px}
+@media(min-width:1181px){.pm .pm-columns{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
+@media(min-width:1181px) and (max-width:1570px){
+ .pm .pm-line,.pm .pm-group-content .pm-line{display:grid;grid-template-columns:30px minmax(0,1fr) 116px;gap:6px 8px;padding:12px 11px}
+ .pm .pm-item-ico{grid-column:1;grid-row:1;align-self:start}
+ .pm .pm-line-main{grid-column:2/4;grid-row:1;min-width:0}
+ .pm .pm-day.pm-date-full{grid-column:1/3;grid-row:2;justify-self:start;width:auto;min-width:115px;max-width:none}
+ .pm .pm-amount{grid-column:3;grid-row:2;max-width:116px;width:116px;justify-self:end}
+ .pm .pm-line-acts{grid-column:3;grid-row:3;justify-self:end;display:flex}
+}
+@media(max-width:1180px){.pm .pm-columns{grid-template-columns:1fr}}
+@media(max-width:600px){
+ .pm .pm-income-toolbar{gap:7px;padding:10px}
+ .pm .pm-income-toolbar .select{flex:1;max-width:100%;min-width:145px}
+ .pm .pm-income-toolbar [data-pm-bulk-income]{width:100%}
+ .pm-bulk-option{flex-wrap:wrap}
+ .pm-bulk-option b{margin-left:28px}
+}
 
 </style>
 </head>
@@ -498,7 +537,7 @@ function pmSortGroups(groups,sort){return [...groups].sort((a,b)=>{
  let diff=sort==='value-asc'?totals[0]-totals[1]:sort==='value-desc'?totals[1]-totals[0]:sort==='date-asc'?da.localeCompare(db):sort==='date-desc'?db.localeCompare(da):a.name.localeCompare(b.name,'pt-BR');
  return diff||a.name.localeCompare(b.name,'pt-BR');
 });}
-let pmSource='linked', pmGrouped=true, pmPaidControl=false, pmSortIncome='date-desc', pmSortExpense='date-desc';
+let pmSource='linked', pmGrouped=true, pmIncomeGrouped=true, pmPaidControl=false, pmSortIncome='date-desc', pmSortExpense='date-desc';
 const PM_GROUP_OPEN_KEY='pouler-month-grupos-v32';
 let pmOpenGroups=new Set();
 try{const raw=JSON.parse(localStorage.getItem(PM_GROUP_OPEN_KEY)||'[]');if(Array.isArray(raw))pmOpenGroups=new Set(raw.filter(v=>typeof v==='string').slice(-250));}catch{}
@@ -507,11 +546,12 @@ function pmPersistOpen(){try{localStorage.setItem(PM_GROUP_OPEN_KEY,JSON.stringi
 try{let saved=JSON.parse(localStorage.getItem('pouler-month-ui-v3')||'{}');
  if(['mixed','manual','linked'].includes(saved.source))pmSource=saved.source;
  if(typeof saved.grouped==='boolean')pmGrouped=saved.grouped;
+ if(typeof saved.incomeGrouped==='boolean')pmIncomeGrouped=saved.incomeGrouped;
  if(typeof saved.paid==='boolean')pmPaidControl=saved.paid;
  if(PM_SORT_OPTIONS.some(([key])=>key===saved.sortIncome))pmSortIncome=saved.sortIncome;
  if(PM_SORT_OPTIONS.some(([key])=>key===saved.sortExpense))pmSortExpense=saved.sortExpense;
 }catch{}
-function pmSaveSettings(){try{localStorage.setItem('pouler-month-ui-v3',JSON.stringify({source:pmSource,grouped:pmGrouped,paid:pmPaidControl,sortIncome:pmSortIncome,sortExpense:pmSortExpense}));}catch{}}
+function pmSaveSettings(){try{localStorage.setItem('pouler-month-ui-v3',JSON.stringify({source:pmSource,grouped:pmGrouped,incomeGrouped:pmIncomeGrouped,paid:pmPaidControl,sortIncome:pmSortIncome,sortExpense:pmSortExpense}));}catch{}}
 const pmCap=s=>s.charAt(0).toLocaleUpperCase('pt-BR')+s.slice(1);
 function pmMonthName(m){const [year,month]=m.split('-').map(Number);return pmCap(new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric'}).format(new Date(year,month-1,1)));}
 function pmPreviousMonth(m){const [year,month]=m.split('-').map(Number);const v=new Date(year,month-2,1);return String(v.getFullYear())+'-'+String(v.getMonth()+1).padStart(2,'0');}
@@ -541,7 +581,7 @@ function pmTotals(entries){
 }
 const pmCategoryIcon=cat=>({Moradia:'🏠',Alimentação:'🥗',Transporte:'🚗',Saúde:'✚',Educação:'📚',Lazer:'🎬',Assinaturas:'▣',Compras:'🛍️',Salário:'💰','Renda extra':'💼',Investimentos:'📈',Dívidas:'💳',Impostos:'🧾',Família:'👨‍👩‍👧',Presentes:'🎁',Dízimo:'💜',Doações:'💜',Outros:'📌'})[cat]||(pmSegment(cat)==='investments'?'📈':pmSegment(cat)==='donations'?'💜':'◈');
 function pmKpi(label,note,value,style){return `<div class="pm-stat ${style||''}"><div class="slabel">${esc(label)}</div><div class="svalue">${displayedMoney(value)}</div><div class="snote">${esc(note)}</div></div>`;}
-const pmGroupDatalist=()=>`<datalist id="pm-group-names">${PM_SUGGESTIONS.map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist>`;
+const pmGroupDatalist=()=>`<datalist id="pm-group-names">${[...PM_INCOME_SUGGESTIONS,...PM_SUGGESTIONS].map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist>`;
 function pmRow(e){
  const linked=e.ref==='linked',k=linked?txKey(e.transaction):e.id,status=e.effectiveStatus==='paid';
  const dateText=fmtDate(e.effectiveDate),origin=linked?bankLabel(account(e.accountId||e.transaction?.accountId)):'';
@@ -555,6 +595,7 @@ function pmRow(e){
  return `<div class="pm-line ${noncount?'is-dim':''}"><span class="pm-item-ico">${e.type==='income'?'💰':pmCategoryIcon(e.category)}</span><div class="pm-line-main">${titleInput}<div class="pm-line-note"><span class="pm-origin ${linked?'frompluggy':''}">${linked?'↔ Pluggy':'✎ Manual'}</span>${linked?`<span class="pm-bank-tag" title="Conta de origem da movimentação · clique em Bancos e faturas para nomear">🏦 ${esc(origin)}</span>`:''}${e.recurring?'<span>↻ recorrente</span>':''}${pmPaidControl?`<span>${status?'✓ Realizado':'◷ Pendente'}</span>`:''}${noncount?'<span>não contabilizado</span>':''}${finSelect(e.financeClass|| (e.type==='income'?'provento':'geral'),`data-pm-class="${esc(k)}" data-pm-ref="${esc(e.ref)}"`)}${linked&&annotation(e.transaction).planValue!==''?`<span title="Valor original do extrato">Original: ${displayedMoney(signed(e.transaction))}</span>`:''}<button class="pm-minilink" data-edit-entry="${esc(k)}" data-entry-type="${e.ref}" title="Editar categoria e observação">${esc(e.groupName||pmGroupOf(e).name)} ✎</button></div></div>${dateView}<div class="pm-amount ${e.type==='income'?'income':''}"><b>R$</b>${amountInput}</div><div class="pm-line-acts">${actStatus}${action}</div></div>`;
 }
 // Grupos próprios: permitem separar por tipo de conta e assunto, mesmo quando a categoria bancária é genérica.
+const PM_INCOME_SUGGESTIONS=['Aulas particulares','Salários','Serviços e trabalhos','Rendimentos e investimentos','Reembolsos','Transferências recebidas','Presentes e ajudas','Outros proventos'];
 const PM_SUGGESTIONS=['Compras online','Mercados e padarias','Restaurantes e delivery','Combustível e transporte','Assinaturas e serviços','Moradia e contas','Saúde e farmácia','Educação','Lazer e viagens','Vestuário e beleza','Casa e utilidades','Impostos e taxas','Família e presentes','Investimentos','Outros gastos'];
 const pmClean=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function pmGroupOf(e){
@@ -581,6 +622,21 @@ function pmGroupOf(e){
  ||(cat==='compras'?{name:'Compras diversas',icon:'🛍️'}:null)
  ||{name:'Outros gastos',icon:'◈'};
 }
+// Grupos de proventos: não inferir que todo PIX recebido é uma aula.
+// PIX com descrições genéricas ficam em "PIX e transferências" até o usuário classificar.
+function pmIncomeGroupOf(e){
+ const typed=String(e.groupName||'').trim();
+ if(typed)return {name:typed,icon:'🏷️',custom:true};
+ const d=pmClean([e.title,e.transaction?.description,e.category,e.note].filter(Boolean).join(' '));
+ const rule=(re,name,icon)=>re.test(d)?{name,icon}:null;
+ return rule(/aulas?\s*particular|refor[cç]o\s*escolar|pagamento\s*de\s*aula|mensalidade\s*de\s*aula|professor\s*particular|tutoria|aluno\s*particular/, 'Aulas particulares','📚')
+ ||rule(/sal[aá]rio|pagamento\s*de\s*folha|contracheque|holerite|vencimentos|remunera[cç][aã]o/, 'Salários','💼')
+ ||rule(/freelanc|servi[cç]o\s*prestado|trabalho\s*avulso|consultoria|honor[aá]rio/, 'Serviços e trabalhos','🧰')
+ ||rule(/rendimento|juros\s*recebidos|dividendo|provento\s*de\s*investimento|cashback|rentabilidade/, 'Rendimentos e investimentos','📈')
+ ||rule(/reembolso|estorno|devolu[cç][aã]o|ressarcimento/, 'Reembolsos','↩️')
+ ||rule(/pix\s*recebido|transfer[eê]ncia\s*recebida|transferencia\s*recebida|transfer\s*[-–]|ted\s*recebida/, 'PIX e transferências','↙️')
+ ||{name:'Outros proventos',icon:'💰'};
+}
 const pmSourceOf=e=>e.ref==='manual'?'Manual':e.transaction&&isCard(account(e.accountId||e.transaction.accountId))?'Cartão':'Conta / PIX';
 const pmScopeIcon={'Cartão':'💳','Conta / PIX':'🏦','Manual':'✎'};
 function pmGroupKey(section,source,name){return period()+'|'+pmSource+'|'+section+'|'+source+'|'+name;}
@@ -597,9 +653,20 @@ function pmGroupBlock(entries,section,source,name,icon){
   <div class="pm-group-content" ${open?'':'hidden'}>${entries.map(pmRow).join('')}</div>
  </div>`;
 }
+function pmIncomeRows(entries){
+ if(!pmIncomeGrouped)return pmSortEntries(entries,pmSortIncome).map(pmRow).join('');
+ const groups=new Map();
+ for(const e of entries){
+  const g=pmIncomeGroupOf(e),key=pmClean(g.name);
+  if(!groups.has(key))groups.set(key,{...g,items:[]});
+  groups.get(key).items.push(e);
+ }
+ return pmSortGroups([...groups.values()],pmSortIncome)
+  .map(g=>pmGroupBlock(pmSortEntries(g.items,pmSortIncome),'proventos','Receitas',g.name,g.icon)).join('');
+}
 function pmRows(entries,group){
  if(!entries.length)return `<div class="pm-empty"><strong>Nenhum lançamento aqui.</strong>${group==='income'?'Importe proventos do extrato ou cadastre uma receita.':'Importe as despesas com os valores originais da Pluggy ou lance uma conta.'}</div>`;
- if(group==='income')return pmSortEntries(entries,pmSortIncome).map(pmRow).join('');
+ if(group==='income')return pmIncomeRows(entries);
  const section=(rows,label,icon,code)=>{
   if(!rows.length)return `<div class="pm-class-empty">Nenhuma ${label.toLocaleLowerCase('pt-BR')} neste mês.</div>`;
   const categoryRows=(!pmGrouped)?pmSortEntries(rows,pmSortExpense).map(pmRow).join(''):(()=>{
@@ -629,12 +696,23 @@ function freeMonthly(){const entries=pmEntries(),t=pmTotals(entries),income=entr
  <div class="pm-controls"><div><div class="pm-control-title">✓ Controle de pago / recebido</div><div class="pm-control-description">${pmPaidControl?'Ativado: acompanhe ○ pendente e ✓ realizado em cada lançamento manual.':'Desativado: veja apenas a projeção do mês, sem controles de pagamento.'}</div></div><button class="pm-toggle" data-pm-toggle-paid aria-label="Alternar controle de pagamentos" aria-pressed="${pmPaidControl?'true':'false'}"><span class="pm-switch"></span> ${pmPaidControl?'Ativado':'Desativado'}</button></div>
  <div class="pm-sourcebar"><label for="pm-source">ORIGEM DOS LANÇAMENTOS</label><select class="pm-source-select" id="pm-source"><option value="mixed" ${pmSource==='mixed'?'selected':''}>Misto · manual + Pluggy importada</option><option value="manual" ${pmSource==='manual'?'selected':''}>Somente manual</option><option value="linked" ${pmSource==='linked'?'selected':''}>Pluggy · extrato completo</option></select><button class="btn sm primary" data-pm-import-all>↓ Importar todos os valores do extrato</button><button class="btn sm soft" data-pm-import>↔ Escolher lançamentos</button><span class="pm-explain">${esc(sourceLabel)}</span></div>
  <div class="pm-stats">${pmKpi('Receitas do mês',pmPaidControl?`Recebido: ${currency(t.incomePaid)}`:'receitas previstas ou reconhecidas',t.income,'green')}${pmKpi('Despesas do mês',pmPaidControl?`Pago: ${currency(t.expensesPaid)}`:'gastos de consumo / obrigações',t.expenses,'red')}${pmKpi('Investimentos','aportes separados das despesas',t.investments,'blue')}${pmKpi('Doações / outros','dízimo e doações classificados',t.donations,'purple')}${pmKpi('Saldo projetado','receitas − despesas − investimentos − doações',t.balance,t.balance>=0?'green':'red')}</div>
- ${pmClassSummary(entries)}<div class="pm-columns"><section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">💰 Receitas do mês</div><div class="pm-sheet-meta">${pmPaidControl?'Recebimentos e valores pendentes':'Projeção das receitas do mês'}</div></div><div class="pm-head-actions"><span class="pm-sheet-total income">${displayedMoney(t.income)}</span><button class="btn sm" data-add-income>+ Receita</button></div></div><div class="pm-sortbar"><label for="pm-sort-income">Ordenar receitas</label>${pmSortSelect('pm-sort-income',pmSortIncome)}<span class="pm-sort-help">Data e valor de cada recebimento</span></div>${pmRows(income,'income')}<div class="pm-sheet-footer"><button data-add-income>+ Adicionar receita</button><span class="pm-mini-status">${income.length} fonte(s) de renda</span></div></section>
+ ${pmClassSummary(entries)}<div class="pm-columns"><section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">💰 Receitas do mês</div><div class="pm-sheet-meta">${pmPaidControl?'Recebimentos e valores pendentes':'Projeção das receitas do mês'}</div></div><div class="pm-head-actions"><span class="pm-sheet-total income">${displayedMoney(t.income)}</span><button class="btn sm" data-add-income>+ Receita</button></div></div><div class="pm-income-toolbar"><button class="btn sm soft" type="button" data-pm-bulk-income>🏷 Agrupar recebimentos</button><select id="pm-income-group" class="select" aria-label="Organização das receitas"><option value="grouped" ${pmIncomeGrouped?'selected':''}>▤ Grupos recolhíveis</option><option value="list" ${!pmIncomeGrouped?'selected':''}>≡ Lista contínua</option></select><button class="btn sm" type="button" data-pm-income-expand="1">Abrir todos</button><button class="btn sm" type="button" data-pm-income-expand="0">Fechar todos</button></div><div class="pm-sortbar"><label for="pm-sort-income">Ordenar receitas</label>${pmSortSelect('pm-sort-income',pmSortIncome)}<span class="pm-sort-help">Por data, valor ou nome · agrupado sem somar PIX duas vezes</span></div>${pmRows(income,'income')}<div class="pm-sheet-footer"><button data-add-income>+ Adicionar receita</button><span class="pm-mini-status">${income.length} fonte(s) de renda</span></div></section>
  <section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">📌 Despesas fixas e gastos gerais</div><div class="pm-sheet-meta">${pmPaidControl?'Pagamentos, vencimentos e pendências':'Grupos por tipo de gasto. Clique em um grupo para ver as compras.'}</div></div><div class="pm-head-actions"><button class="btn sm pm-all" type="button" data-pm-expand="1">Abrir todos</button><button class="btn sm pm-all" type="button" data-pm-expand="0">Fechar todos</button><select id="pm-group" class="select" style="font-size:11px;max-width:180px;padding:7px" aria-label="Organização das despesas"><option value="category" ${pmGrouped?'selected':''}>▤ Grupos recolhíveis</option><option value="list" ${!pmGrouped?'selected':''}>≡ Lista contínua</option></select><span class="pm-sheet-total expense">${displayedMoney(pmSum(expenses.filter(counted)))}</span></div></div><div class="pm-sortbar"><label for="pm-sort-expense">Ordenar despesas</label>${pmSortSelect('pm-sort-expense',pmSortExpense)}<span class="pm-sort-help">Em grupos: ordena os grupos e seus itens. Use Lista contínua para ordem geral.</span></div>${pmRows(expenses,'expense')}<div class="pm-sheet-footer"><button data-add-expense>+ Adicionar despesa</button><span class="pm-mini-status">${expenses.length} lançamento(s)</span></div></section></div>
  <div class="pm-extra-foot"><div>🔒 Ao importar, o valor vem diretamente da Pluggy. Você pode mudar a classificação, o nome, a categoria e o valor planejado sem alterar o extrato do banco. ${pmSource==='linked'?'Use o botão + de cada transação para levá-la ao modo Misto.':'Evite somar manualmente uma despesa já incluída do extrato.'}</div><div class="wraprows"><button class="btn sm" data-open="dashboard">▦ Dashboard</button><button class="btn sm" data-export-csv>↓ CSV do mês</button></div></div></div>`;}
 function pmOpenImport(){const rows=transactions().filter(t=>annotation(t).kind==='normal').sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
  if(!rows.length){notice('Ainda não existem movimentos normais da Pluggy neste mês. Sincronize primeiro.','warn');return;}
  showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">EXTRATO → CONTROLE MENSAL</div><h2>Escolher o que entra no seu mês</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Marque receitas e compras que devem aparecer no modo Misto. Pagamentos de fatura e transferências identificados ficam de fora para evitar duplicidades. Nenhum lançamento será alterado no banco.</p><form id="pm-import-form"><div class="pm-select-actions"><span class="pill plain">${rows.length} transações · valores do banco</span><button class="btn sm" type="button" data-pm-select-all>Selecionar tudo</button></div><div class="pm-import-list">${rows.map(t=>{const a=annotation(t);return `<label class="pm-import-option"><input type="checkbox" name="chosen" value="${esc(txKey(t))}" ${a.includeFree?'checked':''}/><span class="label"><strong>${esc(a.title)}</strong><small>${fmtDate(t.date)} · ${esc(bankLabel(account(t.accountId)))} · ${esc(a.category)}</small></span>${finSelect(a.financeClass,`name="class_${esc(txKey(t))}"`)}<span class="sum" title="Valor original da Pluggy">${displayedMoney(signed(t))}</span></label>`;}).join('')}</div><div class="footer" style="margin-top:16px"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Importar selecionados com valores</button></div></form>`);
+}
+function pmBulkIncome(){
+ const rows=pmEntries().filter(e=>e.type==='income'&&counted(e));
+ if(!rows.length){notice('Não há proventos neste mês para agrupar. Importe da Pluggy ou cadastre uma receita.','warn');return;}
+ const choices=pmSortEntries(rows,pmSortIncome).map(e=>{
+  const key=e.ref==='linked'?txKey(e.transaction):e.id;
+  const bank=e.ref==='linked'?bankLabel(account(e.accountId||e.transaction?.accountId)):'Manual';
+  const current=pmIncomeGroupOf(e).name;
+  return `<label class="pm-bulk-option"><input type="checkbox" name="incomes" value="${esc(key)}"/><span><strong>${esc(e.title)}</strong><small>${esc(fmtDate(e.effectiveDate))} · ${esc(bank)} · grupo atual: ${esc(current)}</small></span><b>${displayedMoney(e.amount)}</b></label>`;
+ }).join('');
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">PROVENTOS · ORGANIZAÇÃO</div><h2>Agrupar recebimentos</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Selecione vários PIX ou receitas e atribua um grupo, como <strong>Aulas particulares</strong>. Os valores e a origem bancária permanecem intactos.</p><form id="pm-bulk-income-form"><div class="field"><label>Nome do grupo</label><input class="input" name="groupName" list="pm-income-datalist" maxlength="60" placeholder="Ex.: Aulas particulares" required/><datalist id="pm-income-datalist">${PM_INCOME_SUGGESTIONS.map(x=>`<option value="${esc(x)}"></option>`).join('')}</datalist></div><div class="pm-bulk-top"><span>${rows.length} recebimentos neste mês</span><button class="btn sm" type="button" data-pm-income-select-all>Selecionar todos</button></div><div class="pm-bulk-list">${choices}</div><div class="footer" style="margin-top:16px"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Agrupar selecionados</button></div></form>`);
 }
 function pmCopyPrevious(){const prev=pmPreviousMonth(period()),month=period();const originals=state().manual.filter(m=>!m.recurring&&String(m.date||'').slice(0,7)===prev);
  if(!originals.length){notice('Nenhum lançamento manual não recorrente em '+pmMonthName(prev)+' para copiar. Contas recorrentes já aparecem automaticamente.','info');return;}
@@ -693,7 +771,16 @@ $('#view-content').addEventListener('click',async e=>{
  if(btn.hasAttribute('data-pm-expand')){
   const shouldOpen=btn.dataset.pmExpand==='1';
   document.querySelectorAll('#view-content [data-pm-toggle-group]').forEach(el=>{
-   const key=el.dataset.pmToggleGroup;if(shouldOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+   const key=el.dataset.pmToggleGroup;if(key.includes('|proventos|'))return;if(shouldOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+   el.setAttribute('aria-expanded',String(shouldOpen));if(el.nextElementSibling)el.nextElementSibling.hidden=!shouldOpen;
+  });pmPersistOpen();return;
+ }
+ if(btn.hasAttribute('data-pm-income-expand')){
+  const shouldOpen=btn.dataset.pmIncomeExpand==='1';
+  document.querySelectorAll('#view-content [data-pm-toggle-group]').forEach(el=>{
+   const key=el.dataset.pmToggleGroup;
+   if(!key.includes('|proventos|'))return;
+   if(shouldOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
    el.setAttribute('aria-expanded',String(shouldOpen));if(el.nextElementSibling)el.nextElementSibling.hidden=!shouldOpen;
   });pmPersistOpen();return;
  }
@@ -710,6 +797,7 @@ $('#view-content').addEventListener('click',async e=>{
  if(btn.hasAttribute('data-pm-toggle-paid')){pmPaidControl=!pmPaidControl;pmSaveSettings();render();return;}
  if(btn.hasAttribute('data-pm-copy'))return pmCopyPrevious();
  if(btn.hasAttribute('data-pm-import'))return pmOpenImport();
+ if(btn.hasAttribute('data-pm-bulk-income'))return pmBulkIncome();
  if(btn.hasAttribute('data-pm-import-all')){
   const rows=transactions().filter(t=>annotation(t).kind==='normal');
   if(!rows.length){notice('Nenhuma movimentação válida no mês. Clique em Sincronizar e tente novamente.','warn');return;}
@@ -758,6 +846,7 @@ $('#view-content').addEventListener('input',e=>{
 $('#view-content').addEventListener('change',e=>{
  if(e.target.id==='pm-source'){pmSource=e.target.value;pmSaveSettings();render();return;}
  if(e.target.id==='pm-group'){pmGrouped=e.target.value==='category';pmSaveSettings();render();return;}
+ if(e.target.id==='pm-income-group'){pmIncomeGrouped=e.target.value==='grouped';pmSaveSettings();render();return;}
  if(e.target.id==='pm-sort-income'){pmSortIncome=e.target.value;pmSaveSettings();render();return;}
  if(e.target.id==='pm-sort-expense'){pmSortExpense=e.target.value;pmSaveSettings();render();return;}
  if(e.target.hasAttribute('data-pm-class'))return pmQuickEdit('financeClass',e.target.dataset.pmClass,e.target.dataset.pmRef,e.target.value);
@@ -769,11 +858,30 @@ $('#view-content').addEventListener('change',e=>{
  if(e.target.id==='txn-type'){activeTypeFilter=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
 });
 $('#modal-backdrop').addEventListener('click',e=>{
+ if(e.target.closest('[data-pm-income-select-all]')){const items=Array.from($$('#pm-bulk-income-form input[name="incomes"]'));const next=items.some(el=>!el.checked);items.forEach(el=>el.checked=next);e.target.closest('button').textContent=next?'Desmarcar todos':'Selecionar todos';return;}
  if(e.target.closest('[data-pm-select-all]')){const items=Array.from($$('#pm-import-form input[name="chosen"]'));const next=items.some(el=>!el.checked);items.forEach(el=>el.checked=next);e.target.closest('button').textContent=next?'Desmarcar tudo':'Selecionar tudo';return;}
  if(e.target===$('#modal-backdrop')||e.target.closest('[data-close-modal]'))closeModal();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 $('#modal-backdrop').addEventListener('submit',e=>{
+ if(e.target.id==='pm-bulk-income-form'){
+  e.preventDefault();
+  const f=new FormData(e.target),name=String(f.get('groupName')||'').trim().slice(0,60);
+  const ids=new Set(f.getAll('incomes'));
+  if(!name){alert('Informe um nome de grupo, como Aulas particulares.');return;}
+  if(!ids.size){alert('Selecione ao menos um recebimento.');return;}
+  const entries=pmEntries().filter(row=>row.type==='income'&&counted(row));
+  let updated=0;
+  for(const row of entries){
+   const id=row.ref==='linked'?txKey(row.transaction):row.id;
+   if(!ids.has(id))continue;
+   if(row.ref==='linked'){const t=row.transaction;state().overrides[id]={...annotation(t),groupName:name};}
+   else {const m=state().manual.find(v=>v.id===id);if(m)m.groupName=name;}
+   updated++;
+  }
+  closeModal();scheduleSave();notice(updated+' recebimento(s) agrupado(s) em '+name+'. Os valores do extrato não foram alterados.','good');return;
+ }
+
  if(e.target.id==='pm-import-form'){
   e.preventDefault();const chosen=new Set(Array.from(new FormData(e.target).getAll('chosen')));
   for(const t of transactions())if(annotation(t).kind==='normal'){const id=txKey(t),a=annotation(t),c=String(new FormData(e.target).get('class_'+id)||a.financeClass);state().overrides[id]={...a,financeClass:FIN_CLASSES.some(([k])=>k===c)?c:a.financeClass,includeFree:chosen.has(id)};}
