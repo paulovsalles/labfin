@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#f7f5fc"/>
 <meta name="description" content="Pouler Finance Lab — extratos, cartões, dashboard, contas do mês e mensal livre."/>
-<title>Pouler Finance · Controle Mensal Pluggy 3.1</title>
+<title>Pouler Finance · Controle Mensal Pluggy 3.2</title>
 <style>
 :root{--bg:#f7f6fb;--paper:#fff;--panel:#fbfaff;--line:#e9e5f1;--ink:#26233b;--muted:#7e7892;--accent:#7350c7;--accentd:#5633ac;--lav:#f0eafb;--pink:#d85e9d;--green:#168969;--greenbg:#e7f7f0;--red:#ce5470;--redbg:#fff0f3;--blue:#4c74c7;--shadow:0 14px 40px rgba(45,31,87,.045);--round:17px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}a{color:var(--accent)}.hidden{display:none!important}.muted{color:var(--muted)}.tiny{font-size:11px}.sm{font-size:12px}.w100{width:100%}.line{height:1px;background:var(--line);margin:14px 0}.pill{display:inline-flex;gap:6px;align-items:center;background:var(--lav);color:var(--accentd);border-radius:99px;padding:5px 10px;font-size:11px;font-weight:650;white-space:nowrap}.pill.good{background:var(--greenbg);color:var(--green)}.pill.red{background:var(--redbg);color:var(--red)}.pill.plain{background:#f3f1f8;color:#655f79}.btn{background:#fff;border:1px solid #e0d9ed;border-radius:10px;padding:10px 14px;color:var(--ink);font-weight:650;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;transition:background .15s,transform .15s,box-shadow .15s}.btn:hover{background:#f6f2fe}.btn:focus-visible,.navbtn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(115,80,199,.27);outline-offset:2px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.primary:hover{background:var(--accentd)}.btn.soft{color:var(--accentd);background:var(--lav);border-color:#e5d9fb}.btn.danger{color:var(--red)}.btn.sm{padding:7px 10px;min-height:32px}.btn.icon{width:36px;padding:0}.input,.select,.textarea{border:1px solid #e3deee;border-radius:10px;background:#fff;color:var(--ink);padding:10px 12px;min-width:0;width:100%;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:var(--accent)}.textarea{resize:vertical;min-height:73px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label,.field .label{font-size:11px;font-weight:650;color:var(--muted)}.stack{display:flex;flex-direction:column;gap:12px}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.wraprows{display:flex;gap:9px;flex-wrap:wrap}.grow{flex:1;min-width:0}.right{margin-left:auto}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--round);box-shadow:var(--shadow)}.cardpad{padding:20px}.cardtitle{font-size:13px;font-weight:750}.over{font-size:10px;text-transform:uppercase;letter-spacing:.11em;font-weight:800;color:var(--accent)}
@@ -84,6 +84,88 @@
 .pm-import-option .pm-class-select{max-width:130px;flex-shrink:0}
 @media(max-width:900px){.pm-class-summary{grid-template-columns:1fr 1fr}.pm-class-summary-item:last-child{grid-column:span 2}}
 @media(max-width:600px){.pm-class-summary{grid-template-columns:1fr}.pm-class-summary-item:last-child{grid-column:span 1}.pm-import-option{flex-wrap:wrap}.pm-import-option .pm-class-select{order:3;margin-left:25px;max-width:180px}.pm-import-option .sum{margin-left:auto}.pm-line-note .pm-class-select{max-width:125px}}
+
+/* 3.2 · Painel mensal limpo, grupos intuitivos, sem rolagem horizontal */
+.pm{--pmline:#e8e5f0;--pmnavy:#28233e;--pmmist:#faf8ff;color:var(--pmnavy)}
+.pm .pm-period{border-bottom:0;padding:7px 0 20px;margin-bottom:5px}
+.pm .pm-period-title h2{color:#27213b;font-size:clamp(19px,2vw,25px)}
+.pm .pm-period-title p{color:#867e97}
+.pm .pm-controls{background:#fff;border:1px solid #e7e2f1;box-shadow:0 5px 22px #37245a09;border-radius:15px;padding:16px 19px}
+.pm .pm-control-title{color:#36304f}.pm .pm-control-description,.pm .pm-explain{color:#817a91}
+.pm .pm-sourcebar{padding:9px 0 3px;gap:9px}
+.pm .pm-sourcebar .pm-source-select{border-color:#e0d9ec;color:#42345e;border-radius:10px}
+.pm .pm-stats{gap:12px;margin:16px 0}
+.pm .pm-stat{border:1px solid #eae5f1;border-top:0;border-radius:15px;padding:18px 17px;background:#fff;box-shadow:0 4px 22px #30204509;position:relative;overflow:hidden}
+.pm .pm-stat:before{content:'';display:block;position:absolute;top:0;left:0;right:0;height:3px;background:#9b88ce}
+.pm .pm-stat.green:before{background:#1b9c78}.pm .pm-stat.red:before{background:#d2637d}.pm .pm-stat.blue:before{background:#6191d1}.pm .pm-stat.purple:before{background:#9972ce}
+.pm .pm-stat .slabel{color:#766e87;font-size:11px}
+.pm .pm-stat .svalue{font-size:clamp(18px,1.8vw,25px);font-weight:810;color:#27213b;letter-spacing:-.045em;overflow:hidden;text-overflow:ellipsis}
+.pm .pm-stat.green .svalue{color:#168b69}.pm .pm-stat.red .svalue{color:#c7516c}.pm .pm-stat.blue .svalue{color:#497bc4}.pm .pm-stat.purple .svalue{color:#8259c0}
+.pm .pm-stat .snote{color:#938ca1}
+.pm .pm-class-summary{margin:3px 0 17px;gap:11px}
+.pm .pm-class-summary-item{background:#fff;border-color:#ece6f4;border-radius:12px;color:#746985;padding:14px 16px;box-shadow:0 3px 13px #30204507}
+.pm .pm-class-summary-item b{color:#30284b}
+.pm .pm-columns{gap:18px;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr)}
+.pm .pm-sheet{border:1px solid #e6e0ef;box-shadow:0 10px 34px #3521490a;border-radius:17px}
+.pm .pm-sheet-head{padding:19px 20px;gap:11px;border-color:#f0ebf6}
+.pm .pm-sheet-title{font-size:16px;color:#292341}
+.pm .pm-sheet-meta{color:#8b8497;line-height:1.5}
+.pm .pm-sheet-total.income{color:#168b69}.pm .pm-sheet-total.expense{color:#c95571}
+.pm .pm-line{background:#fff;border-bottom:1px solid #f0edf5;transition:background .15s}
+.pm .pm-line:hover{background:#fcfbfe}
+.pm .pm-item-ico{background:#f6f2fb;color:#7456a9}
+.pm .pm-title-input{color:#30284b;font-weight:760}
+.pm .pm-origin{background:#f3f0f8;color:#726783}.pm .pm-origin.frompluggy{background:#efe9fb;color:#7552b7}
+.pm .pm-amount{background:#faf9fd;border:1px solid #e5dfed;box-shadow:none}
+.pm .pm-amount input{color:#c35772}.pm .pm-amount.income input{color:#168c6d}
+.pm .pm-day{background:#faf8fe;border-color:#e7e0ef;color:#817296}
+.pm .pm-day input{color:#817296}
+.pm .pm-class-head{background:#f3f0fa;border-color:#e9e2f3;color:#655184;padding:14px 17px}
+.pm .pm-class-head.gerais{background:#fff8ef;color:#a77535;border-color:#f6e9d5}
+.pm .pm-class-head strong{font-size:12px}
+.pm .pm-origin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 17px;background:#faf8fd;border-bottom:1px solid #efebf5;color:#685f7a;font-size:11px;font-weight:800}
+.pm .pm-origin-head span:last-child{font-size:10px;font-weight:680;color:#8a819c;text-align:right}
+.pm .pm-accordion{background:#fff;border-bottom:1px solid #eeebf4}
+.pm .pm-group-button{width:100%;padding:14px 16px;display:flex;align-items:center;gap:12px;text-align:left;border:0;background:#fff;color:#342d47;transition:background .15s}
+.pm .pm-group-button:hover,.pm .pm-group-button[aria-expanded=true]{background:#f9f7fd}
+.pm .pm-group-button:focus-visible{outline:2px solid #a188db;outline-offset:-3px}
+.pm .pm-group-icon{flex:0 0 37px;height:37px;display:grid;place-items:center;border-radius:12px;background:#f3f0fa;font-size:17px}
+.pm .pm-group-label{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.pm .pm-group-label strong{font-size:12px;font-weight:790;white-space:normal;overflow-wrap:anywhere}
+.pm .pm-group-label small{color:#938ba3;font-size:10px;font-weight:550}
+.pm .pm-group-total{font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#393047}
+.pm .pm-chevron{font-size:19px;color:#988cac;transition:transform .18s;flex:0 0 15px;text-align:center}
+.pm .pm-group-button[aria-expanded=true] .pm-chevron{transform:rotate(180deg)}
+.pm .pm-group-content{background:#fbfafd;border-top:1px solid #f0ecf6}
+.pm .pm-group-content[hidden]{display:none!important}
+.pm .pm-group-content .pm-line{padding-left:14px;background:#fdfcff}
+.pm .pm-group-content .pm-line:last-child{border-bottom:0}
+.pm .pm-group-content .pm-line:hover{background:#f7f4fc}
+.pm .pm-head-actions .pm-all{padding:6px 9px;min-height:31px;border-radius:9px;font-size:10px}
+.pm .pm-sheet-footer{background:#fcfbfe}
+.pm .pm-sheet-footer button{background:#f8f5fe;border-color:#e1d6f1;color:#7051ae}
+.pm .pm-extra-foot{background:#fcfbff;border-color:#ebe4f4;border-radius:14px;color:#81778d}
+@media(max-width:1540px){.pm .pm-columns{grid-template-columns:1fr}.pm .pm-line{grid-template-columns:33px minmax(0,1fr) 70px 125px 76px;gap:8px;padding:10px 13px}.pm .pm-amount{max-width:125px}}
+@media(max-width:800px){.pm .pm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pm .pm-class-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.pm .pm-stats{gap:9px}.pm .pm-stat{padding:14px 12px}.pm .pm-stat .svalue{font-size:19px}.pm .pm-class-summary{grid-template-columns:1fr}.pm .pm-class-summary-item:last-child{grid-column:auto}.pm .pm-group-button{padding:12px 10px;gap:9px}.pm .pm-group-icon{flex-basis:32px;height:32px;font-size:15px}.pm .pm-group-total{font-size:11px}.pm .pm-origin-head{padding:11px 12px;align-items:flex-start}.pm .pm-origin-head span:last-child{max-width:50%}.pm .pm-sheet-head{padding:14px}.pm .pm-head-actions{justify-content:flex-start}.pm .pm-head-actions .pm-all{font-size:10px}.pm .pm-group-content .pm-line{grid-template-columns:29px minmax(0,1fr) 85px;gap:6px;padding:9px}}
+@media(max-width:360px){.pm .pm-group-label strong{font-size:11px}.pm .pm-group-total{font-size:10px}.pm .pm-group-button{gap:6px}}
+
+
+/* Touch/mobile: títulos e números separados, sem campos sobrepostos */
+@media (max-width:600px){
+ .pm .pm-line,.pm .pm-group-content .pm-line{display:grid;grid-template-columns:34px minmax(0,1fr) 96px;gap:6px 8px;align-items:start;padding:12px 11px}
+ .pm .pm-item-ico{grid-column:1;grid-row:1;width:34px;height:34px;align-self:start}
+ .pm .pm-line-main{grid-column:2/4;grid-row:1;min-width:0}
+ .pm .pm-title-input{font-size:12px;line-height:1.5;min-height:30px;width:100%;margin:0;padding:5px 6px 5px 0;white-space:normal;text-overflow:clip}
+ .pm .pm-line-note{gap:5px 6px;line-height:1.5;margin-top:3px;padding:0}
+ .pm .pm-class-select{font-size:10px;min-height:27px}
+ .pm .pm-day{grid-column:1;grid-row:2;min-width:34px;max-width:34px;min-height:31px;font-size:9px;gap:0;border-radius:9px;overflow:hidden}
+ .pm .pm-day input{font-size:11px;max-width:25px;min-width:0}
+ .pm .pm-amount{grid-column:2;grid-row:2;max-width:145px;width:min(100%,145px);min-height:33px;justify-self:start}
+ .pm .pm-amount input{font-size:13px;padding:7px 3px}
+ .pm .pm-line-acts{grid-column:3;grid-row:2;display:flex;justify-content:flex-end;align-self:center;gap:5px}
+ .pm .pm-icon-btn{height:30px;width:30px;min-width:30px}
+}
 </style>
 </head>
 <body>
@@ -187,7 +269,7 @@ function baseKind(t){
 }
 function annotation(t){
  const v=state().overrides[txKey(t)]||{};
- return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',note:v.note||'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
+ return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',groupName:v.groupName||'',note:v.note||'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
 }
 function valueForPlanning(t){const a=annotation(t);return a.planValue===''?Math.abs(signed(t)):a.planValue;}
 const moveType=t=>signed(t)>=0?'income':'expense';
@@ -215,12 +297,12 @@ function monthlyEntries(){
  for(const m of state().manual){
   if(m.recurring){if(month< m.date.slice(0,7))continue;
    const d=Math.min(Number(m.date.slice(-2)),new Date(Number(month.slice(0,4)),Number(month.slice(5)),0).getDate());
-   out.push({...m,financeClass:manualClass(m),type:classType(manualClass(m)),effectiveDate:month+'-'+String(d).padStart(2,'0'),effectiveStatus:m.monthlyStatus?.[month]||'pending',ref:'manual',recurring:true});
-  }else if(m.date.slice(0,7)===month)out.push({...m,financeClass:manualClass(m),type:classType(manualClass(m)),effectiveDate:m.date,effectiveStatus:m.status,ref:'manual'});
+   out.push({...m,financeClass:manualClass(m),type:classType(manualClass(m)),effectiveDate:month+'-'+String(d).padStart(2,'0'),groupName:m.groupName||'',effectiveStatus:m.monthlyStatus?.[month]||'pending',ref:'manual',recurring:true});
+  }else if(m.date.slice(0,7)===month)out.push({...m,financeClass:manualClass(m),type:classType(manualClass(m)),effectiveDate:m.date,groupName:m.groupName||'',effectiveStatus:m.status,ref:'manual'});
  }
  for(const t of transactions()){
   const an=annotation(t); if(!an.includeFree)continue;
-  out.push({id:txKey(t),title:an.title,type:classType(an.financeClass),financeClass:an.financeClass,amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:an.category,note:an.note,kind:an.kind,effectiveStatus:t.status==='PENDING'?'pending':'paid',ref:'linked',accountId:t.accountId,transaction:t});
+  out.push({id:txKey(t),title:an.title,type:classType(an.financeClass),financeClass:an.financeClass,amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:an.category,groupName:an.groupName||'',note:an.note,kind:an.kind,effectiveStatus:t.status==='PENDING'?'pending':'paid',ref:'linked',accountId:t.accountId,transaction:t});
  }
  return out.sort((a,b)=>String(a.effectiveDate).localeCompare(String(b.effectiveDate)));
 }
@@ -347,8 +429,13 @@ function linkedMonthly(){const t=linkedTotals(),rows=transactions().sort((a,b)=>
 <div class="card cardpad"><div class="charthead"><h3>Resumo de faturas</h3></div>${billsUI(10)}</div></div>
 <div class="card cardpad" style="margin-top:14px"><div class="charthead"><div><h3>Movimentações reconhecidas</h3><div class="chartcap">Alterações aqui afetam somente o painel</div></div><button class="btn sm" data-open="extrato">Ver extrato completo</button></div>${txTable(rows)}</div>`;}
 function entryList(entries,section){if(!entries.length)return noData('Nenhum lançamento','Adicione uma conta ou inclua uma movimentação do extrato.');return `<div class="monthlist">${entries.map(e=>`<div class="monthitem"><div style="width:33px;height:33px;flex-shrink:0;border-radius:9px;display:grid;place-items:center;background:${e.type==='income'?'#e7f7f0':'#fff0f3'};color:${e.type==='income'?'var(--green)':'var(--red)'}">${e.type==='income'?'↗':'↘'}</div><div class="grow"><div class="name">${esc(e.title)} ${e.recurring?'<span class="pill plain">↻ mensal</span>':''} ${e.ref==='linked'?'<span class="pill">↔ Pluggy</span>':''}</div><div class="detail">${fmtDate(e.effectiveDate)} · ${esc(e.category||'Outros')} · ${e.effectiveStatus==='paid'?'Realizado':'Pendente'} ${e.ref==='linked'&&e.kind!=='normal'?' · não contabilizado':''}</div></div><div class="amount ${e.type==='income'?'money pos':'money neg'}">${e.type==='income'?'+ ':'− '}${displayedMoney(e.amount)}</div><div class="actions">${e.ref==='manual'?`<button class="btn sm" data-toggle-paid="${esc(e.id)}">${e.effectiveStatus==='paid'?'↶ Pendente':'✓ Pago'}</button>`:''}<button class="btn sm" data-edit-entry="${esc(e.id)}" data-entry-type="${e.ref}">✎ Editar</button>${e.ref==='linked'?`<button class="btn sm danger" data-drop-linked="${esc(e.id)}">Retirar</button>`:`<button class="btn sm danger" data-delete-manual="${esc(e.id)}">Excluir</button>`}</div></div>`).join('')}</div>`;}
-// -------- Controle mensal 3.1; os dados originais da Pluggy continuam somente leitura. --------
+// -------- Controle mensal 3.2; grupos recolhíveis e banco original somente leitura. --------
 let pmSource='linked', pmGrouped=true, pmPaidControl=false;
+const PM_GROUP_OPEN_KEY='pouler-month-grupos-v32';
+let pmOpenGroups=new Set();
+try{const raw=JSON.parse(localStorage.getItem(PM_GROUP_OPEN_KEY)||'[]');if(Array.isArray(raw))pmOpenGroups=new Set(raw.filter(v=>typeof v==='string').slice(-250));}catch{}
+function pmPersistOpen(){try{localStorage.setItem(PM_GROUP_OPEN_KEY,JSON.stringify([...pmOpenGroups].slice(-250)));}catch{}}
+
 try{let saved=JSON.parse(localStorage.getItem('pouler-month-ui-v3')||'{}');
  if(['mixed','manual','linked'].includes(saved.source))pmSource=saved.source;
  if(typeof saved.grouped==='boolean')pmGrouped=saved.grouped;
@@ -360,7 +447,7 @@ function pmMonthName(m){const [year,month]=m.split('-').map(Number);return pmCap
 function pmPreviousMonth(m){const [year,month]=m.split('-').map(Number);const v=new Date(year,month-2,1);return String(v.getFullYear())+'-'+String(v.getMonth()+1).padStart(2,'0');}
 function pmNextMonth(m,offset){const [year,month]=m.split('-').map(Number);const v=new Date(year,month-1+offset,1);return String(v.getFullYear())+'-'+String(v.getMonth()+1).padStart(2,'0');}
 function pmLinkedRows(){return transactions().filter(t=>annotation(t).kind==='normal').map(t=>{
- const a=annotation(t);return {id:txKey(t),title:a.title,type:classType(a.financeClass),financeClass:a.financeClass,amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:a.category,note:a.note,kind:a.kind,effectiveStatus:t.status==='PENDING'?'pending':'paid',ref:'linked',accountId:t.accountId,transaction:t};
+ const a=annotation(t);return {id:txKey(t),title:a.title,type:classType(a.financeClass),financeClass:a.financeClass,amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:a.category,groupName:a.groupName||'',note:a.note,kind:a.kind,effectiveStatus:t.status==='PENDING'?'pending':'paid',ref:'linked',accountId:t.accountId,transaction:t};
 });}
 function pmEntries(){if(pmSource==='linked')return pmLinkedRows();const all=monthlyEntries();return pmSource==='manual'?all.filter(e=>e.ref==='manual'):all;}
 function pmSegment(cat){const s=String(cat||'').trim().toLocaleLowerCase('pt-BR');
@@ -384,6 +471,7 @@ function pmTotals(entries){
 }
 const pmCategoryIcon=cat=>({Moradia:'🏠',Alimentação:'🥗',Transporte:'🚗',Saúde:'✚',Educação:'📚',Lazer:'🎬',Assinaturas:'▣',Compras:'🛍️',Salário:'💰','Renda extra':'💼',Investimentos:'📈',Dívidas:'💳',Impostos:'🧾',Família:'👨‍👩‍👧',Presentes:'🎁',Dízimo:'💜',Doações:'💜',Outros:'📌'})[cat]||(pmSegment(cat)==='investments'?'📈':pmSegment(cat)==='donations'?'💜':'◈');
 function pmKpi(label,note,value,style){return `<div class="pm-stat ${style||''}"><div class="slabel">${esc(label)}</div><div class="svalue">${displayedMoney(value)}</div><div class="snote">${esc(note)}</div></div>`;}
+const pmGroupDatalist=()=>`<datalist id="pm-group-names">${PM_SUGGESTIONS.map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist>`;
 function pmRow(e){const linked=e.ref==='linked',k=linked?txKey(e.transaction):e.id;const status=e.effectiveStatus==='paid';const dateDay=Number(String(e.effectiveDate||'').slice(8,10))||1;
  const titleInput=`<input aria-label="Descrição do lançamento" class="pm-title-input" maxlength="160" data-pm-title="${esc(k)}" data-pm-ref="${e.ref}" value="${esc(e.title)}" title="Clique para renomear"/>`;
  const amountInput=`<input aria-label="Valor em reais" data-pm-amount="${esc(k)}" data-pm-ref="${e.ref}" type="${hiddenValues?'text':'number'}" step="0.01" min="0" max="999999999" ${hiddenValues?'disabled':''} value="${hiddenValues?'•••':Number(e.amount||0).toFixed(2)}" title="Valor considerado no planejamento"/>`;
@@ -391,22 +479,71 @@ function pmRow(e){const linked=e.ref==='linked',k=linked?txKey(e.transaction):e.
  const actStatus=(!linked&&pmPaidControl)?`<button class="pm-icon-btn ${status?'done':''}" title="${status?'Marcar como pendente':'Marcar como pago ou recebido'}" data-toggle-paid="${esc(k)}">${status?'✓':'○'}</button>`:'';
  const action=linked?(pmSource==='linked'?`<button class="pm-icon-btn ${annotation(e.transaction).includeFree?'done':''}" title="${annotation(e.transaction).includeFree?'Retirar do modo misto':'Incluir no modo misto'}" data-include="${esc(k)}">${annotation(e.transaction).includeFree?'✓':'+'}</button>`:`<button class="pm-icon-btn delete" title="Retirar do planejamento" data-drop-linked="${esc(k)}">×</button>`):`<button class="pm-icon-btn delete" title="Excluir lançamento" data-delete-manual="${esc(k)}">×</button>`;
  const noncount=!counted(e);
- return `<div class="pm-line ${noncount?'is-dim':''}"><span class="pm-item-ico">${e.type==='income'?'💰':pmCategoryIcon(e.category)}</span><div class="pm-line-main">${titleInput}<div class="pm-line-note"><span class="pm-origin ${linked?'frompluggy':''}">${linked?'↔ Pluggy':'✎ Manual'}</span>${e.recurring?'<span>↻ recorrente</span>':''}${pmPaidControl?`<span>${status?'✓ Realizado':'◷ Pendente'}</span>`:''}${noncount?'<span>não contabilizado</span>':''}${finSelect(e.financeClass|| (e.type==='income'?'provento':'geral'),`data-pm-class="${esc(k)}" data-pm-ref="${esc(e.ref)}"`)}${linked&&annotation(e.transaction).planValue!==''?`<span title="Valor original do extrato">Banco: ${displayedMoney(signed(e.transaction))}</span>`:''}<button class="pm-minilink" data-edit-entry="${esc(k)}" data-entry-type="${e.ref}" title="Editar categoria e observação">${esc(e.category||'Outros')} ✎</button></div></div>${dayView}<div class="pm-amount ${e.type==='income'?'income':''}"><b>R$</b>${amountInput}</div><div class="pm-line-acts">${actStatus}${action}</div></div>`;
+ return `<div class="pm-line ${noncount?'is-dim':''}"><span class="pm-item-ico">${e.type==='income'?'💰':pmCategoryIcon(e.category)}</span><div class="pm-line-main">${titleInput}<div class="pm-line-note"><span class="pm-origin ${linked?'frompluggy':''}">${linked?'↔ Pluggy':'✎ Manual'}</span>${e.recurring?'<span>↻ recorrente</span>':''}${pmPaidControl?`<span>${status?'✓ Realizado':'◷ Pendente'}</span>`:''}${noncount?'<span>não contabilizado</span>':''}${finSelect(e.financeClass|| (e.type==='income'?'provento':'geral'),`data-pm-class="${esc(k)}" data-pm-ref="${esc(e.ref)}"`)}${linked&&annotation(e.transaction).planValue!==''?`<span title="Valor original do extrato">Banco: ${displayedMoney(signed(e.transaction))}</span>`:''}<button class="pm-minilink" data-edit-entry="${esc(k)}" data-entry-type="${e.ref}" title="Editar categoria e observação">${esc(e.groupName||pmGroupOf(e).name)} ✎</button></div></div>${dayView}<div class="pm-amount ${e.type==='income'?'income':''}"><b>R$</b>${amountInput}</div><div class="pm-line-acts">${actStatus}${action}</div></div>`;
+}
+// Grupos próprios: permitem separar por tipo de conta e assunto, mesmo quando a categoria bancária é genérica.
+const PM_SUGGESTIONS=['Compras online','Mercados e padarias','Restaurantes e delivery','Combustível e transporte','Assinaturas e serviços','Moradia e contas','Saúde e farmácia','Educação','Lazer e viagens','Vestuário e beleza','Casa e utilidades','Impostos e taxas','Família e presentes','Investimentos','Outros gastos'];
+const pmClean=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function pmGroupOf(e){
+ const typed=String(e.groupName||'').trim();
+ if(typed)return {name:typed,icon:'◈',custom:true};
+ const d=pmClean([e.title,e.transaction?.merchant,e.transaction?.description].filter(Boolean).join(' '));
+ const cat=pmClean(e.category);const both=d+' '+cat;
+ const rule=(re,name,icon)=>re.test(both)?{name,icon}:null;
+ // E-commerce ANTES de mercado: Mercado Livre não deve virar supermercado.
+ return rule(/shopee|mercado\s*livre|mercadolivre|amazon|aliexpress|aliex|shein|temu|magalu|magazine\s*luiza|kabum|americanas|enjoei|ebay|alibaba|compras\s*online|comercio\s*eletronico|e-commerce/, 'Compras online','📦')
+ ||rule(/supermercad|hipermercad|atacad|mercearia|padaria|panificadora|bakery|hortifruti|sacolao|acougue|carrefour|assai|pao\s*de\s*acucar|perim|extrabom|mercado(?!\s*pago)|alimentacao/, 'Mercados e padarias','🛒')
+ ||rule(/ifood|delivery|restaurante|pizzaria|lanchonete|hamburg|burger|mcdonald|burger\s*king|subway|cafeteria|bistro|sushi|churrascaria|bar\s|refeicao/, 'Restaurantes e delivery','🍽️')
+ ||rule(/combustivel|gasolina|etanol|posto\s|petrobras|shell|ipiranga|uber|99pop|99\s*app|estacionamento|pedagio|passagem|onibus|automot|transporte|mecanica|oficina/, 'Combustível e transporte','🚘')
+ ||rule(/netflix|spotify|deezer|youtube\s*premium|hbo|max\s*stream|disney\+?|prime\s*video|globoplay|apple\s*music|assinatur|mensalidade\s*digital|adobe|canva|claro|vivo|tim\s|telefonia|internet/, 'Assinaturas e serviços','▣')
+ ||rule(/aluguel|condominio|energia|eletricidade|cemig|edp|escelsa|conta\s*de\s*luz|saneamento|cesan|agua\s*e\s*esgoto|moradia|imovel/, 'Moradia e contas','🏠')
+ ||rule(/farmacia|drogaria|drogasil|droga\s*raia|drogaraia|medicament|hospital|clinica|consulta|saude|dentista|odonto/, 'Saúde e farmácia','✚')
+ ||rule(/colegio|escola|faculdade|universidade|curso|livraria|material\s*escolar|educacao|ensino/, 'Educação','📚')
+ ||rule(/viagem|hotel|airbnb|booking|ingresso|cinema|show|lazer|passeio|teatro|parque/, 'Lazer e viagens','✈️')
+ ||rule(/roupa|calcado|tenis|sapato|moda|cabelo|salao|barbearia|beleza|cosmetico|vestuario/, 'Vestuário e beleza','👕')
+ ||rule(/moveis|eletrodomestico|decoracao|construcao|casa\s|utilidades|reforma/, 'Casa e utilidades','🪴')
+ ||rule(/iptu|ipva|imposto|taxa\s|tarifa|anuidade|tributo/, 'Impostos e taxas','🧾')
+ ||rule(/presente|familia|crianca|brinquedo/, 'Família e presentes','🎁')
+ ||rule(/investimento|aplicacao|renda\s*fixa|tesouro|aporte/, 'Investimentos','📈')
+ ||(cat==='compras'?{name:'Compras diversas',icon:'🛍️'}:null)
+ ||{name:'Outros gastos',icon:'◈'};
+}
+const pmSourceOf=e=>e.ref==='manual'?'Manual':e.transaction&&isCard(account(e.accountId||e.transaction.accountId))?'Cartão':'Conta / PIX';
+const pmScopeIcon={'Cartão':'💳','Conta / PIX':'🏦','Manual':'✎'};
+function pmGroupKey(section,source,name){return period()+'|'+pmSource+'|'+section+'|'+source+'|'+name;}
+function pmGroupBlock(entries,section,source,name,icon){
+ const key=pmGroupKey(section,source,name),open=pmOpenGroups.has(key),amount=pmSum(entries.filter(counted)),n=entries.length;
+ const nameSafe=esc(name),keySafe=esc(key);
+ return `<div class="pm-accordion">
+  <button type="button" class="pm-group-button" data-pm-toggle-group="${keySafe}" aria-expanded="${open}" aria-label="${open?'Fechar':'Abrir'} ${nameSafe}: ${n} lançamentos">
+   <span class="pm-group-icon" aria-hidden="true">${icon}</span>
+   <span class="pm-group-label"><strong>${nameSafe}</strong><small>${esc(source)} · ${n} ${n===1?'lançamento':'lançamentos'}</small></span>
+   <span class="pm-group-total">${displayedMoney(amount)}</span>
+   <span class="pm-chevron" aria-hidden="true">⌄</span>
+  </button>
+  <div class="pm-group-content" ${open?'':'hidden'}>${entries.map(pmRow).join('')}</div>
+ </div>`;
 }
 function pmRows(entries,group){
  if(!entries.length)return `<div class="pm-empty"><strong>Nenhum lançamento aqui.</strong>${group==='income'?'Importe proventos do extrato ou cadastre uma receita.':'Importe as despesas com os valores originais da Pluggy ou lance uma conta.'}</div>`;
  if(group==='income')return entries.map(pmRow).join('');
- const section=(rows, label, icon, code)=>{
-   if(!rows.length)return `<div class="pm-class-empty">Nenhuma ${label.toLocaleLowerCase('pt-BR')} neste mês.</div>`;
-   const categoryRows=(!pmGrouped)?rows.map(pmRow).join(''):(()=>{
-      const cats=new Map();
-      for(const e of rows){const name=e.category||'Outros';if(!cats.has(name))cats.set(name,[]);cats.get(name).push(e);}
-      return [...cats.entries()].sort(([a],[b])=>a.localeCompare(b,'pt-BR')).map(([cat,items])=>`<div class="pm-cat-head"><span>${pmCategoryIcon(cat)} ${esc(cat.toLocaleUpperCase('pt-BR'))}<span class="catcount">${items.length} ${items.length===1?'item':'itens'}</span></span><span class="catsum">${displayedMoney(pmSum(items.filter(counted)))}</span></div>${items.map(pmRow).join('')}`).join('');
+ const section=(rows,label,icon,code)=>{
+  if(!rows.length)return `<div class="pm-class-empty">Nenhuma ${label.toLocaleLowerCase('pt-BR')} neste mês.</div>`;
+  const categoryRows=(!pmGrouped)?rows.map(pmRow).join(''):(()=>{
+    const scopes=['Cartão','Conta / PIX','Manual'], sections=[];
+    for(const source of scopes){
+      const scoped=rows.filter(e=>pmSourceOf(e)===source);if(!scoped.length)continue;
+      const gs=new Map();
+      for(const e of scoped){const g=pmGroupOf(e),key=pmClean(g.name);if(!gs.has(key))gs.set(key,{...g,items:[]});gs.get(key).items.push(e);}
+      const ordered=[...gs.values()].sort((a,b)=>pmSum(b.items.filter(counted))-pmSum(a.items.filter(counted)) || a.name.localeCompare(b.name,'pt-BR'));
+      sections.push(`<div class="pm-origin-head"><span>${pmScopeIcon[source]} ${esc(source==='Cartão'?'Compras no cartão':source==='Manual'?'Lançamentos manuais':'Conta, PIX e débito')}</span><span>${scoped.length} itens · ${displayedMoney(pmSum(scoped.filter(counted)))}</span></div>${ordered.map(g=>pmGroupBlock(g.items,code,source,g.name,g.icon)).join('')}`);
+    }
+    return sections.join('');
    })();
-   return `<div class="pm-class-head ${code}"><span>${icon} ${label} <small>(${rows.length})</small></span><strong>${displayedMoney(pmSum(rows.filter(counted)))}</strong></div>${categoryRows}`;
+  return `<div class="pm-class-head ${code}"><span>${icon} ${label} <small>(${rows.length})</small></span><strong>${displayedMoney(pmSum(rows.filter(counted)))}</strong></div>${categoryRows}`;
  };
- return section(entries.filter(e=>e.financeClass==='fixa'),'Despesas fixas','🏠','fixas')+
-        section(entries.filter(e=>e.financeClass!=='fixa'),'Gastos gerais','🛍️','gerais');
+ return section(entries.filter(e=>e.financeClass==='fixa'),'Despesas fixas','⌂','fixas')+
+        section(entries.filter(e=>e.financeClass!=='fixa'),'Gastos gerais','◈','gerais');
 }
 function pmClassSummary(entries){
  const total=pmTotals(entries),items=[['Proventos',total.income,'provento'],['Despesas fixas',total.fixas,'fixa'],['Gastos gerais',total.gerais,'geral']];
@@ -420,7 +557,7 @@ function freeMonthly(){const entries=pmEntries(),t=pmTotals(entries),income=entr
  <div class="pm-sourcebar"><label for="pm-source">ORIGEM DOS LANÇAMENTOS</label><select class="pm-source-select" id="pm-source"><option value="mixed" ${pmSource==='mixed'?'selected':''}>Misto · manual + Pluggy importada</option><option value="manual" ${pmSource==='manual'?'selected':''}>Somente manual</option><option value="linked" ${pmSource==='linked'?'selected':''}>Pluggy · extrato completo</option></select><button class="btn sm primary" data-pm-import-all>↓ Importar todos os valores do extrato</button><button class="btn sm soft" data-pm-import>↔ Escolher lançamentos</button><span class="pm-explain">${esc(sourceLabel)}</span></div>
  <div class="pm-stats">${pmKpi('Receitas do mês',pmPaidControl?`Recebido: ${currency(t.incomePaid)}`:'receitas previstas ou reconhecidas',t.income,'green')}${pmKpi('Despesas do mês',pmPaidControl?`Pago: ${currency(t.expensesPaid)}`:'gastos de consumo / obrigações',t.expenses,'red')}${pmKpi('Investimentos','aportes separados das despesas',t.investments,'blue')}${pmKpi('Doações / outros','dízimo e doações classificados',t.donations,'purple')}${pmKpi('Saldo projetado','receitas − despesas − investimentos − doações',t.balance,t.balance>=0?'green':'red')}</div>
  ${pmClassSummary(entries)}<div class="pm-columns"><section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">💰 Receitas do mês</div><div class="pm-sheet-meta">${pmPaidControl?'Recebimentos e valores pendentes':'Projeção das receitas do mês'}</div></div><div class="pm-head-actions"><span class="pm-sheet-total income">${displayedMoney(t.income)}</span><button class="btn sm" data-add-income>+ Receita</button></div></div>${pmRows(income,'income')}<div class="pm-sheet-footer"><button data-add-income>+ Adicionar receita</button><span class="pm-mini-status">${income.length} fonte(s) de renda</span></div></section>
- <section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">📌 Despesas fixas e gastos gerais</div><div class="pm-sheet-meta">${pmPaidControl?'Pagamentos, vencimentos e pendências':'Classificadas em fixas e gerais, por categoria'}</div></div><div class="pm-head-actions"><select id="pm-group" class="select" style="font-size:11px;max-width:180px;padding:7px" aria-label="Organização das despesas"><option value="category" ${pmGrouped?'selected':''}>▤ Agrupar por categoria</option><option value="list" ${!pmGrouped?'selected':''}>≡ Lista contínua</option></select><span class="pm-sheet-total expense">${displayedMoney(pmSum(expenses.filter(counted)))}</span></div></div>${pmRows(expenses,'expense')}<div class="pm-sheet-footer"><button data-add-expense>+ Adicionar despesa</button><span class="pm-mini-status">${expenses.length} lançamento(s)</span></div></section></div>
+ <section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">📌 Despesas fixas e gastos gerais</div><div class="pm-sheet-meta">${pmPaidControl?'Pagamentos, vencimentos e pendências':'Grupos por tipo de gasto. Clique em um grupo para ver as compras.'}</div></div><div class="pm-head-actions"><button class="btn sm pm-all" type="button" data-pm-expand="1">Abrir todos</button><button class="btn sm pm-all" type="button" data-pm-expand="0">Fechar todos</button><select id="pm-group" class="select" style="font-size:11px;max-width:180px;padding:7px" aria-label="Organização das despesas"><option value="category" ${pmGrouped?'selected':''}>▤ Grupos recolhíveis</option><option value="list" ${!pmGrouped?'selected':''}>≡ Lista contínua</option></select><span class="pm-sheet-total expense">${displayedMoney(pmSum(expenses.filter(counted)))}</span></div></div>${pmRows(expenses,'expense')}<div class="pm-sheet-footer"><button data-add-expense>+ Adicionar despesa</button><span class="pm-mini-status">${expenses.length} lançamento(s)</span></div></section></div>
  <div class="pm-extra-foot"><div>🔒 Ao importar, o valor vem diretamente da Pluggy. Você pode mudar a classificação, o nome, a categoria e o valor planejado sem alterar o extrato do banco. ${pmSource==='linked'?'Use o botão + de cada transação para levá-la ao modo Misto.':'Evite somar manualmente uma despesa já incluída do extrato.'}</div><div class="wraprows"><button class="btn sm" data-open="dashboard">▦ Dashboard</button><button class="btn sm" data-export-csv>↓ CSV do mês</button></div></div></div>`;}
 function pmOpenImport(){const rows=transactions().filter(t=>annotation(t).kind==='normal').sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
  if(!rows.length){notice('Ainda não existem movimentos normais da Pluggy neste mês. Sincronize primeiro.','warn');return;}
@@ -461,18 +598,32 @@ function closeModal(){$('#modal-backdrop').classList.add('hidden');$('#modal-bac
 function choices(items,selected){return items.map(c=>`<option value="${esc(c)}" ${c===selected?'selected':''}>${esc(c)}</option>`).join('');}
 const categoryList=()=>`<datalist id="categories-list">${categories.map(c=>`<option value="${esc(c)}"></option>`).join('')}</datalist>`;
 function editTransaction(id){const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;const a=annotation(t);const signedV=signed(t);
- showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">TRANSAÇÃO VINCULADA</div><h2>Identificar movimentação</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Banco: ${esc(t.description)} · ${fmtDate(t.date)} · ${displayedMoney(signedV)}</p><form id="tx-form" data-id="${esc(id)}"><div class="fields"><div class="field wide"><label>O que realmente foi essa compra?</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" required/></div><div class="field"><label>Categoria</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" required/>${categoryList()}</div><div class="field"><label>Classificar como</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}</div><div class="field"><label>Valor no planejamento (opcional — original preservado)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="Original: ${Math.abs(signedV).toFixed(2)}" /></div><div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''} /> Incluir no Mensal livre</label></div><div class="field wide"><label>Observação pessoal</label><textarea name="note" class="textarea" maxlength="500" placeholder="Ex.: parcela 2/3 da viagem, presente, compra dividida...">${esc(a.note)}</textarea></div></div><div class="note">🔒 O extrato e o valor original da Pluggy ficam intactos. Aqui você edita somente o planejamento.</div><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Salvar ajustes</button></div></form>`);
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">TRANSAÇÃO VINCULADA</div><h2>Identificar movimentação</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Banco: ${esc(t.description)} · ${fmtDate(t.date)} · ${displayedMoney(signedV)}</p><form id="tx-form" data-id="${esc(id)}"><div class="fields"><div class="field wide"><label>O que realmente foi essa compra?</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" required/></div><div class="field"><label>Categoria detalhada</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" required/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field"><label>Classificar como</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}</div><div class="field"><label>Valor no planejamento (opcional — original preservado)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="Original: ${Math.abs(signedV).toFixed(2)}" /></div><div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''} /> Incluir no Mensal livre</label></div><div class="field wide"><label>Observação pessoal</label><textarea name="note" class="textarea" maxlength="500" placeholder="Ex.: parcela 2/3 da viagem, presente, compra dividida...">${esc(a.note)}</textarea></div></div><div class="note">🔒 O extrato e o valor original da Pluggy ficam intactos. Aqui você edita somente o planejamento.</div><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Salvar ajustes</button></div></form>`);
 }
 function editManual(id=null,defaultType='expense'){const m=state().manual.find(x=>x.id===id)||{id:'',title:'',amount:'',type:defaultType,category:defaultType==='income'?'Salário':'Moradia',date:period()+'-'+String(Math.min(new Date().getDate(),28)).padStart(2,'0'),status:'pending',recurring:false,note:''};const isNew=!id;
- showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?'Novo lançamento':'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Cadastre proventos, despesas fixas ou gastos gerais. Tudo é independente do extrato bancário.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><input type="hidden" name="type" value="${esc(m.type)}" /><div class="field"><label>Classificação financeira</label>${finSelect(manualClass(m),'name="financeClass"')}</div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label><input class="input" name="category" list="categories-list" required maxlength="60" value="${esc(m.category)}"/>${categoryList()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?'Novo lançamento':'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Cadastre proventos, despesas fixas ou gastos gerais. Tudo é independente do extrato bancário.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><input type="hidden" name="type" value="${esc(m.type)}" /><div class="field"><label>Classificação financeira</label>${finSelect(manualClass(m),'name="financeClass"')}</div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label><input class="input" name="category" list="categories-list" required maxlength="60" value="${esc(m.category)}"/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(m.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
 }
 function downloadFile(filename,body,mime){const blob=new Blob([body],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
 function exportJson(){const s=state();downloadFile('Pouler-Lab-backup-'+period()+'.json',JSON.stringify({format:'POULER-LAB-FINANCE-V2',exportedAt:new Date().toISOString(),state:s},null,2),'application/json');notice('Backup exportado. Guarde-o em local privado: contém suas anotações e valores planejados.','good');}
-function exportCsv(){const entries=currentView==='mensal-livre'?pmEntries():monthlyEntries();const lines=[['Data','Descricao','Origem','Categoria','Classificacao','Tipo','Valor','Status','Observacao'],...entries.map(e=>[e.effectiveDate,e.title,e.ref==='linked'?'Pluggy':'Manual',e.category,FIN_LABEL[e.financeClass]||'Gastos gerais',e.type,e.amount,e.effectiveStatus,e.note||''])];const csv=lines.map(row=>row.map(x=>'"'+String(x??'').replace(/^([=+@\-\t\r])/,'\'$1').replace(/"/g,'""')+'"').join(';')).join('\r\n');downloadFile('Pouler-Lab-Mensal-'+period()+'.csv','\ufeff'+csv,'text/csv;charset=utf-8');}
+function exportCsv(){const entries=currentView==='mensal-livre'?pmEntries():monthlyEntries();const lines=[['Data','Descricao','Origem','Categoria','Grupo de visualizacao','Classificacao','Tipo','Valor','Status','Observacao'],...entries.map(e=>[e.effectiveDate,e.title,e.ref==='linked'?'Pluggy':'Manual',e.category,e.groupName||pmGroupOf(e).name,FIN_LABEL[e.financeClass]||'Gastos gerais',e.type,e.amount,e.effectiveStatus,e.note||''])];const csv=lines.map(row=>row.map(x=>'"'+String(x??'').replace(/^([=+@\-\t\r])/,'\'$1').replace(/"/g,'""')+'"').join(';')).join('\r\n');downloadFile('Pouler-Lab-Mensal-'+period()+'.csv','\ufeff'+csv,'text/csv;charset=utf-8');}
 function uniqueId(){return 'm_'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'_'+Math.random().toString(36).slice(2));}
 // Ações dinâmicas do painel.
 $('#view-content').addEventListener('click',async e=>{
  const btn=e.target.closest('button');if(!btn)return;
+ if(btn.hasAttribute('data-pm-toggle-group')){
+  const key=btn.dataset.pmToggleGroup,body=btn.nextElementSibling,willOpen=btn.getAttribute('aria-expanded')!=='true';
+  if(willOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+  pmPersistOpen();btn.setAttribute('aria-expanded',String(willOpen));
+  btn.setAttribute('aria-label',(willOpen?'Fechar ':'Abrir ')+btn.querySelector('.pm-group-label strong')?.textContent);
+  if(body)body.hidden=!willOpen;return;
+ }
+ if(btn.hasAttribute('data-pm-expand')){
+  const shouldOpen=btn.dataset.pmExpand==='1';
+  document.querySelectorAll('#view-content [data-pm-toggle-group]').forEach(el=>{
+   const key=el.dataset.pmToggleGroup;if(shouldOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+   el.setAttribute('aria-expanded',String(shouldOpen));if(el.nextElementSibling)el.nextElementSibling.hidden=!shouldOpen;
+  });pmPersistOpen();return;
+ }
  if(btn.hasAttribute('data-pm-month')){const next=pmNextMonth(period(),Number(btn.dataset.pmMonth));$('#month').value=next;$('#month').dispatchEvent(new Event('change'));return;}
  if(btn.hasAttribute('data-pm-toggle-paid')){pmPaidControl=!pmPaidControl;pmSaveSettings();render();return;}
  if(btn.hasAttribute('data-pm-copy'))return pmCopyPrevious();
@@ -549,7 +700,7 @@ $('#modal-backdrop').addEventListener('submit',e=>{
   e.preventDefault();const f=new FormData(e.target),id=e.target.dataset.id;const t=data?.transactions?.find(t=>txKey(t)===id);if(!t)return;
   const val=String(f.get('planValue')??'').trim();const num=val===''?null:Number(val);
   if(num!==null&&(!Number.isFinite(num)||num<0||num>999999999)){alert('Informe um valor válido.');return;}
-  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',note:String(f.get('note')).trim().slice(0,500),kind:String(f.get('kind')),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',planValue:num};
+  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),kind:String(f.get('kind')),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',planValue:num};
   closeModal();scheduleSave();return;
  }
  if(e.target.id==='manual-form'){
@@ -558,7 +709,7 @@ $('#modal-backdrop').addEventListener('submit',e=>{
   if(!Number.isFinite(amount)||amount<0||amount>999999999){alert('Informe um valor válido.');return;}
   const recur=f.get('recurring')==='on';const paid=f.get('paid')==='on'?'paid':'pending';
   const base=oldId?s.manual.find(v=>v.id===oldId):null;
-  const row={id:oldId||uniqueId(),title:String(f.get('title')).trim().slice(0,160),type:String(f.get('type'))==='income'?'income':'expense',amount,date:String(f.get('date')),category:String(f.get('category')).trim().slice(0,60)||'Outros',status:paid,recurring:recur,note:String(f.get('note')||'').slice(0,500),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):(f.get('type')==='income'?'provento':'geral'),monthlyStatus:base?.monthlyStatus||{}};
+  const row={id:oldId||uniqueId(),title:String(f.get('title')).trim().slice(0,160),type:String(f.get('type'))==='income'?'income':'expense',amount,date:String(f.get('date')),category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),status:paid,recurring:recur,note:String(f.get('note')||'').slice(0,500),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):(f.get('type')==='income'?'provento':'geral'),monthlyStatus:base?.monthlyStatus||{}};
   row.type=classType(row.financeClass);
   if(!/^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(row.date)||!row.title){alert('Informe nome e data válidos.');return;}
   if(recur)row.monthlyStatus[period()]=paid;
