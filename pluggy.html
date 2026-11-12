@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#f7f5fc"/>
+<meta name="description" content="Pouler Finance Lab — extratos, cartões, dashboard, contas do mês e mensal livre."/>
+<title>Pouler Finance · Bancos e Cartões</title>
+<style>
+:root{--bg:#f7f6fb;--paper:#fff;--panel:#fbfaff;--line:#e9e5f1;--ink:#26233b;--muted:#7e7892;--accent:#7350c7;--accentd:#5633ac;--lav:#f0eafb;--pink:#d85e9d;--green:#168969;--greenbg:#e7f7f0;--red:#ce5470;--redbg:#fff0f3;--blue:#4c74c7;--shadow:0 14px 40px rgba(45,31,87,.045);--round:17px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}a{color:var(--accent)}.hidden{display:none!important}.muted{color:var(--muted)}.tiny{font-size:11px}.sm{font-size:12px}.w100{width:100%}.line{height:1px;background:var(--line);margin:14px 0}.pill{display:inline-flex;gap:6px;align-items:center;background:var(--lav);color:var(--accentd);border-radius:99px;padding:5px 10px;font-size:11px;font-weight:650;white-space:nowrap}.pill.good{background:var(--greenbg);color:var(--green)}.pill.red{background:var(--redbg);color:var(--red)}.pill.plain{background:#f3f1f8;color:#655f79}.btn{background:#fff;border:1px solid #e0d9ed;border-radius:10px;padding:10px 14px;color:var(--ink);font-weight:650;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;transition:background .15s,transform .15s,box-shadow .15s}.btn:hover{background:#f6f2fe}.btn:focus-visible,.navbtn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(115,80,199,.27);outline-offset:2px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.primary:hover{background:var(--accentd)}.btn.soft{color:var(--accentd);background:var(--lav);border-color:#e5d9fb}.btn.danger{color:var(--red)}.btn.sm{padding:7px 10px;min-height:32px}.btn.icon{width:36px;padding:0}.input,.select,.textarea{border:1px solid #e3deee;border-radius:10px;background:#fff;color:var(--ink);padding:10px 12px;min-width:0;width:100%;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:var(--accent)}.textarea{resize:vertical;min-height:73px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label,.field .label{font-size:11px;font-weight:650;color:var(--muted)}.stack{display:flex;flex-direction:column;gap:12px}.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.wraprows{display:flex;gap:9px;flex-wrap:wrap}.grow{flex:1;min-width:0}.right{margin-left:auto}.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--round);box-shadow:var(--shadow)}.cardpad{padding:20px}.cardtitle{font-size:13px;font-weight:750}.over{font-size:10px;text-transform:uppercase;letter-spacing:.11em;font-weight:800;color:var(--accent)}
+#app{display:flex;min-height:100vh}.side{width:248px;background:#fff;border-right:1px solid var(--line);position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;z-index:15;padding:22px 12px}.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 24px}.brandicon{height:38px;width:38px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#a883e1,#6240b7);color:white;font-weight:900;font-size:16px;box-shadow:0 8px 18px #b09bd955}.brandname{font-size:15px;font-weight:800;letter-spacing:-.035em}.brandsub{font-size:10px;color:var(--muted);margin-top:2px}.navgroup{font-size:10px;letter-spacing:.12em;color:#a19aac;font-weight:800;margin:18px 14px 7px}.navbtn{width:100%;border:0;background:transparent;color:#665f78;padding:11px 13px;text-align:left;border-radius:11px;display:flex;align-items:center;gap:11px;font-size:12.5px;font-weight:625}.navbtn .ic{width:20px;text-align:center;font-size:16px}.navbtn:hover{background:#f8f5fc}.navbtn.active{background:var(--lav);color:var(--accentd);font-weight:790}.sidebottom{margin-top:auto;padding:10px;border-top:1px solid var(--line)}.sidebottom .hint{padding:8px 2px;font-size:11px;line-height:1.5;color:var(--muted)}.sidebottom .btn{width:100%}.aside-note{margin:10px;padding:11px;border:1px solid #eaddfb;background:#f9f6ff;border-radius:12px;color:#78679a;font-size:11px;line-height:1.5}.stage{margin-left:248px;min-width:0;width:calc(100% - 248px);padding:20px clamp(16px,3vw,46px) 70px;max-width:1920px}.topbar{display:flex;align-items:center;gap:13px;min-height:55px;margin-bottom:28px}.topbar .page-title{font-size:22px;letter-spacing:-.045em;font-weight:820;margin:0}.topbar .page-sub{color:var(--muted);font-size:12px;margin-top:4px}.navtoggle{display:none}.topactions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:nowrap}.monthinput{max-width:174px;min-height:38px;padding:8px 10px;font-size:12px}.banner{display:flex;align-items:flex-start;gap:11px;background:#f1eafd;border:1px solid #e6ddf8;padding:13px 17px;border-radius:13px;color:#5f4c92;margin-bottom:18px;font-size:12px;line-height:1.55}.banner.warn{background:#fff8e9;border-color:#f4e5bf;color:#966a32}.banner.good{background:var(--greenbg);border-color:#cbece0;color:#196e58}.banner.bad{background:var(--redbg);border-color:#f6cfda;color:#ae3553}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.kpi{min-width:0;padding:19px 20px;display:flex;flex-direction:column;gap:9px}.kpi .iconbox{height:34px;width:34px;display:grid;place-items:center;border-radius:10px;background:#f6f0ff;font-size:17px}.kpi .label{color:var(--muted);font-size:11px;font-weight:650}.kpi .number{font-size:clamp(19px,2vw,26px);font-weight:830;letter-spacing:-.04em;white-space:nowrap}.kpi .foot{font-size:10px;color:var(--muted);line-height:1.4}.cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);gap:14px;margin-top:14px}.col2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.cardpad{min-width:0}.charthead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}.charthead h3{font-size:14px;margin:0;letter-spacing:-.01em}.chartcap{color:var(--muted);font-size:11px;margin-top:4px}.chartbody{min-height:165px}.barrow{display:grid;grid-template-columns:minmax(80px,145px) 1fr auto;gap:10px;align-items:center;margin:12px 0;font-size:11px}.barrow .track{background:#f1eef7;border-radius:99px;height:9px;overflow:hidden}.barrow .fill{height:100%;border-radius:99px;background:var(--accent)}.barrow .amt{min-width:77px;text-align:right;font-weight:750}.donutrow{display:flex;align-items:center;gap:26px}.donut{width:160px;height:160px;border-radius:50%;position:relative;flex-shrink:0;background:conic-gradient(#e4dff1 0 100%);display:grid;place-items:center}.donut::before{content:"";position:absolute;inset:29px;border-radius:50%;background:#fff}.donut .center{position:relative;text-align:center;font-weight:850;font-size:15px;max-width:95px;line-height:1.15}.legend{flex:1;min-width:0}.legend .entry{display:flex;gap:8px;align-items:center;font-size:11px;margin:9px 0}.legend .dot{width:8px;height:8px;flex-shrink:0;border-radius:50%}.legend .amount{margin-left:auto;font-weight:800}.trendbox{width:100%;height:166px;display:block}.chartnote{font-size:11px;color:var(--muted)}.tabletools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0}.tabletools .search{width:250px;max-width:100%}.tabletools .select{max-width:210px;font-size:12px}.tablewrap{border:1px solid var(--line);border-radius:15px;overflow-x:auto;background:#fff}.tbl{width:100%;border-collapse:collapse;text-align:left;font-size:12px}.tbl th{font-weight:720;font-size:10px;color:var(--muted);letter-spacing:.03em;padding:13px 14px;background:#faf9fc;white-space:nowrap}.tbl td{padding:13px 14px;border-top:1px solid #f0edf5;vertical-align:middle}.tbl .desc{font-weight:740;max-width:280px}.tbl .desc small{display:block;font-weight:450;color:var(--muted);margin-top:4px;font-size:10px}.money{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:800}.money.neg{color:var(--red)}.money.pos{color:var(--green)}.empty{padding:40px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}.empty .icon{font-size:29px;margin-bottom:9px}.accountlist{display:grid;gap:10px}.account{border:1px solid var(--line);padding:15px;background:#fff;border-radius:13px;display:flex;align-items:center;gap:12px}.account .bankicon{display:grid;place-items:center;border-radius:11px;width:40px;height:40px;background:#f5f0fc;font-size:19px;flex-shrink:0}.account strong{font-size:13px}.account small{font-size:11px;color:var(--muted);display:block;margin-top:4px}.account .money{margin-left:auto;text-align:right}.account .money small{font-weight:400}.splithead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:15px}.splithead h2{margin:0;font-size:18px;letter-spacing:-.03em}.splithead p{margin:5px 0 0;color:var(--muted);font-size:12px}.hstack{display:flex;gap:10px;flex-wrap:wrap}.divider{height:1px;background:var(--line);margin:16px 0}.monthlist{display:flex;flex-direction:column;gap:8px}.monthitem{display:flex;gap:12px;align-items:center;border:1px solid var(--line);padding:13px 14px;border-radius:12px;background:#fff;min-width:0}.monthitem .name{font-size:12px;font-weight:750;overflow:hidden;text-overflow:ellipsis}.monthitem .detail{font-size:10px;color:var(--muted);margin-top:5px}.monthitem .amount{margin-left:auto;font-size:13px;white-space:nowrap;font-weight:800}.monthitem .actions{display:flex;gap:5px;align-items:center}.monthitem .btn{padding:5px 7px;min-height:31px}.mutelabel{font-size:10px;color:var(--muted);font-weight:700}.subhead{font-size:12px;font-weight:750;margin:17px 0 10px}.pilltoggle{display:inline-flex;gap:4px;background:#f0edf6;padding:4px;border-radius:11px}.pilltoggle button{background:none;border:0;color:var(--muted);padding:8px 11px;border-radius:8px;font-size:11px;font-weight:700}.pilltoggle button.active{color:var(--accentd);background:#fff;box-shadow:0 2px 8px #2b184012}.switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:var(--muted);font-size:11px}.switch input{accent-color:var(--accent)}.miniinfo{font-size:11px;line-height:1.6;color:var(--muted)}.compact{font-size:11px;color:var(--muted);line-height:1.6}.hiddenvalue{filter:blur(8px);user-select:none}.mobile-bottom{display:none}
+#login-screen{position:fixed;inset:0;background:linear-gradient(125deg,#f5f1fc,#fff8fc 55%,#f5f7fd);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}#login-screen .loginbox{width:min(420px,100%);padding:30px}#login-screen h1{font-size:25px;margin:20px 0 6px;letter-spacing:-.04em}#login-screen p{font-size:12px;color:var(--muted);line-height:1.6}#login-screen .field{margin-top:14px}#login-screen .btn{margin-top:18px}#login-screen .sub{margin-top:13px;font-size:11px;color:var(--muted)}.status{font-size:12px;border-radius:10px;padding:10px 12px;background:#f2ecfb;color:#6040a5;margin-top:10px;line-height:1.5}.status:empty{display:none}.status.bad{background:var(--redbg);color:#a42a48}.status.good{background:var(--greenbg);color:#146b53}.modalback{position:fixed;inset:0;background:#21163c77;backdrop-filter:blur(3px);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px}.modal{width:min(550px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:21px;padding:23px;box-shadow:0 24px 80px #27153e40}.modal h2{font-size:19px;margin:0;letter-spacing:-.03em}.modal p{font-size:11px;color:var(--muted);line-height:1.55}.modal .fields{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:18px 0}.modal .field.wide{grid-column:1/-1}.modal .footer{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap}.modal .note{font-size:11px;background:#faf6ff;padding:10px 12px;color:#725ca0;border-radius:10px;margin:12px 0}.checkrow{display:flex;align-items:center;gap:8px;font-size:12px;color:#625979}.checkrow input{accent-color:var(--accent)}.mobileonly{display:none}
+@media(max-width:1270px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.cols{grid-template-columns:1fr}.stage{padding-left:24px;padding-right:24px}}@media(max-width:850px){.side{transform:translateX(-100%);transition:transform .2s ease;box-shadow:0 0 0 transparent}.side.open{transform:translateX(0);box-shadow:10px 0 50px #2013321b}.stage{margin-left:0;width:100%;padding:14px 15px 86px}.navtoggle,.mobileonly{display:inline-flex}.topbar{margin-bottom:18px}.topbar .page-title{font-size:20px}.topactions .btn span{display:none}.mobile-bottom{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;padding:7px 6px max(7px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);z-index:12;box-shadow:0 -8px 25px #22132f0a}.mobile-bottom button{border:none;background:transparent;color:#736c83;border-radius:9px;font-size:9px;padding:6px 1px;display:flex;align-items:center;flex-direction:column;gap:5px}.mobile-bottom button span{font-size:18px}.mobile-bottom button.active{color:var(--accentd);background:var(--lav)}.donutrow{gap:15px}}@media(max-width:550px){.stage{padding-left:12px;padding-right:12px}.topbar{flex-wrap:wrap;gap:10px}.topactions{margin-left:0;width:100%;flex-wrap:nowrap}.topactions .monthinput{flex:1;max-width:none}.grid4{gap:9px}.kpi{padding:14px 12px;gap:7px}.kpi .number{font-size:20px}.kpi .foot{font-size:10px}.cardpad{padding:15px}.cols,.col2{gap:10px}.barrow{grid-template-columns:80px 1fr auto;gap:7px}.barrow .amt{min-width:62px;font-size:10px}.donut{height:125px;width:125px}.donut::before{inset:24px}.donut .center{font-size:12px;max-width:80px}.tablewrap{border:0;background:transparent;overflow:visible}.tbl thead{display:none}.tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}.tbl tr{background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px 11px;margin-bottom:8px}.tbl td{border:0;padding:4px 2px;font-size:11px}.tbl td[data-label]:before{content:attr(data-label) ' · ';font-size:10px;color:var(--muted)}.tbl .desc{max-width:none;font-size:12px}.tbl .money{font-size:13px}.tbl td.tableaction{display:flex;gap:6px}.tabletools .search{flex:1;width:140px}.tabletools .select{width:100%;max-width:100%}.monthitem{flex-wrap:wrap;padding:12px}.monthitem .name{max-width:80%}.monthitem .amount{margin-left:auto}.monthitem .actions{width:100%;justify-content:flex-end}.modalback{padding:8px;align-items:flex-end}.modal{max-height:94vh;border-radius:19px 19px 5px 5px;padding:19px}.modal .fields{gap:10px}.modal .footer .btn{flex:1}.account{flex-wrap:wrap}.account .money{width:100%;text-align:left;margin-left:52px}.pill{font-size:10px}.subhead{font-size:11px}}@media(max-width:360px){.cols,.col2{grid-template-columns:minmax(0,1fr)}.donutrow{flex-wrap:wrap;justify-content:center}.legend{flex-basis:100%}.kpi .number{font-size:18px}.barrow{grid-template-columns:74px 1fr auto;gap:4px}.topactions .monthinput{max-width:156px}.cardpad{padding:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.pm-minilink{background:none;border:0;color:#6585a9;padding:0;font-size:10px;text-align:left;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;cursor:pointer}/* Pouler 3.0 - controle mensal tipo planilha, responsivo e editável */
+.pm{--pmline:#d9e4f2;--pmnavy:#1c365d;--pmmist:#edf4fc;color:var(--pmnavy);font-size:13px}
+.pm button,.pm input,.pm select{font-family:inherit}
+.pm-period{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:4px 0 16px;border-bottom:1px solid #cfdeef;margin-bottom:15px}
+.pm-period-title{text-align:center;flex:1;min-width:0}.pm-period-title h2{font-size:21px;color:#213861;margin:0;font-weight:830;letter-spacing:-.035em}.pm-period-title p{font-size:11px;margin:5px 0 0;color:#6d85a5}
+.pm-period .pm-nav:first-child{order:0}.pm-period-title{order:1}.pm-month-actions{order:2}.pm-period .pm-nav:nth-of-type(2){order:3}.pm-period .pm-nav{width:41px;height:41px;min-height:41px;flex-shrink:0;padding:0;border:1px solid #a9c2e5;background:#f6faff;border-radius:9px;color:#3b68aa;font-size:20px}
+.pm-month-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.pm-tiny{font-size:10px;color:#6b82a3}
+.pm-period .pm-badge{padding:6px 10px;border:1px solid #bdd1e9;border-radius:50px;color:#315a93;font-size:11px;white-space:nowrap;background:#f7fbff;font-weight:750}
+.pm-period .pm-copy{white-space:nowrap;color:#315a93;border-color:#b0c9eb;background:#fff}
+.pm-controls{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;border:1px solid #cbdcf1;border-radius:15px;background:linear-gradient(120deg,#f5f9ff,#eaf2fd);padding:13px 16px;margin-bottom:16px}
+.pm-control-title{font-size:13px;color:#23466f;font-weight:780}.pm-control-description{font-size:11px;color:#6380a7;margin-top:3px}
+.pm-toggle{display:inline-flex;align-items:center;gap:10px;background:none;border:0;cursor:pointer;color:#315f9b;font-size:11px;font-weight:700;white-space:nowrap}
+.pm-switch{height:26px;width:47px;background:#d5e3f6;border:1px solid #8aacd5;border-radius:30px;position:relative;transition:background .2s}
+.pm-switch:before{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#54749b;transition:transform .2s}
+.pm-toggle[aria-pressed=true] .pm-switch{background:#6594dd}.pm-toggle[aria-pressed=true] .pm-switch:before{transform:translateX(20px);background:#fff}
+.pm-sourcebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 16px}.pm-sourcebar label{font-size:11px;color:#617d9e;font-weight:750}.pm-sourcebar .pm-source-select{width:auto;max-width:100%;border:1px solid #b6c9e6;border-radius:9px;background:#fff;padding:9px 10px;font-size:12px;font-weight:730;color:#31568a}
+.pm-sourcebar .pm-explain{font-size:11px;color:#7187a1;flex:1;min-width:160px}
+.pm-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-bottom:16px}
+.pm-stat{background:#fff;border:1px solid #bdd0e9;border-top:3px solid #6695d9;box-shadow:0 3px 16px #16335b08;border-radius:9px;padding:15px 15px 14px;min-width:0}
+.pm-stat .slabel{font-size:11px;color:#577197;line-height:1.45}.pm-stat .svalue{margin-top:6px;font-size:clamp(18px,1.65vw,25px);font-weight:860;letter-spacing:-.045em;white-space:nowrap}.pm-stat .snote{font-size:10px;color:#8396af;margin-top:7px;line-height:1.45}
+.pm-stat.green .svalue{color:#0b956c}.pm-stat.red .svalue{color:#d14d5d}.pm-stat.blue .svalue{color:#2869c5}.pm-stat.purple .svalue{color:#8251c8}
+.pm-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:15px}
+.pm-sheet{background:#fff;border:1px solid #bed2ea;border-radius:13px;overflow:hidden;box-shadow:0 4px 18px #1737650b;min-width:0}
+.pm-sheet-head{padding:17px 17px 15px;display:flex;align-items:center;gap:12px;justify-content:space-between;border-bottom:1px solid #d5e2f1;flex-wrap:wrap}
+.pm-sheet-head .pm-sheet-title{font-size:16px;font-weight:850;color:#193960;letter-spacing:-.03em}
+.pm-sheet-head .pm-sheet-meta{color:#6b85a5;font-size:11px;margin-top:4px}.pm-sheet-total{margin-left:auto;font-size:16px;font-weight:830;white-space:nowrap}.pm-sheet-total.income{color:#058967}.pm-sheet-total.expense{color:#ca455d}
+.pm-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pm-head-actions button{font-size:11px}
+.pm-line{display:grid;grid-template-columns:31px minmax(0,1fr) 60px 110px 66px;align-items:center;gap:7px;padding:10px 12px;border-bottom:1px solid #e4ecf6;min-width:0;background:#fff}
+.pm-line:hover{background:#fbfdff}.pm-item-ico{height:34px;width:34px;border-radius:10px;background:#eff6ff;display:grid;place-items:center;font-size:17px}
+.pm-line-main{min-width:0}.pm-title-input{width:100%;min-width:0;border:1px solid transparent;border-radius:6px;padding:5px 4px;margin-left:-4px;background:transparent;font-size:12px;color:#143357;font-weight:780;overflow:hidden;text-overflow:ellipsis}
+.pm-title-input:focus{background:#fff;border-color:#8eaedd;outline:none}
+.pm-line-note{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:3px;color:#7990ab;font-size:10px;line-height:1.3}
+.pm-origin{display:inline-flex;background:#eff1f7;border-radius:20px;padding:2px 7px;color:#64768d;font-size:9px;font-weight:750}
+.pm-origin.frompluggy{background:#f2edfc;color:#7b4db7}.pm-line.is-dim{opacity:.63}
+.pm-amount{display:flex;align-items:center;background:#eef4fc;border:1px solid #b7cce8;border-radius:10px;min-width:0;max-width:110px;overflow:hidden;padding:0 5px}
+.pm-amount b{font-size:10px;color:#8ba0bc;font-weight:650}.pm-amount input{font-size:13px;width:100%;min-width:0;border:0;outline:0;background:transparent;text-align:right;color:#bc3e55;font-weight:850;padding:9px 3px;appearance:textfield}
+.pm-amount.income input{color:#0b8768}.pm-amount input::-webkit-inner-spin-button{-webkit-appearance:none}.pm-amount input:disabled{color:#8592a8;opacity:1}
+.pm-day{display:flex;align-items:center;justify-content:center;gap:4px;border:1px solid #b7cde8;background:#f7faff;border-radius:20px;min-height:33px;min-width:0;color:#597cae;font-size:11px}
+.pm-day input{width:28px;border:0;background:transparent;color:#51739d;font-weight:790;text-align:center;outline:none;appearance:textfield;padding:3px 1px}
+.pm-day input::-webkit-inner-spin-button{-webkit-appearance:none}.pm-line-acts{display:flex;align-items:center;justify-content:flex-end;gap:3px}
+.pm-icon-btn{border:1px solid #b8cdea;background:#fff;color:#5476a4;border-radius:50%;height:30px;width:30px;min-width:30px;font-size:15px;display:grid;place-items:center;padding:0}
+.pm-icon-btn:hover{background:#eff5ff}.pm-icon-btn.delete{color:#c3556a}.pm-icon-btn.done{background:#e2f6ed;color:#078761;border-color:#9ad8bc}
+.pm-cat-head{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#ebf3fe;padding:10px 15px;border-top:1px solid #d6e3f3;border-bottom:1px solid #d6e3f3;font-size:10px;color:#44638f;font-weight:810;letter-spacing:.015em}
+.pm-cat-head .catcount{font-size:9px;color:#7a94b5;margin-left:5px}.pm-cat-head .catsum{white-space:nowrap;color:#325fa3;font-size:11px}
+.pm-empty{padding:28px 17px;text-align:center;color:#8495aa;font-size:12px;line-height:1.6}.pm-empty strong{display:block;color:#517195;margin-bottom:5px}
+.pm-sheet-footer{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;padding:14px 15px;background:#fbfdff}
+.pm-sheet-footer button{border:1px dashed #9ebde5;background:#f3f8ff;border-radius:9px;padding:9px 13px;color:#3d6ba9;font-size:11px;font-weight:750}
+.pm-extra-foot{margin-top:13px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;background:#f9fbff;border:1px solid #d9e4f4;border-radius:12px;padding:12px 15px;color:#667f9f;font-size:11px}
+.pm .pm-help{color:#5f7b9c;font-size:11px;margin-top:8px;line-height:1.6}
+.pm .pm-mini-status{font-size:10px;color:#5e7897}
+.pm .pm-select-actions{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:8px 0 12px}
+.pm-import-list{border:1px solid #e6e0f0;border-radius:12px;max-height:42vh;overflow:auto}.pm-import-option{display:flex;align-items:center;gap:9px;padding:10px;border-bottom:1px solid #ece9f4;font-size:11px}.pm-import-option:last-child{border:0}.pm-import-option input{accent-color:var(--accent);width:17px;height:17px}.pm-import-option .label{flex:1;min-width:0}.pm-import-option strong{display:block;color:#322b4a}.pm-import-option small{display:block;color:#8d869c;margin-top:2px}
+.pm-import-option .sum{font-weight:800;color:#615078;white-space:nowrap}
+@media(max-width:1480px){.pm-line{grid-template-columns:29px minmax(0,1fr) 57px 99px 64px;gap:5px;padding:10px 8px}.pm-amount{max-width:99px}.pm-line-acts .pm-icon-btn{height:28px;width:28px;min-width:28px}}
+@media(max-width:1160px){.pm-columns{grid-template-columns:1fr}.pm-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.pm-line{grid-template-columns:33px minmax(0,1fr) 69px 125px 76px;gap:9px;padding:11px 13px}.pm-amount{max-width:125px}}
+@media(max-width:850px){.pm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pm-period{gap:8px}.pm-period-title h2{font-size:18px}}
+@media(max-width:600px){.pm-period{flex-wrap:wrap}.pm-period-title{order:1}.pm-period .pm-nav:first-child{order:0}.pm-period .pm-nav:nth-of-type(2){order:2}.pm-month-actions{order:3;justify-content:center;width:100%}.pm-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pm-stat{padding:12px 11px}.pm-stat:last-child{grid-column:1/-1}.pm-stat .svalue{font-size:19px}.pm-sourcebar{align-items:stretch}.pm-sourcebar label{width:100%}.pm-sourcebar .pm-source-select{flex:1}.pm-sourcebar .pm-explain{flex-basis:100%}.pm-sheet-head{padding:13px;gap:7px}.pm-sheet-head .pm-sheet-title{font-size:14px}.pm-sheet-total{font-size:14px}.pm-line{grid-template-columns:29px minmax(0,1fr) 85px;gap:7px;padding:9px}.pm-item-ico{width:29px;height:29px;font-size:15px}.pm-line-main{grid-column:2/3;grid-row:1/2}.pm-title-input{font-size:12px}.pm-day{grid-column:2/3;grid-row:2/3;justify-self:start;padding:0 8px;min-height:27px}.pm-amount{grid-column:3/4;grid-row:1/2;max-width:85px}.pm-amount input{font-size:12px}.pm-line-acts{grid-column:3/4;grid-row:2/3}.pm-cat-head{padding:9px 10px}.pm-controls{padding:11px}.pm-control-title{font-size:12px}}
+@media(max-width:370px){.pm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pm-stat .svalue{font-size:17px}.pm-month-actions .btn{font-size:10px}.pm .pm-badge{font-size:10px}}
+
+/* Controle mensal 3.1 · classificação financeira e importação com valores bancários */
+.pm-class-select{font-size:10px;color:#29496e;border:1px solid #c6d8ee;border-radius:7px;background:#f6faff;padding:4px 5px;max-width:155px;min-height:27px;font-weight:720}
+.pm-class-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:-1px 0 16px}
+.pm-class-summary-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border-radius:11px;background:#fff;border:1px solid #c6d8ef;font-size:12px;color:#597296;min-width:0}
+.pm-class-summary-item b{color:#213d60;white-space:nowrap;font-size:15px;font-variant-numeric:tabular-nums}
+.pm-class-summary-item.provento{border-left:4px solid #13996e}.pm-class-summary-item.fixa{border-left:4px solid #3e78bf}.pm-class-summary-item.geral{border-left:4px solid #d39c42}
+.pm-class-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 15px;font-weight:850;font-size:12px;background:#e5efff;color:#285482;border-block:1px solid #c3daf4}
+.pm-class-head small{font-size:10px;color:#678bb9;margin-left:3px}.pm-class-head.gerais{background:#fff4e5;color:#9d702e;border-color:#f3dfbd}
+.pm-class-head strong{white-space:nowrap}.pm-class-empty{padding:12px 16px;color:#8c9fb9;font-size:11px;background:#fbfdff}
+.pm-import-option .pm-class-select{max-width:130px;flex-shrink:0}
+@media(max-width:900px){.pm-class-summary{grid-template-columns:1fr 1fr}.pm-class-summary-item:last-child{grid-column:span 2}}
+@media(max-width:600px){.pm-class-summary{grid-template-columns:1fr}.pm-class-summary-item:last-child{grid-column:span 1}.pm-import-option{flex-wrap:wrap}.pm-import-option .pm-class-select{order:3;margin-left:25px;max-width:180px}.pm-import-option .sum{margin-left:auto}.pm-line-note .pm-class-select{max-width:125px}}
+
+/* 3.2 · Painel mensal limpo, grupos intuitivos, sem rolagem horizontal */
+.pm{--pmline:#e8e5f0;--pmnavy:#28233e;--pmmist:#faf8ff;color:var(--pmnavy)}
+.pm .pm-period{border-bottom:0;padding:7px 0 20px;margin-bottom:5px}
+.pm .pm-period-title h2{color:#27213b;font-size:clamp(19px,2vw,25px)}
+.pm .pm-period-title p{color:#867e97}
+.pm .pm-controls{background:#fff;border:1px solid #e7e2f1;box-shadow:0 5px 22px #37245a09;border-radius:15px;padding:16px 19px}
+.pm .pm-control-title{color:#36304f}.pm .pm-control-description,.pm .pm-explain{color:#817a91}
+.pm .pm-sourcebar{padding:9px 0 3px;gap:9px}
+.pm .pm-sourcebar .pm-source-select{border-color:#e0d9ec;color:#42345e;border-radius:10px}
+.pm .pm-stats{gap:12px;margin:16px 0}
+.pm .pm-stat{border:1px solid #eae5f1;border-top:0;border-radius:15px;padding:18px 17px;background:#fff;box-shadow:0 4px 22px #30204509;position:relative;overflow:hidden}
+.pm .pm-stat:before{content:'';display:block;position:absolute;top:0;left:0;right:0;height:3px;background:#9b88ce}
+.pm .pm-stat.green:before{background:#1b9c78}.pm .pm-stat.red:before{background:#d2637d}.pm .pm-stat.blue:before{background:#6191d1}.pm .pm-stat.purple:before{background:#9972ce}
+.pm .pm-stat .slabel{color:#766e87;font-size:11px}
+.pm .pm-stat .svalue{font-size:clamp(18px,1.8vw,25px);font-weight:810;color:#27213b;letter-spacing:-.045em;overflow:hidden;text-overflow:ellipsis}
+.pm .pm-stat.green .svalue{color:#168b69}.pm .pm-stat.red .svalue{color:#c7516c}.pm .pm-stat.blue .svalue{color:#497bc4}.pm .pm-stat.purple .svalue{color:#8259c0}
+.pm .pm-stat .snote{color:#938ca1}
+.pm .pm-class-summary{margin:3px 0 17px;gap:11px}
+.pm .pm-class-summary-item{background:#fff;border-color:#ece6f4;border-radius:12px;color:#746985;padding:14px 16px;box-shadow:0 3px 13px #30204507}
+.pm .pm-class-summary-item b{color:#30284b}
+.pm .pm-columns{gap:18px;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr)}
+.pm .pm-sheet{border:1px solid #e6e0ef;box-shadow:0 10px 34px #3521490a;border-radius:17px}
+.pm .pm-sheet-head{padding:19px 20px;gap:11px;border-color:#f0ebf6}
+.pm .pm-sheet-title{font-size:16px;color:#292341}
+.pm .pm-sheet-meta{color:#8b8497;line-height:1.5}
+.pm .pm-sheet-total.income{color:#168b69}.pm .pm-sheet-total.expense{color:#c95571}
+.pm .pm-line{background:#fff;border-bottom:1px solid #f0edf5;transition:background .15s}
+.pm .pm-line:hover{background:#fcfbfe}
+.pm .pm-item-ico{background:#f6f2fb;color:#7456a9}
+.pm .pm-title-input{color:#30284b;font-weight:760}
+.pm .pm-origin{background:#f3f0f8;color:#726783}.pm .pm-origin.frompluggy{background:#efe9fb;color:#7552b7}
+.pm .pm-amount{background:#faf9fd;border:1px solid #e5dfed;box-shadow:none}
+.pm .pm-amount input{color:#c35772}.pm .pm-amount.income input{color:#168c6d}
+.pm .pm-day{background:#faf8fe;border-color:#e7e0ef;color:#817296}
+.pm .pm-day input{color:#817296}
+.pm .pm-class-head{background:#f3f0fa;border-color:#e9e2f3;color:#655184;padding:14px 17px}
+.pm .pm-class-head.gerais{background:#fff8ef;color:#a77535;border-color:#f6e9d5}
+.pm .pm-class-head strong{font-size:12px}
+.pm .pm-origin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 17px;background:#faf8fd;border-bottom:1px solid #efebf5;color:#685f7a;font-size:11px;font-weight:800}
+.pm .pm-origin-head span:last-child{font-size:10px;font-weight:680;color:#8a819c;text-align:right}
+.pm .pm-accordion{background:#fff;border-bottom:1px solid #eeebf4}
+.pm .pm-group-button{width:100%;padding:14px 16px;display:flex;align-items:center;gap:12px;text-align:left;border:0;background:#fff;color:#342d47;transition:background .15s}
+.pm .pm-group-button:hover,.pm .pm-group-button[aria-expanded=true]{background:#f9f7fd}
+.pm .pm-group-button:focus-visible{outline:2px solid #a188db;outline-offset:-3px}
+.pm .pm-group-icon{flex:0 0 37px;height:37px;display:grid;place-items:center;border-radius:12px;background:#f3f0fa;font-size:17px}
+.pm .pm-group-label{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.pm .pm-group-label strong{font-size:12px;font-weight:790;white-space:normal;overflow-wrap:anywhere}
+.pm .pm-group-label small{color:#938ba3;font-size:10px;font-weight:550}
+.pm .pm-group-total{font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#393047}
+.pm .pm-chevron{font-size:19px;color:#988cac;transition:transform .18s;flex:0 0 15px;text-align:center}
+.pm .pm-group-button[aria-expanded=true] .pm-chevron{transform:rotate(180deg)}
+.pm .pm-group-content{background:#fbfafd;border-top:1px solid #f0ecf6}
+.pm .pm-group-content[hidden]{display:none!important}
+.pm .pm-group-content .pm-line{padding-left:14px;background:#fdfcff}
+.pm .pm-group-content .pm-line:last-child{border-bottom:0}
+.pm .pm-group-content .pm-line:hover{background:#f7f4fc}
+.pm .pm-head-actions .pm-all{padding:6px 9px;min-height:31px;border-radius:9px;font-size:10px}
+.pm .pm-sheet-footer{background:#fcfbfe}
+.pm .pm-sheet-footer button{background:#f8f5fe;border-color:#e1d6f1;color:#7051ae}
+.pm .pm-extra-foot{background:#fcfbff;border-color:#ebe4f4;border-radius:14px;color:#81778d}
+@media(max-width:1540px){.pm .pm-columns{grid-template-columns:1fr}.pm .pm-line{grid-template-columns:33px minmax(0,1fr) 70px 125px 76px;gap:8px;padding:10px 13px}.pm .pm-amount{max-width:125px}}
+@media(max-width:800px){.pm .pm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pm .pm-class-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.pm .pm-stats{gap:9px}.pm .pm-stat{padding:14px 12px}.pm .pm-stat .svalue{font-size:19px}.pm .pm-class-summary{grid-template-columns:1fr}.pm .pm-class-summary-item:last-child{grid-column:auto}.pm .pm-group-button{padding:12px 10px;gap:9px}.pm .pm-group-icon{flex-basis:32px;height:32px;font-size:15px}.pm .pm-group-total{font-size:11px}.pm .pm-origin-head{padding:11px 12px;align-items:flex-start}.pm .pm-origin-head span:last-child{max-width:50%}.pm .pm-sheet-head{padding:14px}.pm .pm-head-actions{justify-content:flex-start}.pm .pm-head-actions .pm-all{font-size:10px}.pm .pm-group-content .pm-line{grid-template-columns:29px minmax(0,1fr) 85px;gap:6px;padding:9px}}
+@media(max-width:360px){.pm .pm-group-label strong{font-size:11px}.pm .pm-group-total{font-size:10px}.pm .pm-group-button{gap:6px}}
+
+
+/* Touch/mobile: títulos e números separados, sem campos sobrepostos */
+@media (max-width:600px){
+ .pm .pm-line,.pm .pm-group-content .pm-line{display:grid;grid-template-columns:34px minmax(0,1fr) 96px;gap:6px 8px;align-items:start;padding:12px 11px}
+ .pm .pm-item-ico{grid-column:1;grid-row:1;width:34px;height:34px;align-self:start}
+ .pm .pm-line-main{grid-column:2/4;grid-row:1;min-width:0}
+ .pm .pm-title-input{font-size:12px;line-height:1.5;min-height:30px;width:100%;margin:0;padding:5px 6px 5px 0;white-space:normal;text-overflow:clip}
+ .pm .pm-line-note{gap:5px 6px;line-height:1.5;margin-top:3px;padding:0}
+ .pm .pm-class-select{font-size:10px;min-height:27px}
+ .pm .pm-day{grid-column:1;grid-row:2;min-width:34px;max-width:34px;min-height:31px;font-size:9px;gap:0;border-radius:9px;overflow:hidden}
+ .pm .pm-day input{font-size:11px;max-width:25px;min-width:0}
+ .pm .pm-amount{grid-column:2;grid-row:2;max-width:145px;width:min(100%,145px);min-height:33px;justify-self:start}
+ .pm .pm-amount input{font-size:13px;padding:7px 3px}
+ .pm .pm-line-acts{grid-column:3;grid-row:2;display:flex;justify-content:flex-end;align-self:center;gap:5px}
+ .pm .pm-icon-btn{height:30px;width:30px;min-width:30px}
+}
+
+/* 3.3 · Data completa, conta de origem e ordenação independente */
+.pm .pm-sortbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px 18px;background:#fcfbfe;border-bottom:1px solid #eeeaf5;min-height:51px}
+.pm .pm-sortbar label{font-size:10.5px;font-weight:740;color:#6c6282;white-space:nowrap}
+.pm .pm-sort-select{width:auto;max-width:100%;border:1px solid #ded6ef;border-radius:9px;background:#fff;padding:8px 30px 8px 10px;font-size:11px;font-weight:650;color:#4f4272;min-height:34px}
+.pm .pm-sort-help{font-size:10px;color:#9288a1;margin-left:auto}
+.pm .pm-line,.pm .pm-group-content .pm-line{grid-template-columns:34px minmax(0,1fr) 119px 116px 64px;gap:8px}
+.pm .pm-day.pm-date-full{border-color:#e6dff1;background:#faf8fe;border-radius:9px;padding:8px 10px;min-height:36px;max-width:none;width:119px;font-size:10.5px;font-weight:730;color:#6d6090;white-space:nowrap;line-height:1.2;font-variant-numeric:tabular-nums}
+.pm button.pm-date-edit:hover{background:#f1eafa;border-color:#cabce4}
+.pm .pm-bank-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:#eef5fc;color:#3c6599;border:1px solid #dceafa;border-radius:7px;font-size:10px;font-weight:730;white-space:normal;overflow-wrap:anywhere;max-width:100%}
+.pm .pm-line-note{gap:6px 7px;line-height:1.5}
+.pm .pm-line-main{min-width:0;overflow-wrap:anywhere}
+.pm .pm-line-acts{min-width:0}
+.bank-alias-note{font-size:11px;color:#7b7290;margin-top:4px;line-height:1.5}
+@media(max-width:1540px){.pm .pm-line,.pm .pm-group-content .pm-line{grid-template-columns:34px minmax(0,1fr) 119px 116px 64px;gap:7px;padding:11px 13px}.pm .pm-amount{max-width:116px}}
+@media(max-width:700px){.pm .pm-sortbar{padding:10px 12px}.pm .pm-sort-help{margin-left:0;flex-basis:100%}}
+@media(max-width:600px){
+ .pm .pm-line,.pm .pm-group-content .pm-line{display:grid;grid-template-columns:34px minmax(0,1fr) 103px;gap:8px;padding:12px 10px;align-items:start}
+ .pm .pm-item-ico{grid-column:1;grid-row:1;width:34px;height:34px}
+ .pm .pm-line-main{grid-column:2/4;grid-row:1;min-width:0}
+ .pm .pm-day.pm-date-full{grid-column:1/3;grid-row:2;justify-self:start;width:auto;max-width:none;min-width:114px;min-height:34px;padding:7px 9px;line-height:1.2}
+ .pm .pm-amount{grid-column:3;grid-row:2;width:103px;max-width:103px;min-height:34px;justify-self:end}
+ .pm .pm-line-acts{grid-column:3;grid-row:3;justify-self:end;display:flex;justify-content:flex-end}
+ .pm .pm-bank-tag{font-size:9.5px}
+ .pm .pm-sort-select{width:100%;flex:1;min-width:160px}
+}
+@media(max-width:360px){.pm .pm-line,.pm .pm-group-content .pm-line{grid-template-columns:30px minmax(0,1fr) 100px}.pm .pm-amount{width:100px;max-width:100px}.pm .pm-day.pm-date-full{min-width:112px;font-size:10px}}
+
+
+/* 3.4 — receitas agrupáveis e layout mensal em duas colunas no desktop */
+.pm .pm-income-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:10px 15px;background:#f9fcfb;border-bottom:1px solid #e5efe9}
+.pm .pm-income-toolbar .select{font-size:11px;width:auto;min-height:32px;padding:6px 10px;max-width:178px}
+.pm .pm-income-toolbar .btn{font-size:10.5px;min-height:32px;padding:6px 9px}
+.pm .pm-income-toolbar [data-pm-bulk-income]{background:#eef9f4;color:#167b60;border:1px solid #c9e9dc;font-weight:760}
+.pm .pm-income-toolbar [data-pm-bulk-income]:hover{background:#e4f5ed}
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-icon{background:#e8f7ef;color:#157956}
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-button:hover,
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-button[aria-expanded=true]{background:#f3faf6}
+.pm .pm-accordion:has([data-pm-toggle-group*="|proventos|"]) .pm-group-total{color:#13805f}
+.pm-bulk-list{max-height:44vh;overflow-y:auto;border:1px solid #e6e4ed;border-radius:12px;margin-top:7px}
+.pm-bulk-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0 8px;color:#7d748f;font-size:11px}
+.pm-bulk-option{display:flex;gap:11px;align-items:center;padding:11px;border-bottom:1px solid #f0edf5;cursor:pointer;font-size:12px}
+.pm-bulk-option:last-child{border-bottom:0}
+.pm-bulk-option:has(input:checked){background:#f0faf5}
+.pm-bulk-option input{accent-color:#178d6a;width:17px;height:17px;flex-shrink:0}
+.pm-bulk-option span{min-width:0;flex:1}
+.pm-bulk-option strong{display:block;color:#30283f;font-size:12px;overflow-wrap:anywhere}
+.pm-bulk-option small{display:block;margin-top:4px;color:#8c8399;line-height:1.5}
+.pm-bulk-option b{white-space:nowrap;color:#148363;font-variant-numeric:tabular-nums;font-size:11px}
+@media(min-width:1181px){.pm .pm-columns{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}}
+@media(min-width:1181px) and (max-width:1570px){
+ .pm .pm-line,.pm .pm-group-content .pm-line{display:grid;grid-template-columns:30px minmax(0,1fr) 116px;gap:6px 8px;padding:12px 11px}
+ .pm .pm-item-ico{grid-column:1;grid-row:1;align-self:start}
+ .pm .pm-line-main{grid-column:2/4;grid-row:1;min-width:0}
+ .pm .pm-day.pm-date-full{grid-column:1/3;grid-row:2;justify-self:start;width:auto;min-width:115px;max-width:none}
+ .pm .pm-amount{grid-column:3;grid-row:2;max-width:116px;width:116px;justify-self:end}
+ .pm .pm-line-acts{grid-column:3;grid-row:3;justify-self:end;display:flex}
+}
+@media(max-width:1180px){.pm .pm-columns{grid-template-columns:1fr}}
+@media(max-width:600px){
+ .pm .pm-income-toolbar{gap:7px;padding:10px}
+ .pm .pm-income-toolbar .select{flex:1;max-width:100%;min-width:145px}
+ .pm .pm-income-toolbar [data-pm-bulk-income]{width:100%}
+ .pm-bulk-option{flex-wrap:wrap}
+ .pm-bulk-option b{margin-left:28px}
+}
+
+
+/* 3.5 - Grupos de proventos claramente editáveis, inclusive em cada PIX */
+.pm .pm-group-cta{font-weight:850!important;border-color:#9bd7bb!important;background:#e8f8ef!important;color:#116b50!important;min-height:36px!important;padding:8px 12px!important}
+.pm .pm-group-hint{font-size:10px;color:#537f6d;font-weight:600}
+.pm .pm-assign-wrap{display:inline-flex;flex-direction:column;gap:3px;max-width:205px;min-width:135px;vertical-align:middle}
+.pm .pm-assign-wrap>span{font-size:9px;font-weight:750;color:#4c886d;letter-spacing:.035em;text-transform:uppercase}
+.pm .pm-assign-select{border:1px solid #add8c6;border-radius:8px;background:#f1fbf6;color:#116848;font-size:11px;font-weight:750;max-width:205px;width:100%;padding:6px 7px;min-height:30px;cursor:pointer}
+.pm .pm-assign-select:focus-visible{outline:2px solid #179568;outline-offset:2px}
+.pm .pm-line-note:has(.pm-assign-wrap){align-items:center;gap:8px 7px}
+.pm .pm-line-note:has(.pm-assign-wrap) .pm-minilink{flex-shrink:0}
+.pm-preset-wrap{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 12px}
+.pm-preset-chip{font:inherit;font-size:12px;cursor:pointer;border:1px solid #c5dfcf;background:#f5fbf7;color:#1a7154;border-radius:999px;padding:7px 11px;font-weight:750}
+.pm-preset-chip.selected,.pm-preset-chip:hover{background:#def5e7;border-color:#63ae87}
+@media(max-width:600px){.pm .pm-group-hint{width:100%}.pm .pm-assign-wrap{max-width:100%;min-width:155px;flex:1}.pm .pm-assign-select{max-width:100%}.pm .pm-group-cta{width:100%}}
+
+
+/* 3.6 — Central de análise de cartões */
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.ca-page{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ca-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.ca-heading h2{font-size:25px;letter-spacing:-.045em;margin:5px 0 5px}
+.ca-heading p{max-width:620px;margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+.ca-card-tabs{display:flex;gap:10px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:thin}
+.ca-card-tab{border:1px solid #e6e0ee;flex:0 0 auto;text-align:left;border-radius:15px;background:#fff;padding:12px 15px;min-width:180px;max-width:280px;display:flex;flex-direction:column;gap:6px;color:var(--ink)}
+.ca-card-tab>span{font-weight:760;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-card-tab>small,.ca-card-tab span small{color:var(--muted);font-size:10px;font-weight:500}
+.ca-card-tab.active{border-color:#987bdb;background:#f2ecfe;box-shadow:0 2px 0 #aa91e1 inset}
+.ca-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.ca-stat{border:1px solid var(--line);background:#fff;border-radius:15px;padding:17px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.ca-stat>span{font-size:11px;color:var(--muted);font-weight:650}.ca-stat>b{font-size:clamp(17px,1.8vw,24px);letter-spacing:-.035em;white-space:nowrap;font-variant-numeric:tabular-nums}.ca-stat>small{font-size:10px;line-height:1.4;color:var(--muted)}
+.ca-limit{border:1px solid #e3dafa;border-radius:13px;background:#f9f5ff;padding:12px 16px;display:flex;gap:15px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.ca-limit>span{display:flex;flex-direction:column;gap:3px}.ca-limit small{color:#7b7296;font-size:10px}.ca-limit b{font-size:13px}
+.ca-analytics{display:grid;grid-template-columns:1fr 1fr;gap:13px;align-items:stretch}.ca-analytics .card{min-width:0}
+.ca-bars{display:flex;flex-direction:column;gap:11px}.ca-bar{display:flex;flex-direction:column;gap:5px}.ca-bar-label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;min-width:0}.ca-bar-label span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ca-bar-label b{white-space:nowrap}.ca-bar small{font-size:9px;color:var(--muted)}.ca-track{height:8px;border-radius:999px;overflow:hidden;background:#f0edf7}.ca-fill{height:100%;border-radius:999px;transition:width .2s}
+.ca-weeks{display:flex;justify-content:space-around;gap:8px;height:185px;align-items:flex-end;padding-top:15px}.ca-week{flex:1;min-width:0;max-width:100px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px}.ca-week-value{font-size:9px;font-weight:750;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ca-week-track{display:flex;align-items:flex-end;justify-content:center;width:min(70%,55px);height:125px;border-radius:7px 7px 2px 2px;background:#f1edf8;overflow:hidden}.ca-week-fill{width:100%;background:linear-gradient(0deg,#6f4ec2,#c1adef);border-radius:7px 7px 0 0;min-height:0}.ca-week small{color:var(--muted);font-size:10px}.ca-chart-caption{font-size:10px;color:var(--muted);margin-top:12px;line-height:1.4}
+.ca-insights{display:grid;gap:9px}.ca-insight{background:#faf8ff;border:1px solid #ebe3f7;padding:11px 13px;border-radius:11px}.ca-insight b{font-size:12px;color:#4e396f}.ca-insight p{margin:5px 0 0;font-size:11px;color:var(--muted);line-height:1.5}
+.ca-bill{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.ca-bill div{display:flex;flex-direction:column;gap:4px}.ca-bill strong,.ca-bill b{font-size:12px}.ca-bill small{font-size:10px;color:var(--muted)}.ca-help{color:var(--muted);font-size:11px;line-height:1.55;margin-top:10px}
+.ca-purchases{overflow:hidden}.ca-purchases-head{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:18px 19px 12px}.ca-purchases-head h3{font-size:17px;margin:0}.ca-purchases-head p{font-size:11px;color:var(--muted);margin:5px 0 0}.ca-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:12px 19px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fdfcff}.ca-search-wrap{min-width:210px;flex:1;display:flex;align-items:center;position:relative}.ca-search-wrap span{position:absolute;left:12px;color:var(--muted);pointer-events:none}.ca-search-wrap input{padding-left:31px}.ca-sort{width:auto;max-width:208px}.ca-layout{width:auto;max-width:185px}.ca-table-hint{font-size:10px;color:#6f6781;padding:12px 19px;line-height:1.55;background:#faf8ff}
+.ca-group{border-bottom:1px solid var(--line)}.ca-group-head{width:100%;border:0;display:flex;align-items:center;gap:12px;padding:15px 20px;background:#fff;text-align:left;color:var(--ink)}.ca-group-head:hover,.ca-group-head[aria-expanded=true]{background:#faf7ff}.ca-group-icon{width:34px;height:34px;border-radius:10px;background:#f0eafb;color:#7859c2;display:grid;place-items:center;font-size:17px;flex:0 0 auto}.ca-group-title{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}.ca-group-title strong{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ca-group-title small{font-size:10px;color:var(--muted)}.ca-group-head>b{font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}.ca-arrow{font-size:20px;color:#8570b5;margin-left:7px;transition:transform .2s}.ca-group-head[aria-expanded=true] .ca-arrow{transform:rotate(180deg)}
+.ca-row{display:flex;align-items:center;gap:13px;padding:13px 18px;background:#fff;border-top:1px solid #f1edf6;min-width:0}.ca-row:hover{background:#fdfcff}.ca-row:nth-child(even){background:#fcfbfe}.ca-check{display:flex;align-items:center}.ca-check input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}.ca-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}.ca-main strong{font-size:12px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ca-sub{font-size:10px;color:var(--muted);line-height:1.3}.ca-category{font-size:10px;color:#8861af}.ca-desktop-group{width:185px;flex:0 0 185px}.ca-assign{width:100%;min-width:0;background:#f9f7fe;border:1px solid #e5dff0;border-radius:9px;color:#54446d;padding:9px;font-size:10.5px;cursor:pointer}.ca-amount{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:0 0 125px}.ca-amount strong{font-size:12px;white-space:nowrap}.ca-amount small{font-size:9px;color:var(--muted)}.ca-edit{flex-shrink:0}.ca-mobile-group{display:none}.ca-list{border-top:1px solid var(--line)}.ca-disclaimer{border:1px solid #dfd6ee;border-radius:11px;padding:12px 15px;background:#fbf9ff;color:#75698a;font-size:11px;line-height:1.55}
+.pm-quick-groups{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.pm-quick-groups>span{font-size:10px;color:#6c7d9c;margin-right:2px}.pm-quick-chip{border:1px solid #c9d9f3;background:#fff;color:#37669e;padding:6px 9px;border-radius:99px;font-size:10px;font-weight:730}.pm-quick-chip:hover{background:#e9f3ff}
+@media(max-width:1280px){.ca-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.ca-analytics{grid-template-columns:1fr 1fr}.ca-desktop-group{flex-basis:155px;width:155px}}
+@media(max-width:900px){.ca-analytics{grid-template-columns:1fr}.ca-analytics.ca-low{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.ca-heading h2{font-size:21px}.ca-stats{gap:8px}.ca-stat{padding:12px}.ca-stat>b{font-size:18px}.ca-analytics.ca-low{grid-template-columns:1fr}.ca-purchases-head,.ca-toolbar{padding-left:12px;padding-right:12px}.ca-search-wrap{flex-basis:100%}.ca-sort,.ca-layout{flex:1;max-width:none;min-width:120px}.ca-group-head{padding:12px;gap:8px}.ca-group-head>b{font-size:12px}.ca-row{padding:12px;gap:8px;align-items:flex-start;flex-wrap:wrap}.ca-main{flex-basis:calc(100% - 48px)}.ca-main strong{white-space:normal;overflow-wrap:anywhere}.ca-desktop-group{display:none}.ca-mobile-group{display:block;margin-top:6px;width:100%}.ca-amount{flex:1;align-items:flex-start;padding-left:26px;flex-basis:auto}.ca-edit{margin-left:auto}.ca-table-hint{padding:11px 12px}.ca-card-tab{min-width:165px}.ca-stats .ca-stat:last-child{grid-column:auto}}
+@media(max-width:360px){.ca-stat>b{font-size:16px}.ca-bar-label b{font-size:10px}.ca-toolbar button[data-ca-expand]{font-size:10px}.ca-purchases-head .row{width:100%;justify-content:flex-start}}
+
+
+/* 3.7 — Renomear cartões diretamente na central de cartões */
+.ca-card-choice{position:relative;flex:0 0 auto;min-width:190px;max-width:280px;width:max-content}
+.ca-card-choice .ca-card-tab{min-width:190px;max-width:280px;width:100%;padding-right:48px;min-height:67px}
+.ca-card-choice .ca-card-tab>span{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ca-card-rename{position:absolute;top:9px;right:9px;display:grid;place-items:center;width:30px;height:30px;background:#fff;border:1px solid #e5dcef;border-radius:9px;color:#7653b2;font-size:16px;cursor:pointer;transition:all .15s;z-index:1}
+.ca-card-rename:hover,.ca-card-rename:focus-visible{background:#e9ddff;border-color:#aa90dd;outline:none}
+.ca-card-rename:focus-visible{box-shadow:0 0 0 2px #9477d0}
+.ca-card-alias-help{color:#867b9c;font-size:10px;line-height:1.5;margin:-4px 0 0}
+.ca-limit-actions{display:flex;gap:12px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.ca-limit-actions .btn{white-space:nowrap}
+.ca-limit-actions>span{display:flex;flex-direction:column;align-items:flex-end;gap:3px;text-align:right;white-space:nowrap}
+@media(max-width:600px){.ca-card-choice{min-width:172px;max-width:230px}.ca-card-choice .ca-card-tab{min-width:172px;max-width:230px}.ca-limit-actions{justify-content:flex-start;width:100%}.ca-limit-actions .btn{width:100%}.ca-limit-actions>span{align-items:flex-start;text-align:left}}
+
+/* 3.8 — Ação de renomear claramente visível em cada cartão */
+.ca-card-tabs{align-items:stretch}
+.ca-card-choice{display:flex;flex-direction:column;min-width:198px;max-width:282px;width:220px;border:1px solid #e8e1f3;border-radius:15px;overflow:hidden;background:#fff;box-shadow:0 2px 7px rgba(42,25,86,.035)}
+.ca-card-choice:has(.ca-card-tab.active){border-color:#9f80da;background:#fbf8ff}
+.ca-card-choice .ca-card-tab{width:100%;min-width:0;max-width:none;min-height:74px;padding:13px 14px 10px;border:0;border-radius:0;box-shadow:none}
+.ca-card-choice .ca-card-tab>span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ca-card-choice .ca-card-tab.active{box-shadow:0 2px 0 #a88bde inset}
+.ca-card-choice .ca-card-rename{position:static;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:34px;border:0;border-top:1px solid #e9e2f5;border-radius:0;background:#f8f5ff;color:#6541ae;font-size:11px;font-weight:700;font-family:inherit;letter-spacing:.01em;cursor:pointer}
+.ca-card-choice .ca-card-rename:hover,.ca-card-choice .ca-card-rename:focus-visible{background:#ede4ff;outline:2px solid #9575d4;outline-offset:-2px}
+.ca-card-alias-help{font-size:11px;color:#71658b;margin:-3px 0 3px}
+@media(max-width:600px){.ca-card-choice{min-width:182px;max-width:225px;width:196px}.ca-card-choice .ca-card-tab{min-width:0;max-width:none}}
+
+/* 3.9: ações claras para receitas manuais e proventos ocultos */
+.pm .pm-recover-income{border:1px solid #e6d9ee;background:#fff;color:#684a88;font-weight:760}
+.pm .pm-recover-income:hover{background:#f2eaf8}
+.pm .pm-hide-income-link{color:#9a4265!important;border-color:#f0ccdb!important;background:#fff8fb!important}
+.pm .pm-hide-income-link:hover{background:#ffe9f0!important}
+.pm-hidden-income-list{margin-top:12px;border:1px solid #e4ddec;border-radius:12px;overflow:hidden}
+.pm-hidden-income-item{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid #eee8f1;background:#fff}
+.pm-hidden-income-item:last-child{border-bottom:0}
+.pm-hidden-income-item>div{flex:1;min-width:0}
+.pm-hidden-income-item strong{font-size:12px;display:block;overflow-wrap:anywhere}
+.pm-hidden-income-item small{font-size:10px;display:block;color:#7c7288;margin-top:4px}
+.pm-hidden-income-item>b{font-size:12px;white-space:nowrap;color:#138562;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.pm-hidden-income-item{flex-wrap:wrap}.pm-hidden-income-item>div{flex-basis:100%}.pm .pm-income-toolbar .pm-recover-income{order:0}}
+</style>
+
+<style id="pouler-unificado-pluggy">
+.pf-hub-links{display:flex;gap:5px;align-items:center;padding:0 8px 15px;margin:0 2px 15px;border-bottom:1px solid var(--line,#e9e3f0);font-size:10px}
+.pf-hub-links a,.pf-hub-links .pf-hub-current{padding:6px 7px;border-radius:8px;white-space:nowrap;text-decoration:none;font-weight:650;color:var(--muted,#716885);border:1px solid transparent}
+.pf-hub-links a:hover{color:var(--accentd,#683ac6);background:#f7f2fc}
+.pf-hub-links .pf-hub-current{background:#f3ecff;color:#6543af}
+.pf-hub-login{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.pf-hub-login a{color:#7657b4;font-size:11px;font-weight:650;text-decoration:none}
+.pf-hub-login a:hover{text-decoration:underline}
+@media(max-width:550px){.pf-hub-links{gap:3px;padding:0 4px 10px}.pf-hub-links a,.pf-hub-links .pf-hub-current{padding:5px 4px}}
+</style>
+</head>
+<body>
+<div id="login-screen">
+  <div class="loginbox card"><div class="pf-hub-login"><a href="./index.html">← Duas áreas</a><a href="./planejamento.html">Planejamento ↗</a></div>
+    <div class="brandicon">pf</div>
+    <div class="over" style="margin-top:18px">Pouler Finance · Pluggy Lab</div>
+    <h1>Suas finanças, do seu jeito.</h1>
+    <p>Entre com seu e-mail e senha para acessar seus bancos e organizar o planejamento. Sem Firebase. Ambiente separado do Pouler Finance original.</p>
+    <form id="login-form">
+      <div class="field"><label for="login-email">E-mail</label><input class="input" id="login-email" type="email" autocomplete="username" required placeholder="seu@email.com"/></div>
+      <div class="field"><label for="login-password">Senha</label><input class="input" id="login-password" type="password" autocomplete="current-password" minlength="14" required placeholder="Sua senha da Cloudflare"/></div>
+      <label class="checkrow" style="margin-top:13px"><input id="remember-login" type="checkbox" checked/> Lembrar neste dispositivo por 12 horas</label>
+      <button class="btn primary w100" type="submit" id="login-btn">Entrar no painel</button>
+    </form>
+    <div id="login-status" class="status" role="status"></div>
+    <div class="line"></div><button class="btn soft w100" id="preview-btn">✨ Explorar com dados fictícios</button>
+    <div class="sub">Acesso protegido pelo Worker. Nenhuma credencial bancária é enviada para o GitHub.</div>
+  </div>
+</div>
+<div id="app" class="hidden">
+  <aside class="side" id="sidebar">
+    <div class="brand"><div class="brandicon">pf</div><div><div class="brandname">Pouler Finance</div><div class="brandsub">LAB · seu painel financeiro</div></div></div>
+
+    <div class="pf-hub-links" aria-label="Áreas do Pouler Finance">
+      <a href="./index.html">⌂ Áreas</a>
+      <span class="pf-hub-current" aria-current="page">Pluggy</span>
+      <a href="./planejamento.html">↗ Planejamento</a>
+    </div>
+    <div class="navgroup">VISÃO GERAL</div>
+    <button class="navbtn active" data-view="dashboard"><span class="ic">▦</span> Dashboard</button>
+    <button class="navbtn" data-view="extrato"><span class="ic">↔</span> Extrato vinculado</button>
+    <button class="navbtn" data-view="cartoes"><span class="ic">▤</span> Análise de cartões</button>
+    <div class="navgroup">PLANEJAMENTO</div>
+    <button class="navbtn" data-view="mensal-pluggy"><span class="ic">▥</span> Mensal Pluggy</button>
+    <button class="navbtn" data-view="mensal-livre"><span class="ic">✎</span> Controle mensal</button>
+    <button class="navbtn" data-view="contas"><span class="ic">⌂</span> Bancos e faturas</button>
+    <div class="navgroup">PREFERÊNCIAS</div>
+    <button class="navbtn" data-view="config"><span class="ic">⚙</span> Configurações</button>
+    <div class="aside-note">🔒 Extrato original preservado. Suas descrições, categorias e valores planejados são ajustes separados.</div>
+    <div class="sidebottom"><div id="side-email" class="hint" style="word-break:break-word"></div><button class="btn" id="logout-btn">Sair da conta</button></div>
+  </aside>
+  <main class="stage">
+    <header class="topbar">
+      <button class="btn icon navtoggle" id="menu-toggle" title="Abrir menu">☰</button>
+      <div class="grow"><h1 class="page-title" id="page-title">Dashboard</h1><div class="page-sub" id="page-sub">Seu panorama financeiro</div></div>
+      <div class="topactions"><span class="pill plain" id="connection-pill">Sem dados</span><input class="input monthinput" type="month" id="month" aria-label="Mês de referência"/><button class="btn primary" id="sync-btn">↻ <span>Sincronizar</span></button></div>
+    </header>
+    <div class="banner" id="status-banner"><span>ℹ</span><span id="status-text">Carregue suas contas ou use os dados fictícios para explorar.</span></div>
+    <div id="view-content"></div>
+    <footer style="margin:24px 2px 0;font-size:10px;color:var(--muted)">Pouler Finance Lab · Banco conectado em somente leitura · Seus ajustes não alteram a Pluggy · Sem Firebase</footer>
+  </main>
+</div>
+<div class="mobile-bottom hidden" id="mobile-nav">
+  <button data-view="dashboard" class="active"><span>▦</span>Início</button><button data-view="extrato"><span>↔</span>Extrato</button><button data-view="cartoes"><span>▤</span>Cartões</button><button data-view="mensal-livre"><span>✎</span>Controle mensal</button><button data-view="config"><span>⚙</span>Mais</button>
+</div>
+<div id="modal-backdrop" class="modalback hidden" aria-hidden="true"><div id="modal-content" class="modal" role="dialog" aria-modal="true" aria-label="Editar lançamento"></div></div>
+<input type="file" accept=".json,application/json" id="import-file" class="hidden"/>
+<script>
+// Pouler Finance Lab v3 • dados brutos da Pluggy nunca são gravados no KV ou no localStorage.
+const WORKER='https://pouler-pluggy-lab.paulossray.workers.dev';
+const TOKEN_KEY='pouler-pluggy-lab-login-v1';
+const STATE_KEY='pouler-lab-v2-ajustes-locais';
+const $=q=>document.querySelector(q);
+const $$=q=>Array.from(document.querySelectorAll(q));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const currency=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);
+const fmtDate=v=>{let s=String(v||'').slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(s)?s.split('-').reverse().join('/'):s||'—'};
+const monthNow=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit'}).format(new Date());
+const colors=['#7952d2','#d66aa8','#4e8bca','#e8ac5e','#39a78b','#a29bc3','#e2767b','#79a8a2','#ab86e9','#aeb0bb'];
+const categories=['Alimentação','Moradia','Transporte','Saúde','Educação','Lazer','Assinaturas','Compras','Salário','Renda extra','Investimentos','Dívidas','Impostos','Família','Presentes','Dízimo','Doações','Outros'];
+const emptyState=()=>({version:2,manual:[],overrides:{}});
+let finance=emptyState(), demoFinance=emptyState(), data=null, mode='none', currentView='dashboard', token='', sessionEmail='', cloudEnabled=false, saveTimer=null, saveInFlight=false, savedLocally=false, busy=false, hiddenValues=false, activeTypeFilter='all', currentSearch='', currentAccount='', stateRead=false;
+const displayedMoney=n=>hiddenValues?'R$ •••••':currency(n);
+const state=()=>mode==='demo'?demoFinance:finance;
+const period=()=>$('#month').value;
+const account=id=>data?.accounts?.find(a=>a.id===id)||null;
+// Banco mostrado pela Pluggy. MeuPluggy pode retornar apenas o tipo de conta;
+// nesse caso, permita nomear a conta, sem alterar qualquer dado bancário.
+function accountAliasKey(a){return 'account:'+String(a?.id||'').replace(/[^A-Za-z0-9_:\-.]/g,'').slice(0,110);}
+function accountInstitution(a){return (data?.items||[]).find(i=>i.id===a?.itemId)?.institution||'';}
+function bankName(a){
+ if(!a)return 'Conta não identificada';
+ const personal=String(state().overrides[accountAliasKey(a)]?.title||'').trim();
+ if(personal)return personal;
+ const inst=String(accountInstitution(a)||'').trim();
+ if(inst&&!/^(meu\s*pluggy|institui[cç][aã]o|pluggy\s*bank|sandbox)$/i.test(inst))return inst;
+ return String(a.name||'').trim()||'Conta sem identificação';
+}
+function bankLabel(a){
+ if(!a)return 'Conta não identificada';
+ const last=String(a.lastDigits||'').trim().slice(-4);
+ return bankName(a)+(last?' · final '+last:'');
+}
+function bankIsGeneric(a){
+ if(!a)return false;
+ if(String(state().overrides[accountAliasKey(a)]?.title||'').trim())return false;
+ return /^(conta\s*(corrente|poupan[cç]a|de pagamento|digital|banc[aá]ria)?|cart[aã]o\s*(de cr[eé]dito)?|cr[eé]dito|checking account|credit card)$/i.test(String(a.name||'').trim());
+}
+const isCard=a=>a?.type==='CREDIT';
+const signed=(t)=>{
+  const x=Math.abs(Number(t.amount)||0);
+  if(t.type==='DEBIT')return -x;
+  if(t.type==='CREDIT')return x;
+  return Number(t.amount)||0;
+};
+const txKey=t=>String(t.id||'').replace(/[^A-Za-z0-9_:\-.]/g,'').slice(0,125);
+// Classificação financeira (separada da categoria detalhada do banco).
+const FIN_CLASSES = [['provento','Provento'],['fixa','Despesa fixa'],['geral','Gasto geral']];
+const FIN_LABEL = {provento:'Proventos',fixa:'Despesas fixas',geral:'Gastos gerais'};
+function suggestedClass(t){
+ if(signed(t)>=0)return 'provento';
+ const category=String(t.category||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const desc=String(t.description||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ if(/moradia|assinatura|aluguel|condominio|energia|agua|internet|telefone/.test(category+' '+desc))return 'fixa';
+ return 'geral';
+}
+function manualClass(m){
+ return FIN_CLASSES.some(([key])=>key===m.financeClass)?m.financeClass:(m.type==='income'?'provento':'geral');
+}
+function classType(finClass){return finClass==='provento'?'income':'expense';}
+const finSelect=(selected, attrs='')=>`<select ${attrs} class="pm-class-select" aria-label="Tipo de lançamento">${FIN_CLASSES.map(([v,label])=>`<option value="${v}" ${selected===v?'selected':''}>${label}</option>`).join('')}</select>`;
+
+function baseKind(t){
+ const label=String(t.description||'').toLocaleLowerCase('pt-BR');
+ if(/pagamento (de |da |do )?fatura|pagamento (do |de )?cart[aã]o|pgto.*fatura|fatura.*pagamento/.test(label))return 'cardpayment';
+ if(/transfer[eê]ncia entre contas|aplica[cç][aã]o financeira|resgate de investimento|transferencia interna/.test(label))return 'transfer';
+ return 'normal';
+}
+function annotation(t){
+ const v=state().overrides[txKey(t)]||{};
+ return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',groupName:v.groupName||'',note:v.note||'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,hideMonthly:!!v.hideMonthly,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
+}
+function valueForPlanning(t){const a=annotation(t);return a.planValue===''?Math.abs(signed(t)):a.planValue;}
+const moveType=t=>signed(t)>=0?'income':'expense';
+const typeName=t=>moveType(t)==='income'?'Entrada':'Saída';
+const transactions=()=>data?.transactions?.filter(t=>String(t.date||'').slice(0,7)===period())||[];
+const isInternal=t=>annotation(t).kind!=='normal';
+const isBank=t=>!isCard(account(t.accountId));
+const isDebit=t=>signed(t)<0;
+const isCredit=t=>signed(t)>0;
+function linkedTotals(){
+ const rows=transactions();const normal=rows.filter(t=>!isInternal(t));
+ const bankIn=normal.filter(t=>isBank(t)&&isCredit(t)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const bankOut=rows.filter(t=>isBank(t)&&isDebit(t)&&!['transfer','ignore'].includes(annotation(t).kind)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const bankPurchases=normal.filter(t=>isBank(t)&&isDebit(t)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const cards=normal.filter(t=>!isBank(t)&&isDebit(t)).reduce((s,t)=>s+valueForPlanning(t),0);
+ const cardPayments=rows.filter(t=>isBank(t)&&isDebit(t)&&annotation(t).kind==='cardpayment').reduce((s,t)=>s+valueForPlanning(t),0);
+ const totalBalance=(data?.accounts||[]).filter(a=>!isCard(a)).reduce((s,a)=>s+Number(a.balance||0),0);
+ return {bankIn,bankOut,bankPurchases,cards,cardPayments,consumption:bankPurchases+cards,cashFlow:bankIn-bankOut,totalBalance};
+}
+function countCategories(){let map=new Map();for(const t of transactions())if(signed(t)<0&&!isInternal(t)){
+ const a=annotation(t);const k=a.category||'Outros';map.set(k,(map.get(k)||0)+valueForPlanning(t));
+ }return [...map.entries()].sort((a,b)=>b[1]-a[1]);}
+function monthlyEntries(){
+ const month=period(); const out=[];
+ for(const m of state().manual){
+  if(m.recurring){if(month< m.date.slice(0,7))continue;
+   const d=Math.min(Number(m.date.slice(-2)),new Date(Number(month.slice(0,4)),Number(month.slice(5)),0).getDate());
+   out.push({...m,financeClass:manualClass(m),type:classType(manualClass(m)),effectiveDate:month+'-'+String(d).padStart(2,'0'),groupName:m.groupName||'',effectiveStatus:m.monthlyStatus?.[month]||'pending',ref:'manual',recurring:true});
+  }else if(m.date.slice(0,7)===month)out.push({...m,financeClass:manualClass(m),type:classType(manualClass(m)),effectiveDate:m.date,groupName:m.groupName||'',effectiveStatus:m.status,ref:'manual'});
+ }
+ for(const t of transactions()){
+  const an=annotation(t); if(!an.includeFree||an.hideMonthly)continue;
+  out.push({id:txKey(t),title:an.title,type:classType(an.financeClass),financeClass:an.financeClass,amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:an.category,groupName:an.groupName||'',note:an.note,kind:an.kind,effectiveStatus:t.status==='PENDING'?'pending':'paid',ref:'linked',accountId:t.accountId,transaction:t});
+ }
+ return out.sort((a,b)=>String(a.effectiveDate).localeCompare(String(b.effectiveDate)));
+}
+const counted=e=>e.ref==='manual'||e.kind==='normal';
+function freeTotals(){const list=monthlyEntries().filter(counted);
+ const filter=(type,status)=>list.filter(e=>e.type===type&&(status?e.effectiveStatus===status:true)).reduce((s,e)=>s+Number(e.amount||0),0);
+ const incomes=filter('income'),expenses=filter('expense'),received=filter('income','paid'),paid=filter('expense','paid'),toPay=filter('expense','pending'),toReceive=filter('income','pending');
+ return {incomes,expenses,received,paid,toPay,toReceive,planned:incomes-expenses,actual:received-paid};}
+function notice(msg,kind='info'){
+ const el=$('#status-banner'); if(!el)return; el.className='banner'+(kind==='info'?'':' '+kind);$('#status-text').textContent=msg;
+}
+function localSave(){try{localStorage.setItem(STATE_KEY,JSON.stringify(finance));savedLocally=true;return true}catch{notice('Não foi possível salvar no navegador. Exporte um backup JSON para não perder as alterações.','bad');return false}}
+function localRead(){try{const raw=localStorage.getItem(STATE_KEY);if(raw){const f=JSON.parse(raw);if(f&&Array.isArray(f.manual)&&f.overrides)finance={version:2,manual:f.manual,overrides:f.overrides};}}catch{}}
+function savedStatus(){const el=$('#save-indicator');if(el)el.textContent=mode==='demo'?'Exemplo · não salvo':cloudEnabled?'☁ Sincronizado com Cloudflare KV':'▣ Salvo neste navegador';}
+function scheduleSave(){
+ if(mode==='demo'){notice('Alteração feita nos dados fictícios. Ela não será salva na nuvem.','info');setTimeout(render,0);return;}
+ localSave();savedStatus();clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,2200);setTimeout(render,0);
+}
+async function persistCloud(){
+ if(!token||!cloudEnabled||saveInFlight)return;
+ saveInFlight=true;const snapshot=JSON.stringify(finance);
+ try{const ans=await api('/finance-state',true,{body:{state:JSON.parse(snapshot)}});if(ans.success)notice('Seu planejamento foi salvo na Cloudflare. O extrato bancário original não foi alterado.','good');}
+ catch(e){notice('Suas edições estão salvas neste navegador, mas a nuvem não confirmou: '+e.message,'warn');}
+ finally{saveInFlight=false; if(JSON.stringify(finance)!==snapshot){clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,2500);}}
+}
+async function loadStoredState(){
+ localRead(); if(!token){savedStatus();return;}
+ try{const r=await api('/finance-state',true);cloudEnabled=!!r.available;
+  if(r.available&&r.state&&Array.isArray(r.state.manual)&&r.state.overrides){finance={version:2,manual:r.state.manual,overrides:r.state.overrides};localSave();}
+  else if(r.available&&(finance.manual.length||Object.keys(finance.overrides).length)){setTimeout(persistCloud,2300);}
+  stateRead=true;savedStatus();
+  if(!r.available)notice('Salvamento local ativo. Para manter as edições também no celular, vincule FINANCE_KV na Cloudflare.','warn');
+ }catch(e){cloudEnabled=false;stateRead=true;notice('Ajustes carregados deste navegador. KV indisponível: '+e.message,'warn');}
+}
+async function api(path,authorized=false,options={}){
+ const h={Accept:'application/json'};if(authorized){if(!token)throw Error('Entre novamente para acessar os bancos.');h.Authorization='Bearer '+token;}
+ if(options.body)h['Content-Type']='application/json';
+ let r;try{r=await fetch(WORKER+path,{method:options.body?'POST':'GET',headers:h,body:options.body?JSON.stringify(options.body):undefined,cache:'no-store',referrerPolicy:'no-referrer'});}catch{throw Error('Não foi possível conectar à Cloudflare. Confira a internet.');}
+ const result=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(result.error||'Erro HTTP '+r.status);e.httpStatus=r.status;throw e;}return result;
+}
+function setBusy(value){busy=value;const sync=$('#sync-btn');if(sync){sync.disabled=value;sync.innerHTML=value?'⏳ <span>Buscando...</span>':'↻ <span>Sincronizar</span>';}}
+async function loadMonth(){
+ if(mode==='demo'){data=demoData(period());render();return;}
+ if(!token){render();return;}
+ const requested=period();setBusy(true);notice('Consultando os dados disponíveis na Pluggy para '+requested+'…');
+ try{const fresh=await api('/data?month='+encodeURIComponent(requested),true);if(requested!==period())return;data=fresh;mode='real';
+  const n=(fresh.warnings||[]).length;
+  notice('Atualizado às '+new Date(fresh.readAt||Date.now()).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'. '+fresh.transactions.length+' movimentações encontradas.'+(n?' '+n+' aviso(s) de conexão.':''),n?'warn':'good');
+ }catch(e){if(e.httpStatus===401){logout('Sessão expirada. Entre novamente.');return;}notice('Falha ao consultar a Pluggy: '+e.message,'bad');}
+ finally{setBusy(false);render();}
+}
+function demoData(month){const d=day=>month+'-'+String(day).padStart(2,'0');return {source:'demo',readAt:new Date().toISOString(),month,
+ items:[{id:'demo1',status:'UPDATED',institution:'Banco Exemplo',lastUpdatedAt:new Date().toISOString()},{id:'demo2',status:'UPDATED',institution:'Cartão Exemplo',lastUpdatedAt:new Date().toISOString()}],
+ accounts:[{id:'bank1',itemId:'demo1',type:'BANK',name:'Conta principal',lastDigits:'1234',balance:5320.75},{id:'bank2',itemId:'demo1',type:'BANK',name:'Conta reserva',lastDigits:'8890',balance:2430.90},{id:'card1',itemId:'demo2',type:'CREDIT',name:'Cartão principal',lastDigits:'4567',balance:1318.90,creditLimit:5000,availableCreditLimit:3681.1}],
+ bills:[{id:'b1',accountId:'card1',dueDate:d(25),closingDate:d(17),totalAmount:1318.90}],transactions:[
+ {id:'d1',accountId:'bank1',date:d(3),description:'Pagamento SEDU',amount:3650,type:'CREDIT',category:'Salário',status:'POSTED'},
+ {id:'d2',accountId:'bank1',date:d(5),description:'Pagamento Monte Alvo',amount:3240,type:'CREDIT',category:'Salário',status:'POSTED'},
+ {id:'d3',accountId:'bank1',date:d(5),description:'Supermercado Vitória',amount:487.60,type:'DEBIT',category:'Alimentação',status:'POSTED'},
+ {id:'d4',accountId:'bank1',date:d(6),description:'Conta de energia',amount:216.30,type:'DEBIT',category:'Moradia',status:'POSTED'},
+ {id:'d5',accountId:'bank1',date:d(10),description:'Pagamento da fatura',amount:988.80,type:'DEBIT',category:'Dívidas',status:'POSTED'},
+ {id:'d6',accountId:'bank1',date:d(12),description:'Combustível',amount:166.50,type:'DEBIT',category:'Transporte',status:'POSTED'},
+ {id:'d7',accountId:'bank2',date:d(12),description:'Rendimento',amount:12.40,type:'CREDIT',category:'Investimentos',status:'POSTED'},
+ {id:'d8',accountId:'card1',date:d(3),description:'Compra 7234',amount:124.90,type:'DEBIT',category:'Compras',status:'POSTED'},
+ {id:'d9',accountId:'card1',date:d(6),description:'Cinema',amount:72.90,type:'DEBIT',category:'Lazer',status:'POSTED'},
+ {id:'d10',accountId:'card1',date:d(9),description:'Restaurante',amount:146.70,type:'DEBIT',category:'Alimentação',status:'POSTED'},
+ {id:'d11',accountId:'card1',date:d(13),description:'Netflix',amount:44.90,type:'DEBIT',category:'Assinaturas',status:'POSTED'},
+ {id:'d12',accountId:'bank1',date:d(14),description:'Transferência entre contas',amount:450,type:'DEBIT',category:'Outros',status:'POSTED'}]};}
+function openApp(){
+ $('#login-screen').classList.add('hidden');$('#app').classList.remove('hidden');$('#mobile-nav').classList.remove('hidden');
+ $('#side-email').textContent=mode==='demo'?'🧪 Prévia com dados fictícios':sessionEmail||'Conta conectada';
+ $('#month').value=period()||monthNow();savedStatus();render();
+}
+async function loggedIn(session){token=session.token;sessionEmail=session.email||'';mode='real';openApp();await loadStoredState();await loadMonth();}
+function logout(message=''){token='';sessionEmail='';mode='none';data=null;cloudEnabled=false;finance=emptyState();stateRead=false;
+ try{localStorage.removeItem(TOKEN_KEY);sessionStorage.removeItem(TOKEN_KEY)}catch{}
+ $('#app').classList.add('hidden');$('#mobile-nav').classList.add('hidden');$('#login-screen').classList.remove('hidden');
+ $('#login-status').textContent=message;$('#login-status').className='status'+(message?' bad':'');
+}
+async function restore(){let t='';try{t=sessionStorage.getItem(TOKEN_KEY)||localStorage.getItem(TOKEN_KEY)||'';}catch{}
+ if(!t)return;token=t;
+ try{const sess=await api('/session',true);sessionEmail=sess.email;mode='real';openApp();await loadStoredState();await loadMonth();}
+ catch{logout('Sessão encerrada. Entre novamente.');}
+}
+const titles={dashboard:['Dashboard','Um panorama claro dos seus bancos e gastos.'],extrato:['Extrato vinculado','Identifique compras, categorias e observações sem alterar o banco.'],cartoes:['Análise de cartões','Cada cartão, seus gastos e decisões — com grupos e descrições editáveis.'],'mensal-pluggy':['Mensal Pluggy','Movimentações bancárias do mês, sem lançamentos manuais.'],'mensal-livre':['Controle mensal','Receitas e despesas no estilo livre: manual, Pluggy ou misto.'],contas:['Bancos e faturas','Saldos, limites, vencimentos e qualidade das conexões.'],config:['Configurações','Sincronização, backup e privacidade.']};
+function kpi(label,value,foot,icon='◈',tone=''){return `<div class="card kpi"><div class="iconbox">${icon}</div><div class="label">${esc(label)}</div><div class="number ${tone}">${displayedMoney(value)}</div><div class="foot">${esc(foot)}</div></div>`;}
+function noData(title='Nenhum dado para mostrar',hint='Consulte seus bancos ou abra a prévia fictícia.'){return `<div class="empty"><div class="icon">◌</div><strong>${esc(title)}</strong><div>${esc(hint)}</div></div>`;}
+function categoriesUI(){const d=countCategories();if(!d.length)return noData('Sem despesas classificadas','As categorias aparecerão depois da consulta.');
+ const total=d.reduce((s,e)=>s+e[1],0);let offset=0;const stops=d.slice(0,8).map((entry,i)=>{let start=offset;offset+=entry[1]/total*100;return `${colors[i%colors.length]} ${start.toFixed(2)}% ${offset.toFixed(2)}%`;});
+ if(offset<100)stops.push(`${colors[8]} ${offset}% 100%`);
+ return `<div class="donutrow"><div class="donut" style="background:conic-gradient(${stops.join(',')})"><div class="center">${displayedMoney(total)}<div class="tiny muted" style="margin-top:5px;font-weight:500">consumo</div></div></div><div class="legend">${d.slice(0,6).map(([cat,amt],i)=>`<div class="entry"><i class="dot" style="background:${colors[i%colors.length]}"></i><span>${esc(cat)}</span><span class="amount">${displayedMoney(amt)}</span></div>`).join('')}</div></div>`;
+}
+function categoryBars(limit=6){const rows=countCategories().slice(0,limit);if(!rows.length)return noData('Sem despesas no mês');const max=Math.max(1,...rows.map(r=>r[1]));return rows.map(([cat,amt],i)=>`<div class="barrow"><span>${esc(cat)}</span><div class="track"><div class="fill" style="width:${Math.max(1,amt/max*100)}%;background:${colors[i%colors.length]}"></div></div><span class="amt">${displayedMoney(amt)}</span></div>`).join('');}
+function trendChart(){const month=period();const n=new Date(Number(month.slice(0,4)),Number(month.slice(5)),0).getDate();let expenses=Array(n).fill(0);
+ for(const t of transactions()){if(signed(t)>=0||isInternal(t))continue;const dd=Number(String(t.date).slice(8,10));if(dd>0&&dd<=n)expenses[dd-1]+=valueForPlanning(t);}
+ let run=0;const total=expenses.reduce((s,x)=>s+x,0);const max=Math.max(total,1);
+ const coords=expenses.map((val,i)=>{run+=val;return [22+i*616/(n-1),142-(run/max)*110]});
+ const path=coords.map(([x,y],i)=>(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1)).join(' ');
+ const area=path+' L638,148 L22,148 Z';
+ return `<svg class="trendbox" role="img" aria-label="Evolução acumulada dos gastos no mês" viewBox="0 0 660 166" preserveAspectRatio="none"><defs><linearGradient id="gtrend" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#cbb0f1" stop-opacity=".5"/><stop offset="100%" stop-color="#cbb0f1" stop-opacity="0"/></linearGradient></defs><line x1="22" y1="148" x2="640" y2="148" stroke="#e8e0f0"/><line x1="22" y1="87" x2="640" y2="87" stroke="#e8e0f0" stroke-dasharray="4 4"/><path d="${area}" fill="url(#gtrend)"/><path d="${path}" fill="none" stroke="#7653c6" stroke-width="3.1" stroke-linejoin="round" stroke-linecap="round"/><text x="24" y="163" font-size="10" fill="#9187a3">01</text><text x="617" y="163" font-size="10" fill="#9187a3">${n}</text></svg>`;
+}
+function billsUI(limit=6){const bills=(data?.bills||[]).filter(b=>String(b.dueDate||'').slice(0,7)===period()).sort((a,b)=>String(a.dueDate||'').localeCompare(String(b.dueDate||''))).slice(0,limit);
+ if(!bills.length)return noData('Nenhuma fatura informada','Alguns bancos não disponibilizam as faturas pela Pluggy.');
+ return `<div class="accountlist">${bills.map(b=>`<div class="account"><div class="bankicon">▤</div><div class="grow"><strong>${esc(account(b.accountId)?.name||'Cartão')}</strong><small>Vencimento ${fmtDate(b.dueDate)} · fechamento ${fmtDate(b.closingDate)}</small></div><div class="money">${displayedMoney(b.totalAmount)}</div></div>`).join('')}</div>`;
+}
+function dashboard(){const t=linkedTotals();const f=freeTotals();const accountCount=data?.accounts?.length||0;return `
+<div class="grid4">${kpi('Saldo em bancos',t.totalBalance,'Saldo informado pelas contas; não inclui limites','⌂')}${kpi('Receitas bancárias',t.bankIn,'Entradas de conta, excluindo transferências','↗')}${kpi('Consumo identificado',t.consumption,'Compras de conta + cartão, sem fatura duplicada','↘')}${kpi('Saldo mensal livre',f.planned,'Receitas previstas menos contas previstas','✎')}</div>
+<div class="cols"><section class="card cardpad"><div class="charthead"><div><h3>Despesas por categoria</h3><div class="chartcap">Você pode renomear e classificar cada transação</div></div><span class="pill plain">${transactions().length} movimentos</span></div><div class="chartbody">${categoriesUI()}</div></section>
+<section class="card cardpad"><div class="charthead"><div><h3>Movimento do mês</h3><div class="chartcap">Gasto acumulado, excluindo transferências e faturas</div></div></div>${trendChart()}<div class="row" style="justify-content:space-between"><span class="chartnote">Despesas reconhecidas</span><strong>${displayedMoney(t.consumption)}</strong></div></section></div>
+<div class="cols"><section class="card cardpad"><div class="charthead"><div><h3>Onde seu dinheiro foi usado</h3><div class="chartcap">Categorias com maior peso no mês</div></div><button class="btn sm" data-open="extrato">Editar extrato →</button></div>${categoryBars()}</section>
+<section class="card cardpad"><div class="charthead"><div><h3>Faturas do período</h3><div class="chartcap">Valores disponibilizados pelas instituições</div></div><span class="pill">${accountCount} contas</span></div>${billsUI(4)}<div class="line"></div><button class="btn soft w100" data-open="mensal-livre">✎ Abrir contas do mês</button></section></div>`;}
+function pickMenu(){return `<div class="tabletools"><input class="input search" id="txn-search" placeholder="Pesquisar no extrato…" value="${esc(currentSearch)}"/><select id="txn-account" class="select"><option value="">Todas as contas</option>${(data?.accounts||[]).map(a=>`<option value="${esc(a.id)}" ${a.id===currentAccount?'selected':''}>${esc(bankLabel(a))}</option>`).join('')}</select><select id="txn-type" class="select"><option value="all">Todos os movimentos</option><option value="card" ${activeTypeFilter==='card'?'selected':''}>Compras no cartão</option><option value="bank" ${activeTypeFilter==='bank'?'selected':''}>Movimentos bancários</option><option value="unlabeled" ${activeTypeFilter==='unlabeled'?'selected':''}>Sem classificação</option></select></div>`;}
+function filteredTx(){return transactions().filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,annotation(t).title,annotation(t).category,account(t.accountId)?.name,bankLabel(account(t.accountId))].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
+function kindPill(kind){if(kind==='cardpayment')return `<span class="pill red">Fatura</span>`;if(kind==='transfer')return `<span class="pill plain">Transferência</span>`;if(kind==='ignore')return `<span class="pill plain">Ignorar</span>`;return '';}
+function txTable(rows,opts={}){if(!rows.length)return noData('Nenhuma movimentação encontrada','Mude os filtros ou sincronize os dados do mês.');
+ return `<div class="tablewrap"><table class="tbl"><thead><tr><th>Data</th><th>Descrição editável</th><th>Conta</th><th>Categoria</th><th>Valor original</th><th>Mensal livre</th><th>Ações</th></tr></thead><tbody>${rows.map(t=>{const a=annotation(t),signedV=signed(t),linked=!!a.includeFree;return `<tr><td data-label="Data">${fmtDate(t.date)}</td><td><div class="desc">${esc(a.title)}${a.title!==t.description?'<small>Banco: '+esc(t.description)+'</small>':''}</div><div class="wraprows" style="margin-top:5px">${kindPill(a.kind)}${a.note?'<span class="pill plain">✎ nota</span>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</div></td><td data-label="Conta" class="muted">${esc(bankLabel(account(t.accountId)))}</td><td data-label="Categoria"><span class="pill plain">${esc(a.category)}</span><div class="tiny muted" style="margin-top:5px">${esc(FIN_LABEL[a.financeClass]||'Gastos gerais')}</div></td><td data-label="Original" class="money ${signedV<0?'neg':'pos'}">${displayedMoney(signedV)}${a.planValue!==''?`<small style="display:block;font-size:10px;color:var(--muted)">Plano: ${displayedMoney(a.planValue)}</small>`:''}</td><td data-label="Mensal livre"><button class="btn sm ${linked?'soft':''}" data-include="${esc(txKey(t))}">${linked?'✓ Incluído':'+ Incluir'}</button></td><td class="tableaction"><button class="btn sm" data-edit-tx="${esc(txKey(t))}">✎ Editar</button></td></tr>`;}).join('')}</tbody></table></div>`;}
+function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Transações bancárias permanecem intactas. Você edita apenas nomes, categorias, notas e valor planejado.</p></div><div class="wraprows"><span class="pill">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Exemplo: a compra que aparece no cartão como “COMPRA 7234” pode virar “Tênis de corrida”, com categoria, nota e opção de levar para o Mensal Livre.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
+// -------- Análise de Cartões 3.6: um laboratório para identificar despesas --------
+const CA_GROUP_KEY='pouler-card-groups-open-v36';
+const CA_PREF_KEY='pouler-card-analytics-ui-v36';
+const caUI={card:'all',sort:'date-desc',search:'',layout:'groups',selected:new Set()};
+let caOpenGroups=new Set();
+try{const v=JSON.parse(localStorage.getItem(CA_PREF_KEY)||'{}');if(typeof v.card==='string')caUI.card=v.card;if(['date-desc','date-asc','value-desc','value-asc','name-asc'].includes(v.sort))caUI.sort=v.sort;if(['groups','list'].includes(v.layout))caUI.layout=v.layout;}catch{}
+try{const v=JSON.parse(localStorage.getItem(CA_GROUP_KEY)||'[]');if(Array.isArray(v))caOpenGroups=new Set(v.filter(x=>typeof x==='string').slice(-200));}catch{}
+function caSaveUI(){try{localStorage.setItem(CA_PREF_KEY,JSON.stringify({card:caUI.card,sort:caUI.sort,layout:caUI.layout}));localStorage.setItem(CA_GROUP_KEY,JSON.stringify([...caOpenGroups].slice(-200)));}catch{}}
+function caCards(){return (data?.accounts||[]).filter(isCard);}
+function caPurchases(){return transactions().filter(t=>isCard(account(t.accountId))&&isDebit(t)&&annotation(t).kind==='normal');}
+function caScoped(){const active=caCards().some(a=>a.id===caUI.card)?caUI.card:'all';return caPurchases().filter(t=>active==='all'||t.accountId===active);}
+function caGroup(t){const a=annotation(t);return pmGroupOf({title:a.title,category:a.category,groupName:a.groupName,transaction:t});}
+function caGroupNames(){const names=new Map();for(const name of PM_SUGGESTIONS){names.set(pmClean(name),name);}for(const value of Object.values(state().overrides||{})){const n=String(value?.groupName||'').trim();if(n)names.set(pmClean(n),n);}return [...names.values()];}
+function caGroupSelect(t){const current=String(annotation(t).groupName||'').trim(),group=caGroup(t);const all=caGroupNames();if(current&&!all.includes(current))all.unshift(current);
+ return `<select class="ca-assign" data-ca-group="${esc(txKey(t))}" aria-label="Grupo de ${esc(annotation(t).title)}"><option value="__auto__" ${!current?'selected':''}>Automático · ${esc(group.name)}</option>${all.map(n=>`<option value="${esc(n)}" ${n===current?'selected':''}>${esc(n)}</option>`).join('')}<option value="__new__">＋ Criar outro grupo…</option></select>`;}
+function caSortRows(rows){const list=[...rows];return list.sort((a,b)=>{const aa=annotation(a),bb=annotation(b),va=valueForPlanning(a),vb=valueForPlanning(b);let k=0;
+ if(caUI.sort==='value-desc')k=vb-va;else if(caUI.sort==='value-asc')k=va-vb;else if(caUI.sort==='date-asc')k=String(a.date||'').localeCompare(String(b.date||''));else if(caUI.sort==='date-desc')k=String(b.date||'').localeCompare(String(a.date||''));else k=String(aa.title).localeCompare(String(bb.title),'pt-BR');
+ return k||String(b.date||'').localeCompare(String(a.date||''))||String(a.id||'').localeCompare(String(b.id||''));});}
+function caFiltered(){const q=pmClean(caUI.search);return caSortRows(caScoped().filter(t=>!q||pmClean([annotation(t).title,t.description,annotation(t).category,caGroup(t).name,bankLabel(account(t.accountId))].join(' ')).includes(q)));}
+function caAmount(rows){return rows.reduce((sum,t)=>sum+valueForPlanning(t),0);}
+function caSelectedCount(){return caUI.selected.size;}
+function caCardRow(t){const a=annotation(t),g=caGroup(t),id=txKey(t),isPicked=caUI.selected.has(id);
+ return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''}</span><span class="ca-category">${esc(a.category)}${a.note?' · ✎ Com observação':''}</span><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
+function caGroupKey(name){return period()+'|'+caUI.card+'|'+name;}
+function caListContent(){const rows=caFiltered();if(!caScoped().length)return noData('Nenhuma compra neste cartão neste mês','Consulte os bancos ou selecione outro cartão. Alguns bancos ainda não enviam todas as compras.');
+ if(!rows.length)return noData('Nada encontrado','Limpe a busca ou selecione outro cartão.');
+ if(caUI.layout==='list')return `<div class="ca-list">${rows.map(caCardRow).join('')}</div>`;
+ const groups=new Map();for(const t of rows){const g=caGroup(t);const key=pmClean(g.name);if(!groups.has(key))groups.set(key,{...g,items:[]});groups.get(key).items.push(t);}
+ const gs=[...groups.values()].sort((a,b)=>caAmount(b.items)-caAmount(a.items)||a.name.localeCompare(b.name,'pt-BR'));
+ return gs.map(g=>{const key=caGroupKey(g.name),open=caOpenGroups.has(key);
+ return `<section class="ca-group"><button type="button" class="ca-group-head" data-ca-toggle="${esc(key)}" aria-expanded="${open}" aria-label="${open?'Fechar':'Abrir'} grupo ${esc(g.name)}"><span class="ca-group-icon">${g.icon||'◈'}</span><span class="ca-group-title"><strong>${esc(g.name)}</strong><small>${g.items.length} ${g.items.length===1?'compra':'compras'}</small></span><b>${displayedMoney(caAmount(g.items))}</b><span class="ca-arrow">⌄</span></button><div class="ca-group-rows" ${open?'':'hidden'}>${g.items.map(caCardRow).join('')}</div></section>`;}).join('');}
+function caBars(rows){const groups=new Map();for(const t of rows){const k=caGroup(t).name;groups.set(k,(groups.get(k)||0)+valueForPlanning(t));}
+ const ordered=[...groups.entries()].sort((a,b)=>b[1]-a[1]);const total=caAmount(rows);if(!ordered.length)return noData('Sem grupos para analisar','As compras do mês aparecerão aqui.');
+ const rest=ordered.slice(6).reduce((s,g)=>s+g[1],0);const show=ordered.slice(0,6);if(rest)show.push(['Demais grupos',rest]);return `<div class="ca-bars">${show.map(([name,value],i)=>`<div class="ca-bar"><div class="ca-bar-label"><span>${esc(name)}</span><b>${displayedMoney(value)}</b></div><div class="ca-track"><div class="ca-fill" style="width:${total?Math.max(1,100*value/total).toFixed(2):0}%;background:${['#7658c7','#3e91bc','#e7a75b','#3daa89','#e17b9e','#9f8dd8','#98a5b7'][i]}"></div></div><small>${total?(100*value/total).toFixed(1).replace('.',','):0}% das compras</small></div>`).join('')}</div>`;}
+function caWeeks(rows){const weeks=[0,0,0,0,0];for(const t of rows){const day=Number(String(t.date||'').slice(8,10));if(day>0&&day<=31)weeks[Math.min(4,Math.floor((day-1)/7))]+=valueForPlanning(t);}
+ const max=Math.max(1,...weeks);return `<div class="ca-weeks">${weeks.map((v,i)=>`<div class="ca-week"><span class="ca-week-value">${v>0?displayedMoney(v):'—'}</span><div class="ca-week-track"><div class="ca-week-fill" style="height:${Math.max(v?5:0,100*v/max)}%"></div></div><small>${i*7+1}–${Math.min((i+1)*7,31)}</small></div>`).join('')}</div><div class="ca-chart-caption">Distribuição das compras por dia do mês (faixas de até 7 dias), não representa a data de vencimento da fatura.</div>`;}
+function caInsights(rows,cards){if(!rows.length)return `<div class="ca-insight"><b>Comece pela identificação das compras.</b><p>Consulte a Pluggy e classifique cada transação. O painel não inventa lançamentos ausentes.</p></div>`;
+ const map=new Map();for(const t of rows){const g=caGroup(t).name;map.set(g,(map.get(g)||0)+valueForPlanning(t));}
+ const top=[...map.entries()].sort((a,b)=>b[1]-a[1])[0],total=caAmount(rows),max=rows.reduce((best,t)=>!best||valueForPlanning(t)>valueForPlanning(best)?t:best,null);const tips=[];
+ if(top&&total)tips.push(`<div class="ca-insight"><b>Maior grupo: ${esc(top[0])}</b><p>${displayedMoney(top[1])} · ${(top[1]/total*100).toFixed(1).replace('.',',')}% do valor de compras do mês. Vale revisar os itens antes de definir um orçamento.</p></div>`);
+ if(max)tips.push(`<div class="ca-insight"><b>Maior compra identificada</b><p>${esc(annotation(max).title)} · ${displayedMoney(valueForPlanning(max))} · ${esc(fmtDate(max.date))}.</p></div>`);
+ const pending=rows.filter(t=>t.status==='PENDING');if(pending.length)tips.push(`<div class="ca-insight"><b>${pending.length} compra(s) pendente(s)</b><p>Podem sofrer alterações quando o banco concluir o processamento.</p></div>`);
+ const named=cards.filter(c=>Number(c.creditLimit)>0);if(named.length===1&&named[0].availableCreditLimit!=null){const card=named[0],use=Math.max(0,Number(card.creditLimit)-Number(card.availableCreditLimit));tips.push(`<div class="ca-insight"><b>Limite utilizado informado: ${((use/Number(card.creditLimit))*100).toFixed(0)}%</b><p>Esse dado é o limite atual informado pela Pluggy, não apenas as compras deste mês.</p></div>`);}
+ return tips.join('');}
+function caBills(){const filtered=(data?.bills||[]).filter(b=>(caUI.card==='all'||b.accountId===caUI.card)&&String(b.dueDate||'').slice(0,7)===period());if(!filtered.length)return `<div class="ca-help">Nenhuma fatura informada para o mês selecionado. Isso depende do banco conectado.</div>`;
+ return filtered.map(b=>`<div class="ca-bill"><div><strong>${esc(bankLabel(account(b.accountId)))}</strong><small>Vence em ${esc(fmtDate(b.dueDate))} · fecha em ${esc(fmtDate(b.closingDate))}</small></div><b>${displayedMoney(b.totalAmount)}</b></div>`).join('');}
+function cardsView(){const cards=caCards();if(!cards.some(a=>a.id===caUI.card))caUI.card='all';const all=caScoped(),total=caAmount(all),n=all.length,average=n?total/n:0,large=[...all].sort((a,b)=>valueForPlanning(b)-valueForPlanning(a))[0];
+ const limits=cards.filter(a=>caUI.card==='all'||a.id===caUI.card);const cardLimit=limits.length===1?limits[0]:null;const billValue=(data?.bills||[]).filter(b=>(caUI.card==='all'||b.accountId===caUI.card)&&String(b.dueDate||'').slice(0,7)===period()).reduce((s,b)=>s+Number(b.totalAmount||0),0);
+ return `<div class="ca-page"><div class="ca-heading"><div><div class="over">CENTRAL DE CARTÕES</div><h2>Análise de cartões</h2><p>Entenda o que comprou, renomeie lançamentos, crie grupos e compare cartões. Os valores originais do banco permanecem preservados.</p></div><span class="pill">${esc(pmMonthName(period()))}</span></div>
+ <div class="ca-card-tabs"><button type="button" class="ca-card-tab ${caUI.card==='all'?'active':''}" data-ca-card="all"><span>◎ Todos os cartões</span><small>${cards.length} conectado(s) · ${displayedMoney(caAmount(caPurchases()))}</small></button>${cards.map(card=>`<div class="ca-card-choice"><button type="button" class="ca-card-tab ${caUI.card===card.id?'active':''}" data-ca-card="${esc(card.id)}" aria-label="Selecionar ${esc(bankName(card))}, final ${esc(card.lastDigits||'não informado')}"><span>▤ ${esc(bankName(card))} <small>••${esc(card.lastDigits||'')}</small></span><small>${displayedMoney(caAmount(caPurchases().filter(t=>t.accountId===card.id)))} em compras</small></button><button type="button" class="ca-card-rename" data-rename-bank="${esc(card.id)}" title="Alterar o nome que aparece neste cartão" aria-label="Editar nome de ${esc(bankName(card))}">✎ Renomear cartão</button></div>`).join('')}</div><div class="ca-card-alias-help">Para trocar <b>gold</b> ou <b>GOLD</b> por outro nome, clique em <b>Renomear cartão</b> abaixo do cartão desejado. O número final continua identificando o cartão; a Pluggy não é alterada.</div>
+ ${cards.length===0?`<div class="banner warn">Nenhum cartão de crédito encontrado nesta consulta. Abra o modo Exemplo para visualizar o painel, ou confira se o banco disponibiliza cartões pela Pluggy.</div>`:''}
+ <div class="ca-stats"><div class="ca-stat"><span>Compras no mês</span><b>${displayedMoney(total)}</b><small>Somente compras identificadas no cartão</small></div><div class="ca-stat"><span>Transações</span><b>${n}</b><small>Compras identificadas neste período</small></div><div class="ca-stat"><span>Compra média</span><b>${displayedMoney(average)}</b><small>Valor médio das compras</small></div><div class="ca-stat"><span>${billValue?'Faturas com vencimento no mês':'Maior compra'}</span><b>${displayedMoney(billValue|| (large?valueForPlanning(large):0))}</b><small>${billValue?'Valor informado nas faturas':'Maior valor de uma transação'}</small></div></div>
+ ${cardLimit?`<div class="ca-limit"><span><b>${esc(bankLabel(cardLimit))}</b><small>Limite total: ${cardLimit.creditLimit==null?'não informado':displayedMoney(cardLimit.creditLimit)}</small></span><div class="ca-limit-actions"><span><small>Disponível informado pela Pluggy</small><b>${cardLimit.availableCreditLimit==null?'Não informado':displayedMoney(cardLimit.availableCreditLimit)}</b></span><button type="button" class="btn sm soft" data-rename-bank="${esc(cardLimit.id)}" title="Nome personalizado, sem alterar o cartão no banco">✎ Renomear cartão</button></div></div>`:''}
+ <div class="ca-analytics"><section class="card cardpad"><div class="charthead"><div><h3>Para onde foi o dinheiro?</h3><div class="chartcap">Distribuição pelos grupos das suas compras</div></div></div>${caBars(all)}</section><section class="card cardpad"><div class="charthead"><div><h3>Ritmo dos gastos no mês</h3><div class="chartcap">Compras lançadas por período</div></div></div>${all.length?caWeeks(all):noData('Sem compras neste mês')}</section></div>
+ <div class="ca-analytics ca-low"><section class="card cardpad"><div class="charthead"><div><h3>Leituras para decidir melhor</h3><div class="chartcap">Indicadores descritivos baseados no extrato, não recomendações de crédito</div></div></div><div class="ca-insights">${caInsights(all,limits)}</div></section><section class="card cardpad"><div class="charthead"><div><h3>Faturas informadas</h3><div class="chartcap">Faturas disponíveis na Pluggy para o mês selecionado</div></div></div>${caBills()}<div class="ca-help">Pagar a fatura pela conta não é outra compra. Este painel mostra as compras do cartão separadas do fluxo bancário.</div></section></div>
+ <section class="card ca-purchases"><div class="ca-purchases-head"><div><h3>Compras para organizar</h3><p>Abra grupos, renomeie compras e escolha onde cada uma pertence.</p></div><div class="row"><span class="pill plain" id="ca-selected-label">${caSelectedCount()} selecionada(s)</span><button type="button" class="btn soft" data-ca-bulk>🗂 Agrupar selecionadas</button></div></div><div class="ca-toolbar"><div class="ca-search-wrap"><span>⌕</span><input class="input" id="ca-search" value="${esc(caUI.search)}" aria-label="Buscar compras" placeholder="Buscar loja, descrição, grupo…"/></div><select class="select ca-sort" id="ca-sort" aria-label="Ordenar compras">${PM_SORT_OPTIONS.map(([key,label])=>`<option value="${key}" ${caUI.sort===key?'selected':''}>${label}</option>`).join('')}</select><select class="select ca-layout" id="ca-layout" aria-label="Exibição das compras"><option value="groups" ${caUI.layout==='groups'?'selected':''}>Grupos recolhíveis</option><option value="list" ${caUI.layout==='list'?'selected':''}>Lista contínua</option></select><button type="button" class="btn sm" data-ca-expand="1">Abrir todos</button><button type="button" class="btn sm" data-ca-expand="0">Fechar todos</button></div>
+ <div class="ca-table-hint">Selecione compras e clique em <strong>Agrupar selecionadas</strong> para criar um grupo como “Padaria”, “Mercado Livre” ou “Casa”. Também dá para mudar uma compra individual pelo seletor <strong>Grupo</strong> ou pelo botão <strong>Editar</strong>.</div><div id="ca-results">${caListContent()}</div></section>
+ <div class="ca-disclaimer">🔒 A edição vale para o Pouler Lab, não para o cartão ou banco. Os totais de compras consideram valores ajustados no planejamento; a Pluggy pode disponibilizar dados com atraso ou sem todas as faturas.</div></div>`;}
+function linkedMonthly(){const t=linkedTotals(),rows=transactions().sort((a,b)=>String(a.date).localeCompare(String(b.date)));return `<div class="splithead"><div><h2>Mensal Pluggy</h2><p>Somente valores provenientes dos extratos. Sem lançamentos manuais.</p></div><span class="pill good">✓ Vinculado</span></div>
+<div class="grid4">${kpi('Entradas bancárias',t.bankIn,'Créditos reconhecidos nas contas','↗')}${kpi('Saídas de caixa',t.bankOut,'Inclui pagamento de faturas','↘')}${kpi('Compras no cartão',t.cards,'Não somadas às saídas bancárias','▤')}${kpi('Saldo de caixa do mês',t.cashFlow,'Entradas menos saídas bancárias','◈')}</div>
+<div class="cols"><div class="card cardpad"><div class="charthead"><div><h3>Consumo reconhecido</h3><div class="chartcap">Compras da conta e do cartão; fatura paga não conta duas vezes</div></div><strong>${displayedMoney(t.consumption)}</strong></div>${categoryBars(8)}<div class="line"></div><div class="chartnote">Saídas de caixa incluem ${displayedMoney(t.cardPayments)} de pagamentos de faturas identificados. Você pode corrigir essa classificação no Extrato.</div></div>
+<div class="card cardpad"><div class="charthead"><h3>Resumo de faturas</h3></div>${billsUI(10)}</div></div>
+<div class="card cardpad" style="margin-top:14px"><div class="charthead"><div><h3>Movimentações reconhecidas</h3><div class="chartcap">Alterações aqui afetam somente o painel</div></div><button class="btn sm" data-open="extrato">Ver extrato completo</button></div>${txTable(rows)}</div>`;}
+function entryList(entries,section){if(!entries.length)return noData('Nenhum lançamento','Adicione uma conta ou inclua uma movimentação do extrato.');return `<div class="monthlist">${entries.map(e=>`<div class="monthitem"><div style="width:33px;height:33px;flex-shrink:0;border-radius:9px;display:grid;place-items:center;background:${e.type==='income'?'#e7f7f0':'#fff0f3'};color:${e.type==='income'?'var(--green)':'var(--red)'}">${e.type==='income'?'↗':'↘'}</div><div class="grow"><div class="name">${esc(e.title)} ${e.recurring?'<span class="pill plain">↻ mensal</span>':''} ${e.ref==='linked'?'<span class="pill">↔ Pluggy</span>':''}</div><div class="detail">${fmtDate(e.effectiveDate)} · ${esc(e.category||'Outros')} · ${e.effectiveStatus==='paid'?'Realizado':'Pendente'} ${e.ref==='linked'&&e.kind!=='normal'?' · não contabilizado':''}</div></div><div class="amount ${e.type==='income'?'money pos':'money neg'}">${e.type==='income'?'+ ':'− '}${displayedMoney(e.amount)}</div><div class="actions">${e.ref==='manual'?`<button class="btn sm" data-toggle-paid="${esc(e.id)}">${e.effectiveStatus==='paid'?'↶ Pendente':'✓ Pago'}</button>`:''}<button class="btn sm" data-edit-entry="${esc(e.id)}" data-entry-type="${e.ref}">✎ Editar</button>${e.ref==='linked'?`<button class="btn sm danger" data-drop-linked="${esc(e.id)}">Retirar</button>`:`<button class="btn sm danger" data-delete-manual="${esc(e.id)}">Excluir</button>`}</div></div>`).join('')}</div>`;}
+// -------- Controle mensal 3.2; grupos recolhíveis e banco original somente leitura. --------
+const PM_SORT_OPTIONS=[['date-desc','Data · mais recentes'],['date-asc','Data · mais antigas'],['value-desc','Valor · maior primeiro'],['value-asc','Valor · menor primeiro'],['name-asc','Nome · A a Z']];
+function pmSortSelect(id,value){return `<select id="${id}" class="pm-sort-select" aria-label="Ordenar lançamentos">${PM_SORT_OPTIONS.map(([key,label])=>`<option value="${key}" ${key===value?'selected':''}>${label}</option>`).join('')}</select>`;}
+function pmSortEntries(entries,sort){const x=[...entries];const date=e=>String(e.effectiveDate||e.date||'');const val=e=>Number(e.amount)||0;
+ x.sort((a,b)=>{let cmp=0;
+  if(sort==='date-asc')cmp=date(a).localeCompare(date(b));
+  else if(sort==='date-desc')cmp=date(b).localeCompare(date(a));
+  else if(sort==='value-asc')cmp=val(a)-val(b);
+  else if(sort==='value-desc')cmp=val(b)-val(a);
+  else cmp=String(a.title||'').localeCompare(String(b.title||''),'pt-BR');
+  return cmp||date(a).localeCompare(date(b))||String(a.title||'').localeCompare(String(b.title||''),'pt-BR')||String(a.id||'').localeCompare(String(b.id||''));
+ });return x;}
+function pmSortGroups(groups,sort){return [...groups].sort((a,b)=>{
+ const first=g=>pmSortEntries(g.items,sort)[0];
+ const aa=first(a),bb=first(b);const da=String(aa?.effectiveDate||''),db=String(bb?.effectiveDate||'');
+ const totals=[pmSum(a.items.filter(counted)),pmSum(b.items.filter(counted))];
+ let diff=sort==='value-asc'?totals[0]-totals[1]:sort==='value-desc'?totals[1]-totals[0]:sort==='date-asc'?da.localeCompare(db):sort==='date-desc'?db.localeCompare(da):a.name.localeCompare(b.name,'pt-BR');
+ return diff||a.name.localeCompare(b.name,'pt-BR');
+});}
+let pmSource='linked', pmGrouped=true, pmIncomeGrouped=true, pmPaidControl=false, pmSortIncome='date-desc', pmSortExpense='date-desc';
+const PM_GROUP_OPEN_KEY='pouler-month-grupos-v32';
+let pmOpenGroups=new Set();
+try{const raw=JSON.parse(localStorage.getItem(PM_GROUP_OPEN_KEY)||'[]');if(Array.isArray(raw))pmOpenGroups=new Set(raw.filter(v=>typeof v==='string').slice(-250));}catch{}
+function pmPersistOpen(){try{localStorage.setItem(PM_GROUP_OPEN_KEY,JSON.stringify([...pmOpenGroups].slice(-250)));}catch{}}
+
+try{let saved=JSON.parse(localStorage.getItem('pouler-month-ui-v3')||'{}');
+ if(['combined','mixed','manual','linked'].includes(saved.source))pmSource=saved.source;
+ if(typeof saved.grouped==='boolean')pmGrouped=saved.grouped;
+ if(typeof saved.incomeGrouped==='boolean')pmIncomeGrouped=saved.incomeGrouped;
+ if(typeof saved.paid==='boolean')pmPaidControl=saved.paid;
+ if(PM_SORT_OPTIONS.some(([key])=>key===saved.sortIncome))pmSortIncome=saved.sortIncome;
+ if(PM_SORT_OPTIONS.some(([key])=>key===saved.sortExpense))pmSortExpense=saved.sortExpense;
+}catch{}
+function pmSaveSettings(){try{localStorage.setItem('pouler-month-ui-v3',JSON.stringify({source:pmSource,grouped:pmGrouped,incomeGrouped:pmIncomeGrouped,paid:pmPaidControl,sortIncome:pmSortIncome,sortExpense:pmSortExpense}));}catch{}}
+const pmCap=s=>s.charAt(0).toLocaleUpperCase('pt-BR')+s.slice(1);
+function pmMonthName(m){const [year,month]=m.split('-').map(Number);return pmCap(new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric'}).format(new Date(year,month-1,1)));}
+function pmPreviousMonth(m){const [year,month]=m.split('-').map(Number);const v=new Date(year,month-2,1);return String(v.getFullYear())+'-'+String(v.getMonth()+1).padStart(2,'0');}
+function pmNextMonth(m,offset){const [year,month]=m.split('-').map(Number);const v=new Date(year,month-1+offset,1);return String(v.getFullYear())+'-'+String(v.getMonth()+1).padStart(2,'0');}
+function pmLinkedRows(){return transactions().filter(t=>annotation(t).kind==='normal'&&!annotation(t).hideMonthly).map(t=>{
+ const a=annotation(t);return {id:txKey(t),title:a.title,type:classType(a.financeClass),financeClass:a.financeClass,amount:valueForPlanning(t),date:String(t.date||'').slice(0,10),effectiveDate:String(t.date||'').slice(0,10),category:a.category,groupName:a.groupName||'',note:a.note,kind:a.kind,effectiveStatus:t.status==='PENDING'?'pending':'paid',ref:'linked',accountId:t.accountId,transaction:t};
+});}
+function pmEntries(){if(pmSource==='linked')return pmLinkedRows();const all=monthlyEntries();if(pmSource==='manual')return all.filter(e=>e.ref==='manual');if(pmSource==='combined')return [...pmLinkedRows(),...all.filter(e=>e.ref==='manual')].sort((a,b)=>String(a.effectiveDate).localeCompare(String(b.effectiveDate)));return all;}
+function pmSegment(cat){const s=String(cat||'').trim().toLocaleLowerCase('pt-BR');
+ if(/^(investimento|investimentos|aporte|aportes|poupan[cç]a)$/.test(s))return 'investments';
+ if(/^(d[ií]zimo|doa[cç][aã]o|doa[cç][oõ]es|oferta|ofertas|contribui[cç][oõ]es)$/.test(s))return 'donations';
+ return 'expenses';}
+function pmSum(rows){return rows.reduce((total,e)=>total+Number(e.amount||0),0);}
+function pmTotals(entries){
+ const valid=entries.filter(counted);
+ const proventos=valid.filter(e=>e.financeClass==='provento');
+ const fixas=valid.filter(e=>e.financeClass==='fixa');
+ const gerais=valid.filter(e=>e.financeClass!=='fixa'&&e.financeClass!=='provento');
+ const despesas=[...fixas,...gerais];
+ const investments=despesas.filter(e=>pmSegment(e.category)==='investments');
+ const donations=despesas.filter(e=>pmSegment(e.category)==='donations');
+ const regular=despesas.filter(e=>pmSegment(e.category)==='expenses');
+ return {income:pmSum(proventos),fixas:pmSum(fixas),gerais:pmSum(gerais),
+ expenses:pmSum(regular),investments:pmSum(investments),donations:pmSum(donations),
+ balance:pmSum(proventos)-pmSum(despesas),incomePaid:pmSum(proventos.filter(e=>e.effectiveStatus==='paid')),
+ expensesPaid:pmSum(despesas.filter(e=>e.effectiveStatus==='paid'))};
+}
+const pmCategoryIcon=cat=>({Moradia:'🏠',Alimentação:'🥗',Transporte:'🚗',Saúde:'✚',Educação:'📚',Lazer:'🎬',Assinaturas:'▣',Compras:'🛍️',Salário:'💰','Renda extra':'💼',Investimentos:'📈',Dívidas:'💳',Impostos:'🧾',Família:'👨‍👩‍👧',Presentes:'🎁',Dízimo:'💜',Doações:'💜',Outros:'📌'})[cat]||(pmSegment(cat)==='investments'?'📈':pmSegment(cat)==='donations'?'💜':'◈');
+function pmKpi(label,note,value,style){return `<div class="pm-stat ${style||''}"><div class="slabel">${esc(label)}</div><div class="svalue">${displayedMoney(value)}</div><div class="snote">${esc(note)}</div></div>`;}
+const pmGroupDatalist=()=>`<datalist id="pm-group-names">${[...PM_INCOME_SUGGESTIONS,...PM_SUGGESTIONS].map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist>`;
+function pmRow(e){
+ const linked=e.ref==='linked',k=linked?txKey(e.transaction):e.id,status=e.effectiveStatus==='paid';
+ const dateText=fmtDate(e.effectiveDate),origin=linked?bankLabel(account(e.accountId||e.transaction?.accountId)):'';
+ const titleInput=`<input aria-label="Descrição do lançamento" class="pm-title-input" maxlength="160" data-pm-title="${esc(k)}" data-pm-ref="${e.ref}" value="${esc(e.title)}" title="Clique para renomear"/>`;
+ const amountInput=`<input aria-label="Valor em reais" data-pm-amount="${esc(k)}" data-pm-ref="${e.ref}" type="${hiddenValues?'text':'number'}" step="0.01" min="0" max="999999999" ${hiddenValues?'disabled':''} value="${hiddenValues?'•••':Number(e.amount||0).toFixed(2)}" title="Valor considerado no planejamento"/>`;
+ const dateLabel=linked?'Data original da movimentação informada pela Pluggy':'Data do lançamento manual. Clique para editar';
+ const dateView=linked?`<span class="pm-day pm-date-full" title="${dateLabel}">📅 ${esc(dateText)}</span>`:`<button type="button" class="pm-day pm-date-full pm-date-edit" data-edit-entry="${esc(k)}" data-entry-type="manual" title="${dateLabel}">📅 ${esc(dateText)} ✎</button>`;
+ const actStatus=(!linked&&pmPaidControl)?`<button class="pm-icon-btn ${status?'done':''}" title="${status?'Marcar como pendente':'Marcar como pago ou recebido'}" data-toggle-paid="${esc(k)}">${status?'✓':'○'}</button>`:'';
+ const action=linked?(['linked','combined'].includes(pmSource)?`<button class="pm-icon-btn ${annotation(e.transaction).includeFree?'done':''}" title="${annotation(e.transaction).includeFree?'Retirar do modo misto':'Incluir no modo misto'}" data-include="${esc(k)}">${annotation(e.transaction).includeFree?'✓':'+'}</button>`:`<button class="pm-icon-btn delete" title="Retirar do planejamento" data-drop-linked="${esc(k)}">×</button>`):`<button class="pm-icon-btn delete" title="Excluir lançamento" data-delete-manual="${esc(k)}">×</button>`;
+ const noncount=!counted(e);
+ return `<div class="pm-line ${noncount?'is-dim':''}"><span class="pm-item-ico">${e.type==='income'?'💰':pmCategoryIcon(e.category)}</span><div class="pm-line-main">${titleInput}<div class="pm-line-note"><span class="pm-origin ${linked?'frompluggy':''}">${linked?'↔ Pluggy':'✎ Manual'}</span>${linked?`<span class="pm-bank-tag" title="Conta de origem da movimentação · clique em Bancos e faturas para nomear">🏦 ${esc(origin)}</span>`:''}${e.recurring?'<span>↻ recorrente</span>':''}${pmPaidControl?`<span>${status?'✓ Realizado':'◷ Pendente'}</span>`:''}${noncount?'<span>não contabilizado</span>':''}${finSelect(e.financeClass|| (e.type==='income'?'provento':'geral'),`data-pm-class="${esc(k)}" data-pm-ref="${esc(e.ref)}"`)}${linked&&annotation(e.transaction).planValue!==''?`<span title="Valor original do extrato">Original: ${displayedMoney(signed(e.transaction))}</span>`:''}${e.type==='income'?pmIncomeGroupSelect(e,k):''}<button class="pm-minilink" data-edit-entry="${esc(k)}" data-entry-type="${e.ref}" title="Editar detalhes da movimentação">✎ Detalhes</button>${linked&&e.type==='income'?`<button class="pm-minilink pm-hide-income-link" type="button" data-pm-hide-income="${esc(k)}" title="Ocultar apenas deste planejamento mensal, sem alterar o extrato">⊖ Ocultar do mês</button>`:''}</div></div>${dateView}<div class="pm-amount ${e.type==='income'?'income':''}"><b>R$</b>${amountInput}</div><div class="pm-line-acts">${actStatus}${action}</div></div>`;
+}
+// Grupos próprios: permitem separar por tipo de conta e assunto, mesmo quando a categoria bancária é genérica.
+const PM_INCOME_SUGGESTIONS=['Aulas particulares','Monte Alvo','SEDU','Novo Milênio','Musicalização','Aulas e reforços','Serviços e trabalhos','Rendimentos e investimentos','Salários','Reembolsos','Transferências recebidas','Presentes e ajudas','Outros proventos'];
+// Os grupos de receita são editáveis por transação, sem inferir que um PIX qualquer seja pagamento de aula.
+function pmIncomeGroupNames(){
+ const unique=new Map();
+ const add=n=>{const value=String(n||'').trim().slice(0,60);if(value&&!unique.has(value.toLocaleLowerCase('pt-BR')))unique.set(value.toLocaleLowerCase('pt-BR'),value);};
+ PM_INCOME_SUGGESTIONS.forEach(add);
+ (state().manual||[]).forEach(m=>{if(manualClass(m)==='provento')add(m.groupName);});
+ Object.values(state().overrides||{}).forEach(v=>add(v?.groupName));
+ return [...unique.values()];
+}
+function pmIncomeGroupSelect(e,key){
+ const current=String(e.groupName||'').trim();
+ const available=pmIncomeGroupNames();
+ if(current&&!available.includes(current))available.unshift(current);
+ const options=available.map(name=>`<option value="${esc(name)}" ${current===name?'selected':''}>${esc(name)}</option>`).join('');
+ return `<label class="pm-assign-wrap"><span>Grupo da receita</span><select class="pm-assign-select" data-pm-income-assign="${esc(key)}" data-pm-ref="${esc(e.ref)}" aria-label="Grupo da receita: ${esc(e.title)}"><option value="__automatic__" ${!current?'selected':''}>${esc('Automático · '+pmIncomeGroupOf(e).name)}</option>${options}<option value="__create__">＋ Criar novo grupo...</option></select></label>`;
+}
+const PM_SUGGESTIONS=['Compras online','Mercados e padarias','Restaurantes e delivery','Combustível e transporte','Assinaturas e serviços','Moradia e contas','Saúde e farmácia','Educação','Lazer e viagens','Vestuário e beleza','Casa e utilidades','Impostos e taxas','Família e presentes','Investimentos','Outros gastos'];
+const pmClean=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function pmGroupOf(e){
+ const typed=String(e.groupName||'').trim();
+ if(typed)return {name:typed,icon:'◈',custom:true};
+ const d=pmClean([e.title,e.transaction?.merchant,e.transaction?.description].filter(Boolean).join(' '));
+ const cat=pmClean(e.category);const both=d+' '+cat;
+ const rule=(re,name,icon)=>re.test(both)?{name,icon}:null;
+ // E-commerce ANTES de mercado: Mercado Livre não deve virar supermercado.
+ return rule(/shopee|mercado\s*livre|mercadolivre|amazon|aliexpress|aliex|shein|temu|magalu|magazine\s*luiza|kabum|americanas|enjoei|ebay|alibaba|compras\s*online|comercio\s*eletronico|e-commerce/, 'Compras online','📦')
+ ||rule(/supermercad|hipermercad|atacad|mercearia|padaria|panificadora|bakery|hortifruti|sacolao|acougue|carrefour|assai|pao\s*de\s*acucar|perim|extrabom|mercado(?!\s*pago)|alimentacao/, 'Mercados e padarias','🛒')
+ ||rule(/ifood|delivery|restaurante|pizzaria|lanchonete|hamburg|burger|mcdonald|burger\s*king|subway|cafeteria|bistro|sushi|churrascaria|bar\s|refeicao/, 'Restaurantes e delivery','🍽️')
+ ||rule(/combustivel|gasolina|etanol|posto\s|petrobras|shell|ipiranga|uber|99pop|99\s*app|estacionamento|pedagio|passagem|onibus|automot|transporte|mecanica|oficina/, 'Combustível e transporte','🚘')
+ ||rule(/netflix|spotify|deezer|youtube\s*premium|hbo|max\s*stream|disney\+?|prime\s*video|globoplay|apple\s*music|assinatur|mensalidade\s*digital|adobe|canva|claro|vivo|tim\s|telefonia|internet/, 'Assinaturas e serviços','▣')
+ ||rule(/aluguel|condominio|energia|eletricidade|cemig|edp|escelsa|conta\s*de\s*luz|saneamento|cesan|agua\s*e\s*esgoto|moradia|imovel/, 'Moradia e contas','🏠')
+ ||rule(/farmacia|drogaria|drogasil|droga\s*raia|drogaraia|medicament|hospital|clinica|consulta|saude|dentista|odonto/, 'Saúde e farmácia','✚')
+ ||rule(/colegio|escola|faculdade|universidade|curso|livraria|material\s*escolar|educacao|ensino/, 'Educação','📚')
+ ||rule(/viagem|hotel|airbnb|booking|ingresso|cinema|show|lazer|passeio|teatro|parque/, 'Lazer e viagens','✈️')
+ ||rule(/roupa|calcado|tenis|sapato|moda|cabelo|salao|barbearia|beleza|cosmetico|vestuario/, 'Vestuário e beleza','👕')
+ ||rule(/moveis|eletrodomestico|decoracao|construcao|casa\s|utilidades|reforma/, 'Casa e utilidades','🪴')
+ ||rule(/iptu|ipva|imposto|taxa\s|tarifa|anuidade|tributo/, 'Impostos e taxas','🧾')
+ ||rule(/presente|familia|crianca|brinquedo/, 'Família e presentes','🎁')
+ ||rule(/investimento|aplicacao|renda\s*fixa|tesouro|aporte/, 'Investimentos','📈')
+ ||(cat==='compras'?{name:'Compras diversas',icon:'🛍️'}:null)
+ ||{name:'Outros gastos',icon:'◈'};
+}
+// Grupos de proventos: não inferir que todo PIX recebido é uma aula.
+// PIX com descrições genéricas ficam em "PIX e transferências" até o usuário classificar.
+function pmIncomeGroupOf(e){
+ const typed=String(e.groupName||'').trim();
+ if(typed)return {name:typed,icon:'🏷️',custom:true};
+ const d=pmClean([e.title,e.transaction?.description,e.category,e.note].filter(Boolean).join(' '));
+ const rule=(re,name,icon)=>re.test(d)?{name,icon}:null;
+ return rule(/monte\s*alvo/, 'Monte Alvo','🏫')
+ ||rule(/\bsedu\b|secretaria\s*de\s*educacao/, 'SEDU','🏛️')
+ ||rule(/novo\s*milenio/, 'Novo Milênio','🏫')
+ ||rule(/musicalizacao/, 'Musicalização','🎵')
+ ||rule(/aulas?\s*particular|refor[cç]o\s*escolar|pagamento\s*de\s*aula|mensalidade\s*de\s*aula|professor\s*particular|tutoria|aluno\s*particular/, 'Aulas particulares','📚')
+ ||rule(/sal[aá]rio|pagamento\s*de\s*folha|contracheque|holerite|vencimentos|remunera[cç][aã]o/, 'Salários','💼')
+ ||rule(/freelanc|servi[cç]o\s*prestado|trabalho\s*avulso|consultoria|honor[aá]rio/, 'Serviços e trabalhos','🧰')
+ ||rule(/rendimento|juros\s*recebidos|dividendo|provento\s*de\s*investimento|cashback|rentabilidade/, 'Rendimentos e investimentos','📈')
+ ||rule(/reembolso|estorno|devolu[cç][aã]o|ressarcimento/, 'Reembolsos','↩️')
+ ||rule(/pix\s*recebido|transfer[eê]ncia\s*recebida|transferencia\s*recebida|transfer\s*[-–]|ted\s*recebida/, 'PIX e transferências','↙️')
+ ||{name:'Outros proventos',icon:'💰'};
+}
+const pmSourceOf=e=>e.ref==='manual'?'Manual':e.transaction&&isCard(account(e.accountId||e.transaction.accountId))?'Cartão':'Conta / PIX';
+const pmScopeIcon={'Cartão':'💳','Conta / PIX':'🏦','Manual':'✎'};
+function pmGroupKey(section,source,name){return period()+'|'+pmSource+'|'+section+'|'+source+'|'+name;}
+function pmGroupBlock(entries,section,source,name,icon){
+ const key=pmGroupKey(section,source,name),open=pmOpenGroups.has(key),amount=pmSum(entries.filter(counted)),n=entries.length;
+ const nameSafe=esc(name),keySafe=esc(key);
+ return `<div class="pm-accordion">
+  <button type="button" class="pm-group-button" data-pm-toggle-group="${keySafe}" aria-expanded="${open}" aria-label="${open?'Fechar':'Abrir'} ${nameSafe}: ${n} lançamentos">
+   <span class="pm-group-icon" aria-hidden="true">${icon}</span>
+   <span class="pm-group-label"><strong>${nameSafe}</strong><small>${esc(source)} · ${n} ${n===1?'lançamento':'lançamentos'}</small></span>
+   <span class="pm-group-total">${displayedMoney(amount)}</span>
+   <span class="pm-chevron" aria-hidden="true">⌄</span>
+  </button>
+  <div class="pm-group-content" ${open?'':'hidden'}>${entries.map(pmRow).join('')}</div>
+ </div>`;
+}
+function pmIncomeRows(entries){
+ if(!pmIncomeGrouped)return pmSortEntries(entries,pmSortIncome).map(pmRow).join('');
+ const groups=new Map();
+ for(const e of entries){
+  const g=pmIncomeGroupOf(e),key=pmClean(g.name);
+  if(!groups.has(key))groups.set(key,{...g,items:[]});
+  groups.get(key).items.push(e);
+ }
+ return pmSortGroups([...groups.values()],pmSortIncome)
+  .map(g=>pmGroupBlock(pmSortEntries(g.items,pmSortIncome),'proventos','Receitas',g.name,g.icon)).join('');
+}
+function pmRows(entries,group){
+ if(!entries.length)return `<div class="pm-empty"><strong>Nenhum lançamento aqui.</strong>${group==='income'?'Importe proventos do extrato ou cadastre uma receita.':'Importe as despesas com os valores originais da Pluggy ou lance uma conta.'}</div>`;
+ if(group==='income')return pmIncomeRows(entries);
+ const section=(rows,label,icon,code)=>{
+  if(!rows.length)return `<div class="pm-class-empty">Nenhuma ${label.toLocaleLowerCase('pt-BR')} neste mês.</div>`;
+  const categoryRows=(!pmGrouped)?pmSortEntries(rows,pmSortExpense).map(pmRow).join(''):(()=>{
+    const scopes=['Cartão','Conta / PIX','Manual'], sections=[];
+    for(const source of scopes){
+      const scoped=rows.filter(e=>pmSourceOf(e)===source);if(!scoped.length)continue;
+      const gs=new Map();
+      for(const e of scoped){const g=pmGroupOf(e),key=pmClean(g.name);if(!gs.has(key))gs.set(key,{...g,items:[]});gs.get(key).items.push(e);}
+      const ordered=pmSortGroups([...gs.values()],pmSortExpense);
+      sections.push(`<div class="pm-origin-head"><span>${pmScopeIcon[source]} ${esc(source==='Cartão'?'Compras no cartão':source==='Manual'?'Lançamentos manuais':'Conta, PIX e débito')}</span><span>${scoped.length} itens · ${displayedMoney(pmSum(scoped.filter(counted)))}</span></div>${ordered.map(g=>pmGroupBlock(pmSortEntries(g.items,pmSortExpense),code,source,g.name,g.icon)).join('')}`);
+    }
+    return sections.join('');
+   })();
+  return `<div class="pm-class-head ${code}"><span>${icon} ${label} <small>(${rows.length})</small></span><strong>${displayedMoney(pmSum(rows.filter(counted)))}</strong></div>${categoryRows}`;
+ };
+ return section(entries.filter(e=>e.financeClass==='fixa'),'Despesas fixas','⌂','fixas')+
+        section(entries.filter(e=>e.financeClass!=='fixa'),'Gastos gerais','◈','gerais');
+}
+function pmClassSummary(entries){
+ const total=pmTotals(entries),items=[['Proventos',total.income,'provento'],['Despesas fixas',total.fixas,'fixa'],['Gastos gerais',total.gerais,'geral']];
+ return `<div class="pm-class-summary">${items.map(([label,v,code])=>`<div class="pm-class-summary-item ${code}"><span>${label}</span><b>${displayedMoney(v)}</b></div>`).join('')}</div>`;
+}
+function freeMonthly(){const entries=pmEntries(),t=pmTotals(entries),income=entries.filter(e=>e.type==='income'),expenses=entries.filter(e=>e.type==='expense');const prev=pmPreviousMonth(period());
+ const sourceLabel=pmSource==='linked'?'Movimentações válidas do extrato; proventos ocultos não entram nesta projeção.':pmSource==='combined'?'Tudo em uma visão: movimentações Pluggy visíveis + receitas e despesas manuais.':pmSource==='manual'?'Somente receitas e despesas cadastradas manualmente.':'Lançamentos manuais + transações Pluggy escolhidas para o planejamento.';
+ return `<div class="pm">
+ <div class="pm-period"><button class="pm-nav" data-pm-month="-1" title="Mês anterior">‹</button><div class="pm-period-title"><h2>${pmMonthName(period())}</h2><p>Planejamento mensal editável · extrato bancário preservado</p></div><button class="pm-nav" data-pm-month="1" title="Próximo mês">›</button><div class="pm-month-actions"><button class="btn sm pm-copy" data-pm-copy title="Copiar apenas lançamentos manuais não recorrentes do mês anterior">▤ Copiar ${pmMonthName(prev).split(' ')[0]}</button><span class="pm-badge">Meses independentes</span></div></div>
+ <div class="pm-controls"><div><div class="pm-control-title">✓ Controle de pago / recebido</div><div class="pm-control-description">${pmPaidControl?'Ativado: acompanhe ○ pendente e ✓ realizado em cada lançamento manual.':'Desativado: veja apenas a projeção do mês, sem controles de pagamento.'}</div></div><button class="pm-toggle" data-pm-toggle-paid aria-label="Alternar controle de pagamentos" aria-pressed="${pmPaidControl?'true':'false'}"><span class="pm-switch"></span> ${pmPaidControl?'Ativado':'Desativado'}</button></div>
+ <div class="pm-sourcebar"><label for="pm-source">ORIGEM DOS LANÇAMENTOS</label><select class="pm-source-select" id="pm-source"><option value="combined" ${pmSource==='combined'?'selected':''}>Pluggy + Manual · visão completa</option><option value="mixed" ${pmSource==='mixed'?'selected':''}>Misto · manual + Pluggy importada</option><option value="manual" ${pmSource==='manual'?'selected':''}>Somente manual</option><option value="linked" ${pmSource==='linked'?'selected':''}>Pluggy · extrato completo</option></select><button class="btn sm primary" data-pm-import-all>↓ Importar todos os valores do extrato</button><button class="btn sm soft" data-pm-import>↔ Escolher lançamentos</button><span class="pm-explain">${esc(sourceLabel)}</span></div>
+ <div class="pm-stats">${pmKpi('Receitas do mês',pmPaidControl?`Recebido: ${currency(t.incomePaid)}`:'receitas previstas ou reconhecidas',t.income,'green')}${pmKpi('Despesas do mês',pmPaidControl?`Pago: ${currency(t.expensesPaid)}`:'gastos de consumo / obrigações',t.expenses,'red')}${pmKpi('Investimentos','aportes separados das despesas',t.investments,'blue')}${pmKpi('Doações / outros','dízimo e doações classificados',t.donations,'purple')}${pmKpi('Saldo projetado','receitas − despesas − investimentos − doações',t.balance,t.balance>=0?'green':'red')}</div>
+ ${pmClassSummary(entries)}<div class="pm-columns"><section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">💰 Receitas do mês</div><div class="pm-sheet-meta">${pmPaidControl?'Recebimentos e valores pendentes':'Projeção das receitas do mês'}</div></div><div class="pm-head-actions"><span class="pm-sheet-total income">${displayedMoney(t.income)}</span><button class="btn sm" data-add-income>+ Receita</button></div></div><div class="pm-income-toolbar"><button class="btn sm soft pm-recover-income" type="button" data-pm-hidden-income>⊖ Ocultos (${pmHiddenIncomes().length})</button><button class="btn sm soft pm-group-cta" type="button" data-pm-bulk-income>＋ Criar grupo / agrupar PIX</button><span class="pm-group-hint">Monte Alvo, SEDU, Aulas... ou qualquer nome</span><div class="pm-quick-groups"><span>Começar por:</span>${['Aulas particulares','Monte Alvo','SEDU','Novo Milênio'].map(name=>`<button class="pm-quick-chip" type="button" data-pm-start-group="${esc(name)}">${esc(name)}</button>`).join('')}</div><select id="pm-income-group" class="select" aria-label="Organização das receitas"><option value="grouped" ${pmIncomeGrouped?'selected':''}>▤ Grupos recolhíveis</option><option value="list" ${!pmIncomeGrouped?'selected':''}>≡ Lista contínua</option></select><button class="btn sm" type="button" data-pm-income-expand="1">Abrir todos</button><button class="btn sm" type="button" data-pm-income-expand="0">Fechar todos</button></div><div class="pm-sortbar"><label for="pm-sort-income">Ordenar receitas</label>${pmSortSelect('pm-sort-income',pmSortIncome)}<span class="pm-sort-help">Por data, valor ou nome · use “Grupo da receita” em cada PIX para separar Monte Alvo, SEDU e Aulas</span></div>${pmRows(income,'income')}<div class="pm-sheet-footer"><button data-add-income>+ Adicionar receita</button><span class="pm-mini-status">${income.length} fonte(s) de renda</span></div></section>
+ <section class="pm-sheet"><div class="pm-sheet-head"><div><div class="pm-sheet-title">📌 Despesas fixas e gastos gerais</div><div class="pm-sheet-meta">${pmPaidControl?'Pagamentos, vencimentos e pendências':'Grupos por tipo de gasto. Clique em um grupo para ver as compras.'}</div></div><div class="pm-head-actions"><button class="btn sm pm-all" type="button" data-pm-expand="1">Abrir todos</button><button class="btn sm pm-all" type="button" data-pm-expand="0">Fechar todos</button><select id="pm-group" class="select" style="font-size:11px;max-width:180px;padding:7px" aria-label="Organização das despesas"><option value="category" ${pmGrouped?'selected':''}>▤ Grupos recolhíveis</option><option value="list" ${!pmGrouped?'selected':''}>≡ Lista contínua</option></select><span class="pm-sheet-total expense">${displayedMoney(pmSum(expenses.filter(counted)))}</span></div></div><div class="pm-sortbar"><label for="pm-sort-expense">Ordenar despesas</label>${pmSortSelect('pm-sort-expense',pmSortExpense)}<span class="pm-sort-help">Em grupos: ordena os grupos e seus itens. Use Lista contínua para ordem geral.</span></div>${pmRows(expenses,'expense')}<div class="pm-sheet-footer"><button data-add-expense>+ Adicionar despesa</button><span class="pm-mini-status">${expenses.length} lançamento(s)</span></div></section></div>
+ <div class="pm-extra-foot"><div>🔒 Ao importar, o valor vem diretamente da Pluggy. Você pode mudar a classificação, o nome, a categoria e o valor planejado sem alterar o extrato do banco. ${pmSource==='linked'?'Use + para levar transações ao modo Misto, ou ⊖ para ocultar proventos apenas deste mês.':'Evite somar manualmente uma despesa já incluída do extrato.'}</div><div class="wraprows"><button class="btn sm" data-open="dashboard">▦ Dashboard</button><button class="btn sm" data-export-csv>↓ CSV do mês</button></div></div></div>`;}
+
+// 3.9: ocultar apenas do planejamento mensal; o extrato e os relatórios bancários permanecem intactos.
+function pmHiddenIncomes(){return transactions().filter(t=>annotation(t).hideMonthly&&annotation(t).financeClass==='provento');}
+function pmOpenHiddenIncomes(){
+ const rows=pmHiddenIncomes();
+ showModal(`<div class="row" style="justify-content:space-between;gap:12px"><div><div class="over">CONTROLE MENSAL · PROVENTOS</div><h2>Receitas ocultadas</h2></div><button type="button" class="btn icon" data-close-modal aria-label="Fechar">✕</button></div><p>Esses valores saíram apenas do seu <strong>Controle mensal</strong>. Continuam no extrato original da Pluggy e podem ser restaurados a qualquer momento.</p>${rows.length?`<div class="pm-hidden-income-list">${rows.map(t=>{const a=annotation(t);return `<div class="pm-hidden-income-item"><div><strong>${esc(a.title)}</strong><small>${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))}</small></div><b>${displayedMoney(valueForPlanning(t))}</b><button type="button" class="btn sm" data-pm-restore-income="${esc(txKey(t))}">↶ Restaurar</button></div>`;}).join('')}</div>`:'<div class="note">Nenhum provento oculto neste mês.</div>'}<div class="footer"><button type="button" class="btn" data-close-modal>Fechar</button></div>`);
+}
+
+function pmOpenImport(){const rows=transactions().filter(t=>annotation(t).kind==='normal'&&!annotation(t).hideMonthly).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+ if(!rows.length){notice('Ainda não existem movimentos normais da Pluggy neste mês. Sincronize primeiro.','warn');return;}
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">EXTRATO → CONTROLE MENSAL</div><h2>Escolher o que entra no seu mês</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Marque receitas e compras que devem aparecer no modo Misto. Pagamentos de fatura e transferências identificados ficam de fora para evitar duplicidades. Nenhum lançamento será alterado no banco.</p><form id="pm-import-form"><div class="pm-select-actions"><span class="pill plain">${rows.length} transações · valores do banco</span><button class="btn sm" type="button" data-pm-select-all>Selecionar tudo</button></div><div class="pm-import-list">${rows.map(t=>{const a=annotation(t);return `<label class="pm-import-option"><input type="checkbox" name="chosen" value="${esc(txKey(t))}" ${a.includeFree?'checked':''}/><span class="label"><strong>${esc(a.title)}</strong><small>${fmtDate(t.date)} · ${esc(bankLabel(account(t.accountId)))} · ${esc(a.category)}</small></span>${finSelect(a.financeClass,`name="class_${esc(txKey(t))}"`)}<span class="sum" title="Valor original da Pluggy">${displayedMoney(signed(t))}</span></label>`;}).join('')}</div><div class="footer" style="margin-top:16px"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Importar selecionados com valores</button></div></form>`);
+}
+function pmBulkIncome(){
+ const rows=pmEntries().filter(e=>e.type==='income'&&counted(e));
+ if(!rows.length){notice('Não há proventos neste mês para agrupar. Importe da Pluggy ou cadastre uma receita.','warn');return;}
+ const choices=pmSortEntries(rows,pmSortIncome).map(e=>{
+  const key=e.ref==='linked'?txKey(e.transaction):e.id;
+  const bank=e.ref==='linked'?bankLabel(account(e.accountId||e.transaction?.accountId)):'Manual';
+  const current=pmIncomeGroupOf(e).name;
+  return `<label class="pm-bulk-option"><input type="checkbox" name="incomes" value="${esc(key)}"/><span><strong>${esc(e.title)}</strong><small>${esc(fmtDate(e.effectiveDate))} · ${esc(bank)} · grupo atual: ${esc(current)}</small></span><b>${displayedMoney(e.amount)}</b></label>`;
+ }).join('');
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">PROVENTOS · ORGANIZAÇÃO</div><h2>Agrupar recebimentos</h2></div><button class="btn icon" data-close-modal>✕</button></div><p><strong>Você decide a origem da receita.</strong> Selecione os PIX das aulas e crie o grupo <strong>Aulas particulares</strong>; se quiser, separe os pagamentos de <strong>Monte Alvo</strong>, <strong>SEDU</strong> e <strong>Novo Milênio</strong>. Valores e datas da Pluggy são preservados.</p><form id="pm-bulk-income-form"><div class="field"><label>1. Escolha um grupo ou escreva outro nome</label><div class="pm-preset-wrap">${['Aulas particulares','Monte Alvo','SEDU','Novo Milênio','Musicalização'].map(x=>`<button type="button" class="pm-preset-chip" data-pm-income-preset="${esc(x)}">${esc(x)}</button>`).join('')}</div><input class="input" name="groupName" list="pm-income-datalist" maxlength="60" placeholder="Digite: Monte Alvo, SEDU, Aulas particulares..." required/><datalist id="pm-income-datalist">${pmIncomeGroupNames().map(x=>`<option value="${esc(x)}"></option>`).join('')}</datalist></div><div class="pm-bulk-top"><span>2. Marque quais PIX / receitas pertencem ao grupo · ${rows.length} no mês</span><button class="btn sm" type="button" data-pm-income-select-all>Selecionar todos</button></div><div class="pm-bulk-list">${choices}</div><div class="footer" style="margin-top:16px"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Agrupar selecionados</button></div></form>`);
+}
+function pmCopyPrevious(){const prev=pmPreviousMonth(period()),month=period();const originals=state().manual.filter(m=>!m.recurring&&String(m.date||'').slice(0,7)===prev);
+ if(!originals.length){notice('Nenhum lançamento manual não recorrente em '+pmMonthName(prev)+' para copiar. Contas recorrentes já aparecem automaticamente.','info');return;}
+ if(!confirm('Copiar '+originals.length+' lançamento(s) manuais de '+pmMonthName(prev)+' para '+pmMonthName(month)+'? Itens recorrentes e movimentos da Pluggy não serão duplicados.'))return;
+ const y=Number(month.slice(0,4)),m=Number(month.slice(5,7));const last=new Date(y,m,0).getDate();let added=0;
+ for(const row of originals){const day=Math.min(Number(String(row.date).slice(-2))||1,last);const date=month+'-'+String(day).padStart(2,'0');if(state().manual.some(e=>!e.recurring&&e.date===date&&e.title===row.title&&e.type===row.type&&Number(e.amount)===Number(row.amount)))continue;
+  state().manual.push({...row,id:uniqueId(),date,status:'pending',recurring:false,monthlyStatus:{}});added++;}
+ if(added){scheduleSave();notice(added+' lançamento(s) copiado(s) de '+pmMonthName(prev)+'. Confira os valores e vencimentos.','good');}
+ else notice('Esses lançamentos já existem no mês e não foram duplicados.','info');}
+function pmQuickEdit(field,id,ref,value){const linked=ref==='linked',row=linked?data?.transactions?.find(t=>txKey(t)===id):state().manual.find(e=>e.id===id);if(!row)return;
+ if(field==='financeClass'){
+  if(!FIN_CLASSES.some(([key])=>key===value))return;
+  if(linked){state().overrides[id]={...annotation(row),financeClass:value};}
+  else {row.financeClass=value;row.type=classType(value);}
+ }
+ if(field==='title'){const name=String(value||'').trim().slice(0,160);if(!name){render();return;}if(linked){state().overrides[id]={...annotation(row),title:name};}else row.title=name;}
+ if(field==='amount'){const amount=Number(value);if(!Number.isFinite(amount)||amount<0||amount>999999999){alert('Digite um valor válido.');render();return;}if(linked){state().overrides[id]={...annotation(row),planValue:amount};}else row.amount=amount;}
+ if(field==='day'&&!linked){let day=Number(value);if(!Number.isInteger(day)||day<1||day>31){alert('Dia inválido. Informe entre 1 e 31.');render();return;}
+  const base=row.recurring?row.date.slice(0,7):period();const y=Number(base.slice(0,4)),m=Number(base.slice(5,7));day=Math.min(day,new Date(y,m,0).getDate());row.date=base+'-'+String(day).padStart(2,'0');}
+ scheduleSave();}
+function renameAccountModal(id){
+ const a=account(id);if(!a)return;
+ const key=accountAliasKey(a),current=String(state().overrides[key]?.title||'');
+ const card=isCard(a),original=String(a.name||'Sem nome na Pluggy');
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">${card?'CARTÕES · NOME PERSONALIZADO':'BANCOS · NOME PERSONALIZADO'}</div><h2>Renomear ${card?'cartão':'conta'}</h2></div><button type="button" class="btn icon" data-close-modal aria-label="Fechar">✕</button></div><p>Escolha o nome para identificar ${card?'este cartão':'esta conta'} no Pouler Finance Lab. A alteração aparece nos filtros, compras, análises e extratos.</p><div class="note">Nome original na Pluggy: <strong>${esc(original)}</strong>${a.lastDigits?' · final '+esc(a.lastDigits):''}. Nenhuma alteração será feita na instituição financeira.</div><form id="bank-alias-form" data-account-id="${esc(a.id)}"><div class="field"><label for="custom-bank-name">Novo nome exibido no painel (substitui GOLD)</label><input id="custom-bank-name" class="input" name="name" type="text" autocomplete="off" maxlength="80" placeholder="Ex.: ${card?'Nubank Gold / Cartão principal':'Minha conta Nubank'}" value="${esc(current)}" autofocus/></div><p class="miniinfo">Para restaurar o nome original, apague o campo e salve.</p><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button type="submit" class="btn primary">Salvar nome</button></div></form>`);
+ const field=$('#custom-bank-name');if(field){field.focus();field.select();}
+}
+function banksPage(){const accounts=data?.accounts||[];return `<div class="splithead"><div><h2>Contas conectadas</h2><p>Saldos, cartões e horário da última sincronização disponibilizada pela Pluggy.</p></div><span class="pill">${accounts.length} contas</span></div><div class="col2">${accounts.map(a=>`<div class="card cardpad"><div class="row"><div class="bankicon" style="font-size:22px">${isCard(a)?'▤':'⌂'}</div><div class="grow"><strong>${esc(bankName(a))}</strong><div class="tiny muted">${isCard(a)?'Cartão de crédito':'Conta bancária'} · final ${esc(a.lastDigits||'••••')}</div><div class="bank-alias-note">${esc(a.name)}${bankIsGeneric(a)?' · nome genérico informado pela Pluggy':''}</div></div><button type="button" class="btn sm" data-rename-bank="${esc(a.id)}" title="Apenas um nome de exibição, não altera seu banco">✎ Nomear</button></div><div class="line"></div><div class="mutelabel">${isCard(a)?'Saldo devedor informado':'Saldo disponível informado'}</div><div style="font-size:24px;font-weight:850;margin:5px 0">${a.balance===null?'Não informado':displayedMoney(a.balance)}</div>${isCard(a)?`<span class="miniinfo">Limite total: ${a.creditLimit==null?'—':displayedMoney(a.creditLimit)} · disponível: ${a.availableCreditLimit==null?'—':displayedMoney(a.availableCreditLimit)}</span>`:''}</div>`).join('')||`<div class="card">${noData('Sem contas consultadas')}</div>`}</div><div class="cols"><div class="card cardpad"><div class="charthead"><h3>Faturas</h3></div>${billsUI(40)}</div><div class="card cardpad"><div class="charthead"><h3>Conexões Pluggy</h3></div><div class="accountlist">${(data?.items||[]).map(i=>`<div class="account"><div class="bankicon">↔</div><div class="grow"><strong>${esc(i.institution||'Instituição')}</strong><small>Última sincronização: ${fmtDate(i.lastUpdatedAt)}</small></div><span class="pill ${i.status==='UPDATED'?'good':'plain'}">${esc(i.status||'—')}</span></div>`).join('')||noData('Sem conexões consultadas')}</div></div></div>`;}
+function settingsPage(){return `<div class="cols"><section class="card cardpad"><div class="splithead"><div><h2>Seus dados e segurança</h2><p>O banco original é somente leitura; salvamos ajustes, seleções e lançamentos manuais, não o extrato completo.</p></div></div><div class="subhead">Armazenamento do planejamento</div><div class="row"><span class="pill ${cloudEnabled?'good':'plain'}" id="save-indicator">${cloudEnabled?'Cloudflare KV':'Local'}</span><button class="btn sm" data-sync-settings>Verificar nuvem</button></div><p class="miniinfo">${cloudEnabled?'Cloudflare KV conectado. Seus ajustes podem ser vistos em outro dispositivo com o mesmo login.':'Você está usando armazenamento local neste navegador. Para sincronizar as edições no celular e no computador, vincule FINANCE_KV ao Worker na Cloudflare.'}</p><div class="divider"></div><div class="subhead">Segurança financeira</div><p class="miniinfo">Seu login é validado no Cloudflare Worker. Não salve o Client Secret no HTML ou GitHub. Os extratos completos são consultados na Pluggy e não são gravados pelo painel. Alguns nomes de operações podem constar nos ajustes salvos.</p><button class="btn" data-toggle-values>${hiddenValues?'◉ Mostrar valores':'◉ Ocultar valores'}</button><div class="divider"></div><div class="subhead">Edição</div><p class="miniinfo">${state().manual.length} lançamentos manuais • ${Object.keys(state().overrides).length} transações ajustadas • ${monthlyEntries().filter(e=>e.ref==='linked').length} importações neste mês.</p></section><section class="card cardpad"><h2 style="font-size:18px;margin:0">Backup e testes</h2><p class="miniinfo">Faça cópia das suas anotações e lançamentos para não depender de um único dispositivo.</p><div class="stack" style="margin-top:18px"><button class="btn primary w100" data-export-json>↓ Exportar meu planejamento (JSON)</button><button class="btn w100" data-export-csv>↓ Exportar lançamentos do mês (CSV)</button><button class="btn w100" data-import-json>↑ Restaurar backup (JSON)</button><button class="btn w100" data-demo>✨ Abrir dados fictícios</button><button class="btn w100" data-refresh>↻ Consultar Pluggy novamente</button><button class="btn danger w100" data-clear-planning>Limpar meus lançamentos e ajustes</button></div><div class="line"></div><p class="compact">Este laboratório não modifica o Pouler Finance original. No plano Cloudflare Workers Free e KV Free, chamadas acima dos limites deixam de funcionar até a renovação da cota, sem cobrança automática pelo plano Free.</p></section></div>`;}
+function render(){
+ if($('#app').classList.contains('hidden'))return;
+ const [title,sub]=titles[currentView]||titles.dashboard;$('#page-title').textContent=title;$('#page-sub').textContent=sub;
+ $('#connection-pill').textContent=mode==='demo'?'🧪 Exemplo':data?'● Pluggy conectada':'Sem dados';$('#connection-pill').className='pill '+(data?'good':'plain');
+ const all=$$('.navbtn, #mobile-nav button');all.forEach(btn=>btn.classList.toggle('active',btn.dataset.view===currentView));
+ const contents={dashboard:dashboard,extrato:extractView,cartoes:cardsView,'mensal-pluggy':linkedMonthly,'mensal-livre':freeMonthly,contas:banksPage,config:settingsPage};
+ $('#view-content').innerHTML=(contents[currentView]||dashboard)();savedStatus();
+}
+function changeView(to){if(!titles[to])return;currentView=to;$('#sidebar').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});render();}
+function showModal(content){$('#modal-content').innerHTML=content;$('#modal-backdrop').classList.remove('hidden');$('#modal-backdrop').setAttribute('aria-hidden','false');const inp=$('#modal-content input:not([type=checkbox])');inp?.focus();}
+function closeModal(){$('#modal-backdrop').classList.add('hidden');$('#modal-backdrop').setAttribute('aria-hidden','true');$('#modal-content').innerHTML='';}
+function choices(items,selected){return items.map(c=>`<option value="${esc(c)}" ${c===selected?'selected':''}>${esc(c)}</option>`).join('');}
+const categoryList=()=>`<datalist id="categories-list">${categories.map(c=>`<option value="${esc(c)}"></option>`).join('')}</datalist>`;
+function editTransaction(id){const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;const a=annotation(t);const signedV=signed(t);
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">TRANSAÇÃO VINCULADA</div><h2>Identificar movimentação</h2></div><button class="btn icon" data-close-modal>✕</button></div><p><strong>Origem:</strong> ${esc(bankLabel(account(t.accountId)))} · <strong>Data Pluggy:</strong> ${fmtDate(t.date)} · ${displayedMoney(signedV)}<br/><span class="tiny muted">Descrição original: ${esc(t.description)}</span></p><form id="tx-form" data-id="${esc(id)}"><div class="fields"><div class="field wide"><label>O que realmente foi essa compra?</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" required/></div><div class="field"><label>Categoria detalhada</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" required/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field"><label>Classificar como</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}</div><div class="field"><label>Valor no planejamento (opcional — original preservado)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="Original: ${Math.abs(signedV).toFixed(2)}" /></div><div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''} /> Incluir no Mensal livre</label></div><div class="field wide"><label class="checkrow"><input name="hideMonthly" type="checkbox" ${a.hideMonthly?'checked':''} /> Ocultar do Controle mensal (sem apagar do extrato)</label></div><div class="field wide"><label>Observação pessoal</label><textarea name="note" class="textarea" maxlength="500" placeholder="Ex.: parcela 2/3 da viagem, presente, compra dividida...">${esc(a.note)}</textarea></div></div><div class="note">🔒 O extrato e o valor original da Pluggy ficam intactos. Aqui você edita somente o planejamento.</div><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Salvar ajustes</button></div></form>`);
+}
+function editManual(id=null,defaultType='expense'){const m=state().manual.find(x=>x.id===id)||{id:'',title:'',amount:'',type:defaultType,category:defaultType==='income'?'Renda extra':'Moradia',date:period()+'-'+String(Math.min(new Date().getDate(),28)).padStart(2,'0'),status:'pending',recurring:false,note:''};const isNew=!id;
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?(defaultType==='income'?'Nova receita manual':'Nova despesa manual'):'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Cadastre proventos, despesas fixas ou gastos gerais. O lançamento é manual, editável e <strong>não cria nenhuma transação bancária</strong>.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><input type="hidden" name="type" value="${esc(m.type)}" /><div class="field"><label>Classificação financeira</label>${finSelect(manualClass(m),'name="financeClass"')}</div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label><input class="input" name="category" list="categories-list" required maxlength="60" value="${esc(m.category)}"/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(m.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
+}
+function downloadFile(filename,body,mime){const blob=new Blob([body],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
+function exportJson(){const s=state();downloadFile('Pouler-Lab-backup-'+period()+'.json',JSON.stringify({format:'POULER-LAB-FINANCE-V2',exportedAt:new Date().toISOString(),state:s},null,2),'application/json');notice('Backup exportado. Guarde-o em local privado: contém suas anotações e valores planejados.','good');}
+function exportCsv(){const entries=currentView==='mensal-livre'?pmEntries():monthlyEntries();const lines=[['Data','Descricao','Origem','Banco/Conta','Categoria','Grupo de visualizacao','Classificacao','Tipo','Valor','Status','Observacao'],...entries.map(e=>[e.effectiveDate,e.title,e.ref==='linked'?'Pluggy':'Manual',e.ref==='linked'?bankLabel(account(e.accountId)):'Manual',e.category,e.groupName||pmGroupOf(e).name,FIN_LABEL[e.financeClass]||'Gastos gerais',e.type,e.amount,e.effectiveStatus,e.note||''])];const csv=lines.map(row=>row.map(x=>'"'+String(x??'').replace(/^([=+@\-\t\r])/,'\'$1').replace(/"/g,'""')+'"').join(';')).join('\r\n');downloadFile('Pouler-Lab-Mensal-'+period()+'.csv','\ufeff'+csv,'text/csv;charset=utf-8');}
+function uniqueId(){return 'm_'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'_'+Math.random().toString(36).slice(2));}
+// Ações dinâmicas do painel.
+$('#view-content').addEventListener('click',async e=>{
+ const btn=e.target.closest('button');if(!btn)return;
+ if(btn.hasAttribute('data-pm-start-group')){pmBulkIncome();const inp=$('#pm-bulk-income-form input[name="groupName"]');if(inp)inp.value=btn.dataset.pmStartGroup;return;}
+ if(btn.hasAttribute('data-ca-card')){caUI.card=btn.dataset.caCard;caUI.selected.clear();caSaveUI();render();return;}
+ if(btn.hasAttribute('data-ca-edit')){editTransaction(btn.dataset.caEdit);return;}
+ if(btn.hasAttribute('data-ca-toggle')){const k=btn.dataset.caToggle,open=btn.getAttribute('aria-expanded')!=='true';if(open)caOpenGroups.add(k);else caOpenGroups.delete(k);caSaveUI();btn.setAttribute('aria-expanded',String(open));if(btn.nextElementSibling)btn.nextElementSibling.hidden=!open;return;}
+ if(btn.hasAttribute('data-ca-expand')){const open=btn.dataset.caExpand==='1';$$('[data-ca-toggle]').forEach(el=>{const k=el.dataset.caToggle;if(open)caOpenGroups.add(k);else caOpenGroups.delete(k);el.setAttribute('aria-expanded',String(open));if(el.nextElementSibling)el.nextElementSibling.hidden=!open;});caSaveUI();return;}
+ if(btn.hasAttribute('data-ca-bulk')){const rows=caScoped().filter(t=>caUI.selected.has(txKey(t)));if(!rows.length){notice('Marque as compras usando as caixas de seleção antes de agrupar.','warn');return;}
+   showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">CARTÕES · ORGANIZAÇÃO</div><h2>Agrupar ${rows.length} compra(s)</h2></div><button class="btn icon" type="button" data-close-modal>✕</button></div><p>Escolha um grupo como <b>Mercados e padarias</b> ou escreva um nome novo. O total do cartão não muda; só a organização do painel.</p><form id="ca-bulk-form"><div class="field"><label>Nome do grupo</label><input class="input" name="groupName" maxlength="60" list="ca-groups-list" placeholder="Ex.: Compras online, Padaria, Viagem…" required autofocus/><datalist id="ca-groups-list">${caGroupNames().map(n=>`<option value="${esc(n)}"></option>`).join('')}</datalist></div><div class="ca-table-hint" style="margin:13px 0;border-radius:9px">${rows.length} selecionada(s) · ${displayedMoney(caAmount(rows))}</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Aplicar grupo</button></div></form>`);return;
+ }
+});
+$('#view-content').addEventListener('click',async e=>{
+ const btn=e.target.closest('button');if(!btn)return;
+ if(btn.hasAttribute('data-pm-toggle-group')){
+  const key=btn.dataset.pmToggleGroup,body=btn.nextElementSibling,willOpen=btn.getAttribute('aria-expanded')!=='true';
+  if(willOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+  pmPersistOpen();btn.setAttribute('aria-expanded',String(willOpen));
+  btn.setAttribute('aria-label',(willOpen?'Fechar ':'Abrir ')+btn.querySelector('.pm-group-label strong')?.textContent);
+  if(body)body.hidden=!willOpen;return;
+ }
+ if(btn.hasAttribute('data-pm-expand')){
+  const shouldOpen=btn.dataset.pmExpand==='1';
+  document.querySelectorAll('#view-content [data-pm-toggle-group]').forEach(el=>{
+   const key=el.dataset.pmToggleGroup;if(key.includes('|proventos|'))return;if(shouldOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+   el.setAttribute('aria-expanded',String(shouldOpen));if(el.nextElementSibling)el.nextElementSibling.hidden=!shouldOpen;
+  });pmPersistOpen();return;
+ }
+ if(btn.hasAttribute('data-pm-income-expand')){
+  const shouldOpen=btn.dataset.pmIncomeExpand==='1';
+  document.querySelectorAll('#view-content [data-pm-toggle-group]').forEach(el=>{
+   const key=el.dataset.pmToggleGroup;
+   if(!key.includes('|proventos|'))return;
+   if(shouldOpen)pmOpenGroups.add(key);else pmOpenGroups.delete(key);
+   el.setAttribute('aria-expanded',String(shouldOpen));if(el.nextElementSibling)el.nextElementSibling.hidden=!shouldOpen;
+  });pmPersistOpen();return;
+ }
+ if(btn.hasAttribute('data-rename-bank')){renameAccountModal(btn.dataset.renameBank);return;}
+ if(btn.hasAttribute('data-pm-month')){const next=pmNextMonth(period(),Number(btn.dataset.pmMonth));$('#month').value=next;$('#month').dispatchEvent(new Event('change'));return;}
+ if(btn.hasAttribute('data-pm-toggle-paid')){pmPaidControl=!pmPaidControl;pmSaveSettings();render();return;}
+ if(btn.hasAttribute('data-pm-copy'))return pmCopyPrevious();
+ if(btn.hasAttribute('data-pm-import'))return pmOpenImport();
+  if(btn.hasAttribute('data-pm-hidden-income'))return pmOpenHiddenIncomes();
+  if(btn.hasAttribute('data-pm-hide-income')){const id=btn.dataset.pmHideIncome,t=transactions().find(x=>txKey(x)===id);if(!t)return;const a=annotation(t);state().overrides[id]={...a,hideMonthly:true};scheduleSave();notice('Provento ocultado somente do Controle mensal. Use “Ocultos” para restaurar.','good');return;}
+ if(btn.hasAttribute('data-pm-bulk-income'))return pmBulkIncome();
+ if(btn.hasAttribute('data-pm-import-all')){
+  const rows=transactions().filter(t=>annotation(t).kind==='normal'&&!annotation(t).hideMonthly);
+  if(!rows.length){notice('Nenhuma movimentação válida no mês. Clique em Sincronizar e tente novamente.','warn');return;}
+  let count=0;
+  for(const t of rows){const id=txKey(t),a=annotation(t);
+    if(!a.includeFree){state().overrides[id]={...a,includeFree:true};count++;}}
+  pmSource='mixed';pmSaveSettings();scheduleSave();
+  notice(count+' movimentação(ões) adicionada(s) ao planejamento com seus VALORES ORIGINAIS da Pluggy. Categorize como provento, despesa fixa ou gasto geral.','good');return;
+ }
+ if(btn.hasAttribute('data-add-income'))return editManual(null,'income');
+ if(btn.hasAttribute('data-add-expense'))return editManual(null,'expense');
+ if(btn.hasAttribute('data-open'))return changeView(btn.dataset.open);
+ if(btn.hasAttribute('data-edit-tx'))return editTransaction(btn.dataset.editTx);
+ if(btn.hasAttribute('data-edit-entry')){return btn.dataset.entryType==='manual'?editManual(btn.dataset.editEntry):editTransaction(btn.dataset.editEntry);}
+ if(btn.hasAttribute('data-add-manual'))return editManual();
+ if(btn.hasAttribute('data-include')){
+  const id=btn.dataset.include;const t=data?.transactions?.find(x=>txKey(x)===id);if(!t)return;
+  const a=annotation(t);state().overrides[id]={...a,includeFree:!a.includeFree};scheduleSave();return;
+ }
+ if(btn.hasAttribute('data-drop-linked')){const id=btn.dataset.dropLinked;const t=data?.transactions?.find(x=>txKey(x)===id);if(!t)return;state().overrides[id]={...annotation(t),includeFree:false};scheduleSave();return;}
+ if(btn.hasAttribute('data-toggle-paid')){
+  const id=btn.dataset.togglePaid,m=state().manual.find(v=>v.id===id);if(!m)return;
+  if(m.recurring){m.monthlyStatus=m.monthlyStatus||{};m.monthlyStatus[period()]=(m.monthlyStatus[period()]==='paid'?'pending':'paid');}
+  else m.status=m.status==='paid'?'pending':'paid';scheduleSave();return;
+ }
+ if(btn.hasAttribute('data-delete-manual')){
+  if(!confirm('Excluir este lançamento? Se for recorrente, ele será retirado de todos os meses.'))return;
+  const s=state();s.manual=s.manual.filter(v=>v.id!==btn.dataset.deleteManual);scheduleSave();return;
+ }
+ if(btn.hasAttribute('data-toggle-values')){hiddenValues=!hiddenValues;render();return;}
+ if(btn.hasAttribute('data-export-json'))return exportJson();
+ if(btn.hasAttribute('data-export-csv'))return exportCsv();
+ if(btn.hasAttribute('data-include-all')){let count=0;for(const t of transactions()){const a=annotation(t);if(a.kind!=='normal'||a.includeFree)continue;state().overrides[txKey(t)]={...a,includeFree:true};count++;}scheduleSave();notice(count+' movimentações normais incluídas no Mensal Livre. Transferências e faturas foram ignoradas.','good');return;}
+ if(btn.hasAttribute('data-import-json'))return $('#import-file').click();
+ if(btn.hasAttribute('data-demo'))return switchToDemo();
+ if(btn.hasAttribute('data-refresh')){if(!token){notice('Entre com e-mail e senha para acessar a Pluggy.','warn');return;}mode='real';return loadMonth();}
+ if(btn.hasAttribute('data-sync-settings')){if(!token){notice('Prévia fictícia: sem armazenamento na nuvem.','info');return;}await loadStoredState();return render();}
+ if(btn.hasAttribute('data-clear-planning')){
+  if(!confirm('Excluir TODOS os lançamentos manuais e ajustes do laboratório? Os dados da Pluggy não serão apagados.'))return;
+  const s=state();s.manual=[];s.overrides={};scheduleSave();return;
+ }
+});
+$('#view-content').addEventListener('input',e=>{
+ if(e.target.id==='ca-search'){caUI.search=e.target.value;const el=$('#ca-results');if(el)el.innerHTML=caListContent();return;}
+});
+$('#view-content').addEventListener('input',e=>{
+ if(e.target.id==='txn-search'){currentSearch=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+});
+$('#view-content').addEventListener('change',e=>{
+ if(e.target.id==='ca-sort'){caUI.sort=e.target.value;caSaveUI();render();return;}
+ if(e.target.id==='ca-layout'){caUI.layout=e.target.value;caSaveUI();render();return;}
+ if(e.target.hasAttribute('data-ca-select')){const key=e.target.dataset.caSelect;if(e.target.checked)caUI.selected.add(key);else caUI.selected.delete(key);const label=$('#ca-selected-label');if(label)label.textContent=caSelectedCount()+' selecionada(s)';return;}
+ if(e.target.hasAttribute('data-ca-group')){const id=e.target.dataset.caGroup,t=(data?.transactions||[]).find(x=>txKey(x)===id);if(!t)return;let group=e.target.value;
+  if(group==='__new__'){const v=prompt('Novo grupo para esta compra (ex.: Padaria, Compras online):','');if(v===null){render();return;}group=String(v).trim().slice(0,60);if(!group){notice('Digite o nome de um grupo.','warn');render();return;}}
+  else if(group==='__auto__')group='';
+  state().overrides[id]={...annotation(t),groupName:group};scheduleSave();notice('Compra movida para '+(group||caGroup(t).name)+'.','good');return;}
+});
+$('#view-content').addEventListener('change',e=>{
+ if(e.target.id==='pm-source'){pmSource=e.target.value;pmSaveSettings();render();return;}
+ if(e.target.id==='pm-group'){pmGrouped=e.target.value==='category';pmSaveSettings();render();return;}
+ if(e.target.id==='pm-income-group'){pmIncomeGrouped=e.target.value==='grouped';pmSaveSettings();render();return;}
+ if(e.target.hasAttribute('data-pm-income-assign')){
+  const choice=e.target.value,id=e.target.dataset.pmIncomeAssign,ref=e.target.dataset.pmRef;
+  let name=choice;
+  if(choice==='__create__'){
+   const value=prompt('Nome do novo grupo de proventos (ex.: Monte Alvo, SEDU, Aulas particulares):','');
+   if(value===null){render();return;}
+   name=String(value).trim().slice(0,60);
+   if(!name){notice('Informe um nome para o grupo.','warn');render();return;}
+  }else if(choice==='__automatic__')name='';
+  const row=ref==='linked'?data?.transactions?.find(t=>txKey(t)===id):state().manual.find(m=>m.id===id);
+  if(!row)return;
+  if(ref==='linked')state().overrides[id]={...annotation(row),groupName:name};
+  else row.groupName=name;
+  pmIncomeGrouped=true;pmSaveSettings();scheduleSave();notice('Grupo atualizado para '+(name||'automático')+'.','good');return;
+ }
+ if(e.target.id==='pm-sort-income'){pmSortIncome=e.target.value;pmSaveSettings();render();return;}
+ if(e.target.id==='pm-sort-expense'){pmSortExpense=e.target.value;pmSaveSettings();render();return;}
+ if(e.target.hasAttribute('data-pm-class'))return pmQuickEdit('financeClass',e.target.dataset.pmClass,e.target.dataset.pmRef,e.target.value);
+ if(e.target.hasAttribute('data-pm-title'))return pmQuickEdit('title',e.target.dataset.pmTitle,e.target.dataset.pmRef,e.target.value);
+ if(e.target.hasAttribute('data-pm-amount'))return pmQuickEdit('amount',e.target.dataset.pmAmount,e.target.dataset.pmRef,e.target.value);
+ if(e.target.hasAttribute('data-pm-day'))return pmQuickEdit('day',e.target.dataset.pmDay,'manual',e.target.value);
+
+ if(e.target.id==='txn-account'){currentAccount=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+ if(e.target.id==='txn-type'){activeTypeFilter=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+});
+$('#modal-backdrop').addEventListener('click',e=>{
+ const restore=e.target.closest('[data-pm-restore-income]');if(restore){const id=restore.dataset.pmRestoreIncome,t=transactions().find(x=>txKey(x)===id);if(!t)return;state().overrides[id]={...annotation(t),hideMonthly:false};closeModal();scheduleSave();notice('Provento restaurado no planejamento mensal.','good');return;}
+ if(e.target.closest('[data-pm-income-preset]')){
+  const selected=e.target.closest('[data-pm-income-preset]');
+  const input=$('#pm-bulk-income-form input[name="groupName"]');
+  if(input){input.value=selected.dataset.pmIncomePreset;input.focus();}
+  $$('#pm-bulk-income-form [data-pm-income-preset]').forEach(btn=>btn.classList.toggle('selected',btn===selected));
+  return;
+ }
+ if(e.target.closest('[data-pm-income-select-all]')){const items=Array.from($$('#pm-bulk-income-form input[name="incomes"]'));const next=items.some(el=>!el.checked);items.forEach(el=>el.checked=next);e.target.closest('button').textContent=next?'Desmarcar todos':'Selecionar todos';return;}
+ if(e.target.closest('[data-pm-select-all]')){const items=Array.from($$('#pm-import-form input[name="chosen"]'));const next=items.some(el=>!el.checked);items.forEach(el=>el.checked=next);e.target.closest('button').textContent=next?'Desmarcar tudo':'Selecionar tudo';return;}
+ if(e.target===$('#modal-backdrop')||e.target.closest('[data-close-modal]'))closeModal();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+$('#modal-backdrop').addEventListener('submit',e=>{
+ if(e.target.id!=='bank-alias-form')return;
+ e.preventDefault();
+ const a=account(e.target.dataset.accountId);if(!a)return;
+ const input=String(new FormData(e.target).get('name')||'').trim().slice(0,80);
+ const key=accountAliasKey(a);
+ if(input)state().overrides[key]={...state().overrides[key],title:input};
+ else delete state().overrides[key];
+ closeModal();scheduleSave();
+ notice(input?'Nome personalizado salvo: '+input+'.':'Nome original da Pluggy restaurado.','good');
+});
+$('#modal-backdrop').addEventListener('submit',e=>{
+ if(e.target.id!=='ca-bulk-form')return;e.preventDefault();const group=String(new FormData(e.target).get('groupName')||'').trim().slice(0,60);
+ if(!group){alert('Informe o nome do grupo.');return;}let n=0;
+ for(const t of caScoped()){const id=txKey(t);if(!caUI.selected.has(id))continue;state().overrides[id]={...annotation(t),groupName:group};n++;}
+ caUI.selected.clear();closeModal();scheduleSave();notice(n+' compra(s) agrupada(s) em '+group+'. O extrato original não foi alterado.','good');
+});
+$('#modal-backdrop').addEventListener('submit',e=>{
+ if(e.target.id==='pm-bulk-income-form'){
+  e.preventDefault();
+  const f=new FormData(e.target),name=String(f.get('groupName')||'').trim().slice(0,60);
+  const ids=new Set(f.getAll('incomes'));
+  if(!name){alert('Informe um nome de grupo, como Aulas particulares.');return;}
+  if(!ids.size){alert('Selecione ao menos um recebimento.');return;}
+  const entries=pmEntries().filter(row=>row.type==='income'&&counted(row));
+  let updated=0;
+  for(const row of entries){
+   const id=row.ref==='linked'?txKey(row.transaction):row.id;
+   if(!ids.has(id))continue;
+   if(row.ref==='linked'){const t=row.transaction;state().overrides[id]={...annotation(t),groupName:name};}
+   else {const m=state().manual.find(v=>v.id===id);if(m)m.groupName=name;}
+   updated++;
+  }
+  closeModal();scheduleSave();notice(updated+' recebimento(s) agrupado(s) em '+name+'. Os valores do extrato não foram alterados.','good');return;
+ }
+
+ if(e.target.id==='pm-import-form'){
+  e.preventDefault();const chosen=new Set(Array.from(new FormData(e.target).getAll('chosen')));
+  for(const t of transactions())if(annotation(t).kind==='normal'){const id=txKey(t),a=annotation(t),c=String(new FormData(e.target).get('class_'+id)||a.financeClass);state().overrides[id]={...a,financeClass:FIN_CLASSES.some(([k])=>k===c)?c:a.financeClass,includeFree:chosen.has(id)};}
+  closeModal();pmSource='mixed';pmSaveSettings();scheduleSave();notice(chosen.size+' movimentações selecionadas para o Mensal Misto.','good');return;
+ }
+
+ if(e.target.id==='tx-form'){
+  e.preventDefault();const f=new FormData(e.target),id=e.target.dataset.id;const t=data?.transactions?.find(t=>txKey(t)===id);if(!t)return;
+  const val=String(f.get('planValue')??'').trim();const num=val===''?null:Number(val);
+  if(num!==null&&(!Number.isFinite(num)||num<0||num>999999999)){alert('Informe um valor válido.');return;}
+  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),kind:String(f.get('kind')),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
+  closeModal();scheduleSave();return;
+ }
+ if(e.target.id==='manual-form'){
+  e.preventDefault();const f=new FormData(e.target),s=state(),oldId=e.target.dataset.id;
+  const amount=Number(f.get('amount'));
+  if(!Number.isFinite(amount)||amount<0||amount>999999999){alert('Informe um valor válido.');return;}
+  const recur=f.get('recurring')==='on';const paid=f.get('paid')==='on'?'paid':'pending';
+  const base=oldId?s.manual.find(v=>v.id===oldId):null;
+  const row={id:oldId||uniqueId(),title:String(f.get('title')).trim().slice(0,160),type:String(f.get('type'))==='income'?'income':'expense',amount,date:String(f.get('date')),category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),status:paid,recurring:recur,note:String(f.get('note')||'').slice(0,500),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):(f.get('type')==='income'?'provento':'geral'),monthlyStatus:base?.monthlyStatus||{}};
+  row.type=classType(row.financeClass);
+  if(!/^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(row.date)||!row.title){alert('Informe nome e data válidos.');return;}
+  if(recur)row.monthlyStatus[period()]=paid;
+  if(base){const index=s.manual.findIndex(v=>v.id===oldId);if(index!==-1)s.manual[index]=row;}
+  else s.manual.push(row);
+  const changedSource=currentView==='mensal-livre'&&pmSource==='linked';
+  if(changedSource){pmSource='combined';pmSaveSettings();}
+  closeModal();scheduleSave();if(changedSource)notice('Receita manual adicionada. A visão mudou para Pluggy + Manual para exibir todos os valores juntos.','good');return;
+ }
+});
+$('#import-file').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ if(file.size>240000){alert('Backup muito grande. Limite de 240 KB.');e.target.value='';return;}
+ try{const obj=JSON.parse(await file.text());if(obj.format!=='POULER-LAB-FINANCE-V2'||!Array.isArray(obj.state?.manual)||!obj.state?.overrides)throw Error('O arquivo não é um backup do Pouler Lab v2.');
+  if(!confirm('Substituir seus lançamentos e ajustes atuais pelo backup? Isso não altera o extrato da Pluggy.'))return;
+  const s=state();s.manual=obj.state.manual;s.overrides=obj.state.overrides;
+  scheduleSave();notice('Backup importado. Revise seus lançamentos.','good');}
+ catch(err){alert('Não foi possível importar: '+err.message);}finally{e.target.value='';}
+});
+function switchToDemo(){mode='demo';demoFinance=emptyState();data=demoData(period());openApp();notice('Prévia com dados fictícios. Nenhuma informação bancária ou edição real foi alterada.','info');}
+$('#preview-btn').addEventListener('click',switchToDemo);
+$('#login-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('#login-btn');btn.disabled=true;btn.textContent='Entrando...';
+ try{const session=await api('/login',false,{body:{email:$('#login-email').value.trim().toLowerCase(),password:$('#login-password').value}});
+  $('#login-password').value='';try{($('#remember-login').checked?localStorage:sessionStorage).setItem(TOKEN_KEY,session.token);}catch{}
+  await loggedIn(session);
+ }catch(err){$('#login-status').textContent=err.message;$('#login-status').className='status bad';}
+ finally{btn.disabled=false;btn.textContent='Entrar no painel';}
+});
+$('#logout-btn').addEventListener('click',()=>logout('Você saiu do laboratório.'));
+$('#menu-toggle').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]');if(nav)changeView(nav.dataset.view);});
+$('#month').addEventListener('change',()=>{if(mode==='demo'){data=demoData(period());render();return;}data=null;render();if(token)loadMonth();});
+$('#sync-btn').addEventListener('click',()=>{if(token){mode='real';loadMonth();}else if(mode==='demo'){notice('Você está na prévia. Entre com seu login para conectar os bancos.','warn');}else notice('Entre na sua conta antes de consultar a Pluggy.','warn');});
+$('#month').value=monthNow();restore();
+</script>
+</body>
+</html>

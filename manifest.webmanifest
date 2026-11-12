@@ -1,0 +1,18 @@
+{
+  "name": "Pouler Finance",
+  "short_name": "Pouler Finance",
+  "description": "Planejamento e bancos em um só lugar.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f7fa",
+  "theme_color": "#6d51bd",
+  "icons": [
+    {
+      "src": "./pouler-finance-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
