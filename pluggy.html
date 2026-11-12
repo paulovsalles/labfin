@@ -318,6 +318,43 @@
 .pm-hidden-income-item small{font-size:10px;display:block;color:#7c7288;margin-top:4px}
 .pm-hidden-income-item>b{font-size:12px;white-space:nowrap;color:#138562;font-variant-numeric:tabular-nums}
 @media(max-width:600px){.pm-hidden-income-item{flex-wrap:wrap}.pm-hidden-income-item>div{flex-basis:100%}.pm .pm-income-toolbar .pm-recover-income{order:0}}
+
+/* EXTRATO EDITÁVEL · identificação, grupos e classificação visíveis */
+.tx-enhanced{min-width:1000px}
+.tx-enhanced td{padding:14px 11px}
+.tx-enhanced .tx-desc{max-width:260px;line-height:1.45}
+.tx-enhanced .tx-sub{font-size:10px;font-weight:480;color:var(--muted);margin-top:5px;line-height:1.45}
+.tx-enhanced .tx-account{min-width:122px;max-width:180px}
+.tx-enhanced .tx-bank-name{font-size:11px;font-weight:700;color:#473d62;overflow-wrap:anywhere}
+.tx-enhanced .tx-alias-btn,.tx-enhanced .tx-edit-link{background:none;border:0;color:var(--accentd);font-size:10px;font-weight:700;padding:4px 0;text-decoration:underline;text-underline-offset:2px;text-align:left;cursor:pointer}
+.tx-enhanced .tx-alias-btn:hover,.tx-enhanced .tx-edit-link:hover{color:#342078}
+.tx-enhanced .tx-cat-title{font-size:11px;font-weight:750;color:#493c65;overflow-wrap:anywhere}
+.tx-enhanced .tx-category-cell{min-width:145px;max-width:200px}
+.tx-enhanced .tx-finance-cell{min-width:125px}
+.tx-enhanced .tx-finance-cell .pill{margin-top:7px;font-size:9px}
+.tx-enhanced .tx-finance-select{width:100%;min-width:118px;background:#f7f3fe;border:1px solid #ddd1f3;border-radius:9px;padding:7px;color:#52349a;font-size:11px;font-weight:740;cursor:pointer}
+.tx-enhanced .tx-finance-select:focus-visible{outline:2px solid #af9adf;outline-offset:2px}
+.tx-enhanced .tx-inline-btn{white-space:nowrap}
+.tx-edit-head{border:1px solid #ece6f6;border-radius:13px;background:#fcfbff;padding:13px 15px;margin:14px 0 4px}
+.tx-edit-head .tx-edit-headgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.tx-edit-head strong{display:block;font-size:12px;color:#3e3458;overflow-wrap:anywhere;margin-top:4px}
+.tx-edit-head .tiny{font-size:10px}
+.tx-section-label{font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:#7156a7;margin:18px 0 8px}
+.tx-modal-help{font-size:10px;color:#837993;line-height:1.5;margin-top:3px}
+.tx-field-original{background:#f7f5fb;border:1px solid #ebe6f2;border-radius:8px;padding:8px 10px;font-size:11px;color:#746c85;line-height:1.5}
+.tx-edit-modal{width:min(700px,100%)}
+@media(max-width:550px){
+  .tx-enhanced{min-width:0}.tx-enhanced td{padding:5px 2px}
+  .tx-enhanced .tx-category-cell,.tx-enhanced .tx-finance-cell,.tx-enhanced .tx-account{max-width:none;min-width:0}
+  .tx-enhanced .tx-bank-name{display:inline}
+  .tx-enhanced .tx-cat-title{display:inline}
+  .tx-enhanced .tx-finance-select{min-width:0;max-width:210px}
+  .tx-enhanced .tx-edit-link,.tx-enhanced .tx-alias-btn{padding:7px 4px;min-height:28px}
+  .tx-edit-head .tx-edit-headgrid{grid-template-columns:1fr}
+  .tx-edit-modal .fields{grid-template-columns:1fr}
+  .tx-edit-modal .fields .field.wide{grid-column:auto}
+}
+
 </style>
 
 <style id="pouler-unificado-pluggy">
@@ -388,7 +425,7 @@
 <div id="modal-backdrop" class="modalback hidden" aria-hidden="true"><div id="modal-content" class="modal" role="dialog" aria-modal="true" aria-label="Editar lançamento"></div></div>
 <input type="file" accept=".json,application/json" id="import-file" class="hidden"/>
 <script>
-// Pouler Finance Lab v3 • dados brutos da Pluggy nunca são gravados no KV ou no localStorage.
+// Pouler Finance Lab v4.0 • extrato personalizável • dados brutos da Pluggy nunca são gravados no KV ou no localStorage.
 const WORKER='https://pouler-pluggy-lab.paulossray.workers.dev';
 const TOKEN_KEY='pouler-pluggy-lab-login-v1';
 const STATE_KEY='pouler-lab-v2-ajustes-locais';
@@ -577,7 +614,7 @@ async function restore(){let t='';try{t=sessionStorage.getItem(TOKEN_KEY)||local
  try{const sess=await api('/session',true);sessionEmail=sess.email;mode='real';openApp();await loadStoredState();await loadMonth();}
  catch{logout('Sessão encerrada. Entre novamente.');}
 }
-const titles={dashboard:['Dashboard','Um panorama claro dos seus bancos e gastos.'],extrato:['Extrato vinculado','Identifique compras, categorias e observações sem alterar o banco.'],cartoes:['Análise de cartões','Cada cartão, seus gastos e decisões — com grupos e descrições editáveis.'],'mensal-pluggy':['Mensal Pluggy','Movimentações bancárias do mês, sem lançamentos manuais.'],'mensal-livre':['Controle mensal','Receitas e despesas no estilo livre: manual, Pluggy ou misto.'],contas:['Bancos e faturas','Saldos, limites, vencimentos e qualidade das conexões.'],config:['Configurações','Sincronização, backup e privacidade.']};
+const titles={dashboard:['Dashboard','Um panorama claro dos seus bancos e gastos.'],extrato:['Extrato vinculado','Renomeie contas, organize categorias e grupos e classifique cada movimentação.'],cartoes:['Análise de cartões','Cada cartão, seus gastos e decisões — com grupos e descrições editáveis.'],'mensal-pluggy':['Mensal Pluggy','Movimentações bancárias do mês, sem lançamentos manuais.'],'mensal-livre':['Controle mensal','Receitas e despesas no estilo livre: manual, Pluggy ou misto.'],contas:['Bancos e faturas','Saldos, limites, vencimentos e qualidade das conexões.'],config:['Configurações','Sincronização, backup e privacidade.']};
 function kpi(label,value,foot,icon='◈',tone=''){return `<div class="card kpi"><div class="iconbox">${icon}</div><div class="label">${esc(label)}</div><div class="number ${tone}">${displayedMoney(value)}</div><div class="foot">${esc(foot)}</div></div>`;}
 function noData(title='Nenhum dado para mostrar',hint='Consulte seus bancos ou abra a prévia fictícia.'){return `<div class="empty"><div class="icon">◌</div><strong>${esc(title)}</strong><div>${esc(hint)}</div></div>`;}
 function categoriesUI(){const d=countCategories();if(!d.length)return noData('Sem despesas classificadas','As categorias aparecerão depois da consulta.');
@@ -607,9 +644,25 @@ function dashboard(){const t=linkedTotals();const f=freeTotals();const accountCo
 function pickMenu(){return `<div class="tabletools"><input class="input search" id="txn-search" placeholder="Pesquisar no extrato…" value="${esc(currentSearch)}"/><select id="txn-account" class="select"><option value="">Todas as contas</option>${(data?.accounts||[]).map(a=>`<option value="${esc(a.id)}" ${a.id===currentAccount?'selected':''}>${esc(bankLabel(a))}</option>`).join('')}</select><select id="txn-type" class="select"><option value="all">Todos os movimentos</option><option value="card" ${activeTypeFilter==='card'?'selected':''}>Compras no cartão</option><option value="bank" ${activeTypeFilter==='bank'?'selected':''}>Movimentos bancários</option><option value="unlabeled" ${activeTypeFilter==='unlabeled'?'selected':''}>Sem classificação</option></select></div>`;}
 function filteredTx(){return transactions().filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,annotation(t).title,annotation(t).category,account(t.accountId)?.name,bankLabel(account(t.accountId))].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
 function kindPill(kind){if(kind==='cardpayment')return `<span class="pill red">Fatura</span>`;if(kind==='transfer')return `<span class="pill plain">Transferência</span>`;if(kind==='ignore')return `<span class="pill plain">Ignorar</span>`;return '';}
-function txTable(rows,opts={}){if(!rows.length)return noData('Nenhuma movimentação encontrada','Mude os filtros ou sincronize os dados do mês.');
- return `<div class="tablewrap"><table class="tbl"><thead><tr><th>Data</th><th>Descrição editável</th><th>Conta</th><th>Categoria</th><th>Valor original</th><th>Mensal livre</th><th>Ações</th></tr></thead><tbody>${rows.map(t=>{const a=annotation(t),signedV=signed(t),linked=!!a.includeFree;return `<tr><td data-label="Data">${fmtDate(t.date)}</td><td><div class="desc">${esc(a.title)}${a.title!==t.description?'<small>Banco: '+esc(t.description)+'</small>':''}</div><div class="wraprows" style="margin-top:5px">${kindPill(a.kind)}${a.note?'<span class="pill plain">✎ nota</span>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</div></td><td data-label="Conta" class="muted">${esc(bankLabel(account(t.accountId)))}</td><td data-label="Categoria"><span class="pill plain">${esc(a.category)}</span><div class="tiny muted" style="margin-top:5px">${esc(FIN_LABEL[a.financeClass]||'Gastos gerais')}</div></td><td data-label="Original" class="money ${signedV<0?'neg':'pos'}">${displayedMoney(signedV)}${a.planValue!==''?`<small style="display:block;font-size:10px;color:var(--muted)">Plano: ${displayedMoney(a.planValue)}</small>`:''}</td><td data-label="Mensal livre"><button class="btn sm ${linked?'soft':''}" data-include="${esc(txKey(t))}">${linked?'✓ Incluído':'+ Incluir'}</button></td><td class="tableaction"><button class="btn sm" data-edit-tx="${esc(txKey(t))}">✎ Editar</button></td></tr>`;}).join('')}</tbody></table></div>`;}
-function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Transações bancárias permanecem intactas. Você edita apenas nomes, categorias, notas e valor planejado.</p></div><div class="wraprows"><span class="pill">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Exemplo: a compra que aparece no cartão como “COMPRA 7234” pode virar “Tênis de corrida”, com categoria, nota e opção de levar para o Mensal Livre.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
+function txTable(rows,opts={}){
+ if(!rows.length)return noData('Nenhuma movimentação encontrada','Mude os filtros ou sincronize os dados do mês.');
+ return `<div class="tablewrap"><table class="tbl tx-enhanced"><thead><tr><th>Data</th><th>Descrição</th><th>Banco / conta</th><th>Categoria / grupo</th><th>Financeiro / natureza</th><th>Valor Pluggy</th><th>Mensal livre</th><th>Ações</th></tr></thead><tbody>${rows.map(t=>{
+ const a=annotation(t),signedV=signed(t),id=txKey(t),linked=!!a.includeFree,acc=account(t.accountId);
+ const alias=String(state().overrides[accountAliasKey(acc)]?.title||'').trim();
+ const kindLabel={normal:'Movimentação',transfer:'Transferência',cardpayment:'Pagamento de fatura',ignore:'Ignorado'}[a.kind]||'Movimentação';
+ return `<tr>
+ <td data-label="Data">${fmtDate(t.date)}</td>
+ <td><div class="desc tx-desc">${esc(a.title)}${a.title!==t.description?`<small>Original: ${esc(t.description)}</small>`:''}</div>${a.note?'<div class="tx-sub">✎ Com observação</div>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</td>
+ <td data-label="Banco / conta" class="tx-account"><div class="tx-bank-name">${esc(bankLabel(acc))}</div>${alias?`<div class="tx-sub">Original: ${esc(acc?.name||'Conta')}</div>`:''}${acc?`<button class="tx-alias-btn" type="button" data-rename-bank="${esc(acc.id)}" aria-label="Renomear banco ou cartão ${esc(bankLabel(acc))}">✎ Renomear banco</button>`:''}</td>
+ <td data-label="Categoria / grupo" class="tx-category-cell"><div class="tx-cat-title">${esc(a.category)}</div><div class="tx-sub">${a.groupName?'Grupo: '+esc(a.groupName):'Grupo automático'}</div><button type="button" class="tx-edit-link" data-edit-tx="${esc(id)}">Editar categoria e grupo</button></td>
+ <td data-label="Financeiro" class="tx-finance-cell"><select class="tx-finance-select" data-tx-finance="${esc(id)}" aria-label="Grupo financeiro de ${esc(a.title)}">${FIN_CLASSES.map(([v,label])=>`<option value="${v}" ${v===a.financeClass?'selected':''}>${label}</option>`).join('')}</select><div class="tx-sub">${esc(kindLabel)}</div></td>
+ <td data-label="Valor original" class="money ${signedV<0?'neg':'pos'}">${displayedMoney(signedV)}${a.planValue!==''?`<small style="display:block;font-size:10px;color:var(--muted)">Plano: ${displayedMoney(a.planValue)}</small>`:''}</td>
+ <td data-label="Mensal livre"><button class="btn sm tx-inline-btn ${linked?'soft':''}" data-include="${esc(id)}">${linked?'✓ Incluído':'+ Incluir'}</button></td>
+ <td class="tableaction"><button type="button" class="btn sm tx-inline-btn" data-edit-tx="${esc(id)}">✎ Editar tudo</button></td>
+ </tr>`;
+ }).join('')}</tbody></table></div>`;
+}
+function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Renomeie contas e cartões, ajuste categorias, grupos e tipo financeiro. O extrato original fica intacto.</p></div><div class="wraprows"><span class="pill">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Clique em “Editar tudo” para personalizar uma transação, ou em “Renomear banco” para identificar a conta em todos os lançamentos. A classificação financeira também pode ser alterada diretamente na tabela.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
 // -------- Análise de Cartões 3.6: um laboratório para identificar despesas --------
 const CA_GROUP_KEY='pouler-card-groups-open-v36';
 const CA_PREF_KEY='pouler-card-analytics-ui-v36';
@@ -936,11 +989,32 @@ function render(){
 }
 function changeView(to){if(!titles[to])return;currentView=to;$('#sidebar').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});render();}
 function showModal(content){$('#modal-content').innerHTML=content;$('#modal-backdrop').classList.remove('hidden');$('#modal-backdrop').setAttribute('aria-hidden','false');const inp=$('#modal-content input:not([type=checkbox])');inp?.focus();}
-function closeModal(){$('#modal-backdrop').classList.add('hidden');$('#modal-backdrop').setAttribute('aria-hidden','true');$('#modal-content').innerHTML='';}
+function closeModal(){$('#modal-content')?.classList.remove('tx-edit-modal');$('#modal-backdrop').classList.add('hidden');$('#modal-backdrop').setAttribute('aria-hidden','true');$('#modal-content').innerHTML='';}
 function choices(items,selected){return items.map(c=>`<option value="${esc(c)}" ${c===selected?'selected':''}>${esc(c)}</option>`).join('');}
 const categoryList=()=>`<datalist id="categories-list">${categories.map(c=>`<option value="${esc(c)}"></option>`).join('')}</datalist>`;
-function editTransaction(id){const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;const a=annotation(t);const signedV=signed(t);
- showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">TRANSAÇÃO VINCULADA</div><h2>Identificar movimentação</h2></div><button class="btn icon" data-close-modal>✕</button></div><p><strong>Origem:</strong> ${esc(bankLabel(account(t.accountId)))} · <strong>Data Pluggy:</strong> ${fmtDate(t.date)} · ${displayedMoney(signedV)}<br/><span class="tiny muted">Descrição original: ${esc(t.description)}</span></p><form id="tx-form" data-id="${esc(id)}"><div class="fields"><div class="field wide"><label>O que realmente foi essa compra?</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" required/></div><div class="field"><label>Categoria detalhada</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" required/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field"><label>Classificar como</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select></div><div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}</div><div class="field"><label>Valor no planejamento (opcional — original preservado)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="Original: ${Math.abs(signedV).toFixed(2)}" /></div><div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''} /> Incluir no Mensal livre</label></div><div class="field wide"><label class="checkrow"><input name="hideMonthly" type="checkbox" ${a.hideMonthly?'checked':''} /> Ocultar do Controle mensal (sem apagar do extrato)</label></div><div class="field wide"><label>Observação pessoal</label><textarea name="note" class="textarea" maxlength="500" placeholder="Ex.: parcela 2/3 da viagem, presente, compra dividida...">${esc(a.note)}</textarea></div></div><div class="note">🔒 O extrato e o valor original da Pluggy ficam intactos. Aqui você edita somente o planejamento.</div><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button class="btn primary" type="submit">Salvar ajustes</button></div></form>`);
+function editTransaction(id){
+ const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;
+ const a=annotation(t),signedV=signed(t),acc=account(t.accountId);
+ const alias=acc?String(state().overrides[accountAliasKey(acc)]?.title||'').trim():'';
+ const bankOrig=acc?String(acc.name||accountInstitution(acc)||'Conta bancária'):'Conta não identificada';
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">EXTRATO VINCULADO · EDIÇÃO</div><h2>Personalizar movimentação</h2></div><button class="btn icon" type="button" data-close-modal aria-label="Fechar editor">✕</button></div>
+ <div class="tx-edit-head"><span class="mutelabel">DADOS ORIGINAIS DO BANCO (SOMENTE LEITURA)</span><div class="tx-edit-headgrid"><div><span class="tiny muted">Data e valor</span><strong>${fmtDate(t.date)} · ${displayedMoney(signedV)}</strong></div><div><span class="tiny muted">Conta de origem</span><strong>${esc(bankLabel(acc))}</strong></div></div><div class="tx-sub">Descrição original: ${esc(t.description)}</div></div>
+ <form id="tx-form" data-id="${esc(id)}" data-account-id="${esc(acc?.id||'')}">
+ <div class="tx-section-label">Identificação e banco</div>
+ <div class="fields"><div class="field wide"><label>Nome personalizado da movimentação</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" placeholder="Ex.: Padaria, Aulas particulares, Fatura..." required/></div>
+ ${acc?`<div class="field wide"><label>Renomear banco / cartão para todas as movimentações desta conta</label><input name="bankAlias" class="input" maxlength="80" value="${esc(alias)}" placeholder="Ex.: Nubank Principal, Sicoob, Cartão Gold"/><div class="tx-modal-help">Nome de origem: ${esc(bankOrig)}${acc.lastDigits?' · final '+esc(acc.lastDigits):''}. Deixe vazio para mostrar o nome original da Pluggy.</div></div>`:''}
+ </div><div class="tx-section-label">Organização financeira</div>
+ <div class="fields"><div class="field"><label>Categoria detalhada</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" placeholder="Ex.: Padaria, Mercado, Combustível" required/>${categoryList()}</div>
+ <div class="field"><label>Grupo personalizado</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Ex.: Aulas, Monte Alvo, Compras online"/>${pmGroupDatalist()}<div class="tx-modal-help">Organiza receitas e despesas nos grupos recolhíveis.</div></div>
+ <div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}<div class="tx-modal-help">Provento, despesa fixa ou gasto geral.</div></div>
+ <div class="field"><label>Natureza da movimentação</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select><div class="tx-modal-help">Evite contar transferências e faturas duas vezes.</div></div>
+ <div class="field"><label>Valor para o planejamento (opcional)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="${Math.abs(signedV).toFixed(2)}"/><div class="tx-modal-help">Vazio = usar o valor original do banco.</div></div>
+ <div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''}/> Incluir no Mensal livre</label></div>
+ <div class="field wide"><label class="checkrow"><input name="hideMonthly" type="checkbox" ${a.hideMonthly?'checked':''}/> Ocultar do Controle mensal (sem apagar do extrato)</label></div>
+ <div class="field wide"><label>Observações</label><textarea class="textarea" name="note" maxlength="500" placeholder="Ex.: parcela 2/3, reembolso, compra compartilhada...">${esc(a.note)}</textarea></div></div>
+ <div class="note">🔒 A descrição, o banco, a data e o valor originais na Pluggy não mudam. O nome do banco personalizado vale para todas as movimentações dessa conta; a classificação, categoria e observações valem apenas para este lançamento.</div>
+ <div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button type="submit" class="btn primary">Salvar personalizações</button></div></form>`);
+ $('#modal-content')?.classList.add('tx-edit-modal');
 }
 function editManual(id=null,defaultType='expense'){const m=state().manual.find(x=>x.id===id)||{id:'',title:'',amount:'',type:defaultType,category:defaultType==='income'?'Renda extra':'Moradia',date:period()+'-'+String(Math.min(new Date().getDate(),28)).padStart(2,'0'),status:'pending',recurring:false,note:''};const isNew=!id;
  showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?(defaultType==='income'?'Nova receita manual':'Nova despesa manual'):'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Cadastre proventos, despesas fixas ou gastos gerais. O lançamento é manual, editável e <strong>não cria nenhuma transação bancária</strong>.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><input type="hidden" name="type" value="${esc(m.type)}" /><div class="field"><label>Classificação financeira</label>${finSelect(manualClass(m),'name="financeClass"')}</div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label><input class="input" name="category" list="categories-list" required maxlength="60" value="${esc(m.category)}"/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(m.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
@@ -1072,6 +1146,12 @@ $('#view-content').addEventListener('change',e=>{
  }
  if(e.target.id==='pm-sort-income'){pmSortIncome=e.target.value;pmSaveSettings();render();return;}
  if(e.target.id==='pm-sort-expense'){pmSortExpense=e.target.value;pmSaveSettings();render();return;}
+ if(e.target.hasAttribute('data-tx-finance')){
+  const id=e.target.dataset.txFinance,t=data?.transactions?.find(t=>txKey(t)===id),value=e.target.value;
+  if(!t||!FIN_CLASSES.some(([k])=>k===value))return;
+  state().overrides[id]={...annotation(t),financeClass:value};
+  scheduleSave();notice('Grupo financeiro atualizado no extrato e no controle mensal.','good');return;
+ }
  if(e.target.hasAttribute('data-pm-class'))return pmQuickEdit('financeClass',e.target.dataset.pmClass,e.target.dataset.pmRef,e.target.value);
  if(e.target.hasAttribute('data-pm-title'))return pmQuickEdit('title',e.target.dataset.pmTitle,e.target.dataset.pmRef,e.target.value);
  if(e.target.hasAttribute('data-pm-amount'))return pmQuickEdit('amount',e.target.dataset.pmAmount,e.target.dataset.pmRef,e.target.value);
@@ -1140,8 +1220,14 @@ $('#modal-backdrop').addEventListener('submit',e=>{
   e.preventDefault();const f=new FormData(e.target),id=e.target.dataset.id;const t=data?.transactions?.find(t=>txKey(t)===id);if(!t)return;
   const val=String(f.get('planValue')??'').trim();const num=val===''?null:Number(val);
   if(num!==null&&(!Number.isFinite(num)||num<0||num>999999999)){alert('Informe um valor válido.');return;}
-  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),kind:String(f.get('kind')),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
-  closeModal();scheduleSave();return;
+  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),kind:['normal','transfer','cardpayment','ignore'].includes(String(f.get('kind')))?String(f.get('kind')):baseKind(t),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
+  const acc=account(t.accountId);
+  if(acc){
+   const alias=String(f.get('bankAlias')||'').trim().slice(0,80),aliasKey=accountAliasKey(acc);
+   if(alias)state().overrides[aliasKey]={...state().overrides[aliasKey],title:alias};
+   else delete state().overrides[aliasKey];
+  }
+  closeModal();scheduleSave();notice('Personalizações salvas. Extrato original preservado.','good');return;
  }
  if(e.target.id==='manual-form'){
   e.preventDefault();const f=new FormData(e.target),s=state(),oldId=e.target.dataset.id;
