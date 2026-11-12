@@ -1464,5 +1464,606 @@ $('#month').addEventListener('change',()=>{if(mode==='demo'){data=demoData(perio
 $('#sync-btn').addEventListener('click',()=>{if(token){mode='real';loadMonth();}else if(mode==='demo'){notice('Você está na prévia. Entre com seu login para conectar os bancos.','warn');}else notice('Entre na sua conta antes de consultar a Pluggy.','warn');});
 $('#month').value=monthNow();restore();
 </script>
+ 
+<!-- POULER FINANCE | Conciliação entre contas próprias -->
+<script>
+(() => {
+  if (document.getElementById('pf-conciliacao-nav')) return;
+
+  const nav = document.createElement('button');
+  nav.id = 'pf-conciliacao-nav';
+  nav.className = 'navbtn';
+  nav.dataset.view = 'conciliacao';
+  nav.innerHTML =
+    '<span class="ic">⇄</span> Transferências internas';
+
+  const lugar = [...document.querySelectorAll('.navgroup')]
+    .find(x => x.textContent.includes('PLANEJAMENTO'));
+
+  if (!lugar) return;
+  lugar.before(nav);
+
+  titles.conciliacao = [
+    'Transferências internas',
+    'Inter → Sicoob e outras contas: organize suas movimentações.'
+  ];
+
+  const css = document.createElement('style');
+
+  css.textContent = `
+    .pf-recon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .pf-recon-tile,
+    .pf-recon-panel {
+      background: #fff;
+      border: 1px solid #e6ddf4;
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .pf-recon-tile small {
+      display: block;
+      color: #72718b;
+      font-size: 12px;
+    }
+
+    .pf-recon-tile strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 22px;
+    }
+
+    .pf-recon-panel { margin: 14px 0; }
+    .pf-recon-panel h3 {
+      margin: 0 0 7px;
+      font-size: 17px;
+    }
+
+    .pf-recon-pair {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid #eee8f6;
+    }
+
+    .pf-recon-pair small {
+      display: block;
+      margin-top: 4px;
+      color: #6e6a85;
+      overflow-wrap: anywhere;
+    }
+
+    .pf-recon-pair strong { overflow-wrap: anywhere; }
+
+    .pf-recon-note {
+      padding: 14px;
+      border: 1px solid #d7caec;
+      border-radius: 12px;
+      background: #f5efff;
+      margin-top: 12px;
+    }
+
+    .pf-recon-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      align-items: end;
+      margin-top: 12px;
+    }
+
+    .pf-recon-fields label {
+      display: block;
+      color: #6e6a85;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .pf-recon-fields select {
+      width: 100%;
+      min-width: 0;
+    }
+
+    @media(max-width:760px) {
+      .pf-recon-grid { grid-template-columns: 1fr; }
+      .pf-recon-fields { grid-template-columns: 1fr; }
+      .pf-recon-pair { flex-wrap: wrap; }
+    }
+  `;
+
+  document.head.append(css);
+
+  const monthTx = () => transactions().filter(
+    t => isBank(t) &&
+    !['cardpayment','ignore'].includes(annotation(t).kind)
+  );
+
+  const outgoing = () =>
+    monthTx().filter(t => signed(t) < 0);
+
+  const incoming = () =>
+    monthTx().filter(t => signed(t) > 0);
+
+  const idOf = t => txKey(t);
+
+  const bankOf = t =>
+    bankGroupName(account(t.accountId));
+
+  const ms = date =>
+    Date.parse(String(date || '').slice(0,10));
+
+  const equal = (a,b) =>
+    Math.abs(
+      Math.abs(signed(a)) - Math.abs(signed(b))
+    ) < 0.01;
+
+  const valid = (a,b) =>
+    a && b &&
+    signed(a) < 0 &&
+    signed(b) > 0 &&
+    isBank(a) &&
+    isBank(b) &&
+    a.accountId !== b.accountId &&
+    equal(a,b) &&
+    Number.isFinite(ms(a.date)) &&
+    Number.isFinite(ms(b.date)) &&
+    Math.abs(ms(a.date)-ms(b.date)) <= 3*86400000;
+
+  const keyOf = (from,to) => {
+    const raw = idOf(from) + '|' + idOf(to);
+    let h = 2166136261;
+
+    for (let i=0; i<raw.length; i++) {
+      h = Math.imul(
+        h ^ raw.charCodeAt(i),
+        16777619
+      );
+    }
+
+    return 'recon:' + period() +
+      ':' + (h>>>0).toString(16);
+  };
+
+  const pairs = () =>
+    Object.entries(state().overrides || {})
+      .filter(([k,v]) =>
+        k.startsWith('recon:') && v?.note
+      )
+      .map(([key,v]) => {
+        try {
+          return {key,...JSON.parse(v.note)};
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean);
+
+  const paired = () =>
+    new Set(pairs().flatMap(p => [p.from,p.to]));
+
+  const findTx = id =>
+    transactions().find(t => idOf(t) === id);
+
+  const caption = t =>
+    `${fmtDate(t.date)} · ` +
+    `${bankLabel(account(t.accountId))} · ` +
+    `${currency(Math.abs(signed(t)))}`;
+
+  const isPreferred = (a,b) =>
+    /inter/i.test(bankOf(a)) &&
+    /sicoob/i.test(bankOf(b));
+
+  let scope = 'inter';
+
+  function suggestions() {
+    const used = paired();
+    const result = [];
+
+    for (const a of outgoing()) {
+      for (const b of incoming()) {
+        if (
+          !valid(a,b) ||
+          used.has(idOf(a)) ||
+          used.has(idOf(b))
+        ) continue;
+
+        if (
+          scope === 'inter' &&
+          !isPreferred(a,b)
+        ) continue;
+
+        result.push({
+          a,b,
+          delta: Math.abs(ms(a.date)-ms(b.date))
+        });
+      }
+    }
+
+    result.sort((x,y) => x.delta-y.delta);
+
+    const chosen = new Set();
+
+    return result.filter(({a,b}) => {
+      if (
+        chosen.has(idOf(a)) ||
+        chosen.has(idOf(b))
+      ) return false;
+
+      chosen.add(idOf(a));
+      chosen.add(idOf(b));
+      return true;
+    }).slice(0,30);
+  }
+
+  const option = t =>
+    `<option value="${esc(idOf(t))}">` +
+    `${esc(caption(t))} · ` +
+    `${esc(annotation(t).title)}</option>`;
+
+  function page() {
+    const known = pairs().filter(
+      p => findTx(p.from) || findTx(p.to)
+    );
+
+    const opts = suggestions();
+
+    const total = known.reduce(
+      (sum,p) => sum + Number(p.amount||0),
+      0
+    );
+
+    return `
+      <div class="splithead">
+        <div>
+          <h2>Transferências entre minhas contas</h2>
+          <p>
+            Recebeu uma aula no Inter e depois
+            transferiu para o Sicoob?
+            Conte a receita da aula apenas uma vez.
+          </p>
+        </div>
+      </div>
+
+      <div class="pf-recon-note">
+        <b>Somente para o planejamento:</b>
+        o extrato original da Pluggy continua intacto.
+        Confirme apenas transferências entre contas suas.
+      </div>
+
+      <div class="pf-recon-grid">
+        <div class="pf-recon-tile">
+          <small>Pares conciliados neste mês</small>
+          <strong>${known.length}</strong>
+        </div>
+
+        <div class="pf-recon-tile">
+          <small>Volume transferido</small>
+          <strong>${currency(total)}</strong>
+        </div>
+
+        <div class="pf-recon-tile">
+          <small>Sugestões para conferir</small>
+          <strong>${opts.length}</strong>
+        </div>
+      </div>
+
+      <section class="pf-recon-panel">
+        <div class="row" style="
+          justify-content:space-between;
+          gap:12px;
+          flex-wrap:wrap;
+        ">
+          <div>
+            <h3>01 · Sugestões de conciliação</h3>
+            <p class="miniinfo">
+              Mesmo valor, contas diferentes e
+              datas com até três dias de diferença.
+            </p>
+          </div>
+
+          <select class="select" id="pf-recon-scope">
+            <option value="inter"
+              ${scope==='inter'?'selected':''}>
+              Inter → Sicoob
+            </option>
+
+            <option value="all"
+              ${scope==='all'?'selected':''}>
+              Todas as minhas contas
+            </option>
+          </select>
+        </div>
+
+        ${opts.length
+          ? opts.map(({a,b}) => `
+            <div class="pf-recon-pair">
+              <div>
+                <strong>
+                  ${esc(bankLabel(account(a.accountId)))}
+                  →
+                  ${esc(bankLabel(account(b.accountId)))}
+                </strong>
+
+                <small>
+                  Saída: ${esc(caption(a))}
+                  <br>
+                  Entrada: ${esc(caption(b))}
+                </small>
+              </div>
+
+              <button
+                class="btn primary"
+                data-pf-pair="${esc(idOf(a))}"
+                data-pf-to="${esc(idOf(b))}">
+                Conciliar ${currency(Math.abs(signed(a)))}
+              </button>
+            </div>
+          `).join('')
+          : `<div class="pf-recon-note">
+              Nenhum par sugerido.
+              Verifique os nomes Inter/Sicoob
+              na guia Bancos e faturas ou use
+              a seleção manual abaixo.
+            </div>`
+        }
+      </section>
+
+      <section class="pf-recon-panel">
+        <h3>02 · Conciliar manualmente</h3>
+
+        <div class="pf-recon-fields">
+          <div>
+            <label>Saída da conta</label>
+            <select class="select" id="pf-recon-from">
+              <option value="">Selecione</option>
+              ${outgoing()
+                .filter(t => !paired().has(idOf(t)))
+                .map(option).join('')}
+            </select>
+          </div>
+
+          <div>
+            <label>Entrada na outra conta</label>
+            <select class="select" id="pf-recon-to">
+              <option value="">Selecione</option>
+              ${incoming()
+                .filter(t => !paired().has(idOf(t)))
+                .map(option).join('')}
+            </select>
+          </div>
+
+          <button class="btn primary" id="pf-recon-manual">
+            Conciliar
+          </button>
+        </div>
+      </section>
+
+      <section class="pf-recon-panel">
+        <h3>03 · Pares confirmados</h3>
+
+        ${known.length
+          ? known.map(p => `
+            <div class="pf-recon-pair">
+              <div>
+                <strong>
+                  ${currency(p.amount)}
+                  · Transferência entre minhas contas
+                </strong>
+                <small>
+                  ${esc(p.fromBank)}
+                  →
+                  ${esc(p.toBank)}
+                </small>
+              </div>
+
+              <button class="btn"
+                data-pf-undo="${esc(p.key)}">
+                Desfazer
+              </button>
+            </div>
+          `).join('')
+          : `<p class="miniinfo">
+              Ainda não existe par confirmado neste mês.
+            </p>`
+        }
+      </section>
+    `;
+  }
+
+  const originalRender = render;
+
+  render = function() {
+    if (currentView !== 'conciliacao') {
+      return originalRender();
+    }
+
+    if (
+      document.querySelector('#app')
+        ?.classList.contains('hidden')
+    ) return;
+
+    document.querySelector('#page-title')
+      .textContent = titles.conciliacao[0];
+
+    document.querySelector('#page-sub')
+      .textContent = titles.conciliacao[1];
+
+    document.querySelectorAll(
+      '.navbtn,#mobile-nav button'
+    ).forEach(b => {
+      b.classList.toggle(
+        'active',
+        b.dataset.view === 'conciliacao'
+      );
+    });
+
+    document.querySelector('#view-content')
+      .innerHTML = page();
+  };
+
+  function match(a,b) {
+    if (!valid(a,b)) {
+      notice(
+        'Escolha saída e entrada de mesmo valor, ' +
+        'contas diferentes e até 3 dias de distância.',
+        'warn'
+      );
+      return;
+    }
+
+    if (
+      paired().has(idOf(a)) ||
+      paired().has(idOf(b))
+    ) {
+      notice(
+        'Movimentação já conciliada. ' +
+        'Desfaça o par anterior.',
+        'warn'
+      );
+      return;
+    }
+
+    if (!confirm(
+      `Confirma que ${currency(Math.abs(signed(a)))} ` +
+      `saiu de ${bankLabel(account(a.accountId))} ` +
+      `e entrou em ${bankLabel(account(b.accountId))}, ` +
+      `entre contas suas?`
+    )) return;
+
+    const f = idOf(a);
+    const t = idOf(b);
+
+    const prevF =
+      state().overrides[f]?.kind ?? '';
+
+    const prevT =
+      state().overrides[t]?.kind ?? '';
+
+    state().overrides[f] = {
+      ...(state().overrides[f] || {}),
+      kind: 'transfer'
+    };
+
+    state().overrides[t] = {
+      ...(state().overrides[t] || {}),
+      kind: 'transfer'
+    };
+
+    const note = JSON.stringify({
+      from: f,
+      to: t,
+      prevF,
+      prevT,
+      amount: Math.abs(signed(a)),
+      fromBank: bankName(
+        account(a.accountId)
+      ).slice(0,45),
+      toBank: bankName(
+        account(b.accountId)
+      ).slice(0,45)
+    });
+
+    state().overrides[keyOf(a,b)] = {
+      title: 'Conciliação interna',
+      category: 'Transferências internas',
+      kind: 'ignore',
+      note
+    };
+
+    scheduleSave();
+
+    notice(
+      'Transferência conciliada! ' +
+      'A receita da aula permanece; ' +
+      'o par não entra como nova receita ou despesa.',
+      'good'
+    );
+  }
+
+  function undo(key) {
+    const p = pairs().find(x => x.key === key);
+
+    if (
+      !p ||
+      !confirm('Desfazer esta conciliação?')
+    ) return;
+
+    for (const [id,prev] of [
+      [p.from,p.prevF],
+      [p.to,p.prevT]
+    ]) {
+      const entry = {
+        ...(state().overrides[id] || {})
+      };
+
+      if (prev) entry.kind = prev;
+      else delete entry.kind;
+
+      state().overrides[id] = entry;
+    }
+
+    delete state().overrides[key];
+    scheduleSave();
+    notice('Conciliação desfeita.','info');
+  }
+
+  const root =
+    document.querySelector('#view-content');
+
+  root.addEventListener('click', e => {
+    if (currentView !== 'conciliacao') return;
+
+    const b = e.target.closest('button');
+    if (!b) return;
+
+    if (b.hasAttribute('data-pf-pair')) {
+      e.stopImmediatePropagation();
+      match(
+        findTx(b.dataset.pfPair),
+        findTx(b.dataset.pfTo)
+      );
+    }
+
+    if (b.hasAttribute('data-pf-undo')) {
+      e.stopImmediatePropagation();
+      undo(b.dataset.pfUndo);
+    }
+
+    if (b.id === 'pf-recon-manual') {
+      e.stopImmediatePropagation();
+
+      match(
+        findTx(
+          document.querySelector(
+            '#pf-recon-from'
+          ).value
+        ),
+        findTx(
+          document.querySelector(
+            '#pf-recon-to'
+          ).value
+        )
+      );
+    }
+  }, true);
+
+  root.addEventListener('change', e => {
+    if (
+      currentView === 'conciliacao' &&
+      e.target.id === 'pf-recon-scope'
+    ) {
+      scope = e.target.value;
+      render();
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
