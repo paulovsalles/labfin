@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+aaaa<html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
@@ -355,6 +355,26 @@
   .tx-edit-modal .fields .field.wide{grid-column:auto}
 }
 
+
+/* EXTRATO · filtros separados por banco e por conta/cartão (v4.1) */
+.txn-filters{display:grid;grid-template-columns:minmax(170px,1.1fr) minmax(155px,.8fr) minmax(230px,1.3fr) minmax(180px,.9fr) auto;gap:10px;align-items:end;margin:17px 0 12px}
+.txn-filter{display:flex;flex-direction:column;gap:6px;min-width:0}
+.txn-filter label{font-size:10px;font-weight:800;color:#736788;letter-spacing:.04em;text-transform:uppercase}
+.txn-filter .input,.txn-filter .select{min-height:42px;width:100%;max-width:none;font-size:12px;border-radius:11px;background:#fff;color:#302747}
+.txn-filter .select:disabled{background:#f6f4fa;color:#9991a5;cursor:not-allowed}
+.txn-filter-clear{min-height:42px;white-space:nowrap}
+.txn-filter-note{font-size:11px;color:#837992;line-height:1.5;margin:-3px 0 14px}
+.txn-group-preview{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;border:1px solid #e8e1f3;background:#faf8fd;color:#615478;border-radius:9px;padding:6px 9px;font-size:11px;font-weight:650}
+.txn-group-preview strong{color:#6e4caf}
+.txn-filter-note button.tx-edit-link{border:0;background:transparent;color:#6f4bac;font:inherit;font-size:11px;font-weight:770;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:7px 4px;border-radius:6px}
+.txn-filter-note button.tx-edit-link:hover,.txn-filter-note button.tx-edit-link:focus-visible{background:#f1eafb;color:#52308f;outline:none}
+.bankgroup-modal-list{display:grid;gap:8px;margin:15px 0;max-height:53vh;overflow:auto}
+.bankgroup-modal-line{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:11px;border:1px solid #eee8f6;border-radius:10px;background:#fdfcff}
+.bankgroup-modal-line>div{flex:1;min-width:0}
+.bankgroup-modal-line strong{display:block;font-size:12px;color:#352947;overflow-wrap:anywhere}
+.bankgroup-modal-line small{display:block;font-size:10px;margin-top:4px;color:#81758f;overflow-wrap:anywhere}
+@media(max-width:1300px){.txn-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.txn-filter-clear{align-self:end}.txn-filter.search-col{grid-column:1/3}}
+@media(max-width:600px){.txn-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.txn-filter.search-col,.txn-filter.type-col{grid-column:1/3}.txn-filter label{font-size:9px}.txn-filter .input,.txn-filter .select{font-size:11px;min-height:42px}.txn-filter-clear{grid-column:1/3;width:100%}.bankgroup-modal-line{align-items:flex-start;flex-wrap:wrap}.bankgroup-modal-line button{width:100%}}
 </style>
 
 <style id="pouler-unificado-pluggy">
@@ -425,7 +445,7 @@
 <div id="modal-backdrop" class="modalback hidden" aria-hidden="true"><div id="modal-content" class="modal" role="dialog" aria-modal="true" aria-label="Editar lançamento"></div></div>
 <input type="file" accept=".json,application/json" id="import-file" class="hidden"/>
 <script>
-// Pouler Finance Lab v4.0 • extrato personalizável • dados brutos da Pluggy nunca são gravados no KV ou no localStorage.
+// Pouler Finance Lab v4.1 • filtros por banco e conta, extrato personalizável • dados brutos da Pluggy nunca são gravados no KV ou no localStorage.
 const WORKER='https://pouler-pluggy-lab.paulossray.workers.dev';
 const TOKEN_KEY='pouler-pluggy-lab-login-v1';
 const STATE_KEY='pouler-lab-v2-ajustes-locais';
@@ -438,7 +458,7 @@ const monthNow=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'
 const colors=['#7952d2','#d66aa8','#4e8bca','#e8ac5e','#39a78b','#a29bc3','#e2767b','#79a8a2','#ab86e9','#aeb0bb'];
 const categories=['Alimentação','Moradia','Transporte','Saúde','Educação','Lazer','Assinaturas','Compras','Salário','Renda extra','Investimentos','Dívidas','Impostos','Família','Presentes','Dízimo','Doações','Outros'];
 const emptyState=()=>({version:2,manual:[],overrides:{}});
-let finance=emptyState(), demoFinance=emptyState(), data=null, mode='none', currentView='dashboard', token='', sessionEmail='', cloudEnabled=false, saveTimer=null, saveInFlight=false, savedLocally=false, busy=false, hiddenValues=false, activeTypeFilter='all', currentSearch='', currentAccount='', stateRead=false;
+let finance=emptyState(), demoFinance=emptyState(), data=null, mode='none', currentView='dashboard', token='', sessionEmail='', cloudEnabled=false, saveTimer=null, saveInFlight=false, savedLocally=false, busy=false, hiddenValues=false, activeTypeFilter='all', currentSearch='', currentAccount='', currentBank='', stateRead=false;
 const displayedMoney=n=>hiddenValues?'R$ •••••':currency(n);
 const state=()=>mode==='demo'?demoFinance:finance;
 const period=()=>$('#month').value;
@@ -464,6 +484,51 @@ function bankIsGeneric(a){
  if(!a)return false;
  if(String(state().overrides[accountAliasKey(a)]?.title||'').trim())return false;
  return /^(conta\s*(corrente|poupan[cç]a|de pagamento|digital|banc[aá]ria)?|cart[aã]o\s*(de cr[eé]dito)?|cr[eé]dito|checking account|credit card)$/i.test(String(a.name||'').trim());
+}
+// Os grupos de instituição são usados apenas para filtrar/organizar o painel.
+// A Pluggy nem sempre informa o nome do banco no conector MeuPluggy.
+const BANK_FAMILIES=[
+ ['Nubank',/\b(nubank|nu pagamentos|nu bank)\b/i],
+ ['Sicoob',/\bsicoob\b/i],
+ ['XP',/\b(xp investimentos|xp inc|xp|rico investimentos)\b/i],
+ ['PicPay',/\b(picpay|pic pay)\b/i],
+ ['Inter',/\b(banco inter|inter)\b/i],
+ ['Itaú',/\b(itau|itaú)\b/i],
+ ['Bradesco',/\bbradesco\b/i],
+ ['Santander',/\bsantander\b/i],
+ ['Caixa',/\b(caixa economica|caixa econômica|caixa)\b/i],
+ ['Banco do Brasil',/\b(banco do brasil|bb banco)\b/i],
+ ['C6 Bank',/\b(c6 bank|c6)\b/i],
+ ['Mercado Pago',/\bmercado pago\b/i],
+ ['BTG Pactual',/\bbtg\b/i],
+ ['Neon',/\bneon\b/i],
+ ['PagBank',/\b(pagbank|pagseguro)\b/i],
+ ['Wise',/\bwise\b/i]
+];
+function bankGroupName(a){
+ if(!a)return 'Banco não identificado';
+ const explicit=String(state().overrides[accountAliasKey(a)]?.groupName||'').trim();
+ if(explicit)return explicit;
+ const candidates=[bankName(a),String(a.name||''),accountInstitution(a)];
+ for(const candidate of candidates)for(const [name,regex] of BANK_FAMILIES)if(regex.test(candidate))return name;
+ const institution=String(accountInstitution(a)||'').trim();
+ if(institution&&!/^(meu\s*pluggy|institui[cç][aã]o|pluggy\s*bank|sandbox)$/i.test(institution))return institution;
+ const raw=String(bankName(a)||'').trim();
+ if(raw&&!/^(gold|platinum|black|infinite|conta(?: corrente| digital| de pagamento)?|cart[aã]o(?: de cr[eé]dito)?|credit card|checking account)$/i.test(raw))return raw;
+ return 'Banco não identificado';
+}
+function bankGroupKey(name){return String(name||'').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');}
+function bankGroupOptions(){
+ const groups=new Map();
+ for(const a of data?.accounts||[]){const label=bankGroupName(a),key=bankGroupKey(label);if(!groups.has(key))groups.set(key,{key,label,accounts:[]});groups.get(key).accounts.push(a);}
+ return [...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'pt-BR'));
+}
+function accountsInBank(){return (data?.accounts||[]).filter(a=>currentBank&&bankGroupKey(bankGroupName(a))===currentBank);}
+function bankAccountFilterLabel(a,group){
+ const card=isCard(a),name=String(bankName(a)||'').trim(),last=String(a.lastDigits||'').trim();
+ const extra=name&&bankGroupKey(name)!==bankGroupKey(group)?' · '+name:'';
+ const duplicates=accountsInBank().filter(x=>String(x.lastDigits||'')===last&&x.type===a.type&&bankName(x)===name).length>1;
+ return (card?'Cartão':'Conta')+(last?' · final '+last:' · sem final informado')+extra+(duplicates?' · ref. '+String(a.id||'').slice(-5):'');
 }
 const isCard=a=>a?.type==='CREDIT';
 const signed=(t)=>{
@@ -641,8 +706,21 @@ function dashboard(){const t=linkedTotals();const f=freeTotals();const accountCo
 <section class="card cardpad"><div class="charthead"><div><h3>Movimento do mês</h3><div class="chartcap">Gasto acumulado, excluindo transferências e faturas</div></div></div>${trendChart()}<div class="row" style="justify-content:space-between"><span class="chartnote">Despesas reconhecidas</span><strong>${displayedMoney(t.consumption)}</strong></div></section></div>
 <div class="cols"><section class="card cardpad"><div class="charthead"><div><h3>Onde seu dinheiro foi usado</h3><div class="chartcap">Categorias com maior peso no mês</div></div><button class="btn sm" data-open="extrato">Editar extrato →</button></div>${categoryBars()}</section>
 <section class="card cardpad"><div class="charthead"><div><h3>Faturas do período</h3><div class="chartcap">Valores disponibilizados pelas instituições</div></div><span class="pill">${accountCount} contas</span></div>${billsUI(4)}<div class="line"></div><button class="btn soft w100" data-open="mensal-livre">✎ Abrir contas do mês</button></section></div>`;}
-function pickMenu(){return `<div class="tabletools"><input class="input search" id="txn-search" placeholder="Pesquisar no extrato…" value="${esc(currentSearch)}"/><select id="txn-account" class="select"><option value="">Todas as contas</option>${(data?.accounts||[]).map(a=>`<option value="${esc(a.id)}" ${a.id===currentAccount?'selected':''}>${esc(bankLabel(a))}</option>`).join('')}</select><select id="txn-type" class="select"><option value="all">Todos os movimentos</option><option value="card" ${activeTypeFilter==='card'?'selected':''}>Compras no cartão</option><option value="bank" ${activeTypeFilter==='bank'?'selected':''}>Movimentos bancários</option><option value="unlabeled" ${activeTypeFilter==='unlabeled'?'selected':''}>Sem classificação</option></select></div>`;}
-function filteredTx(){return transactions().filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,annotation(t).title,annotation(t).category,account(t.accountId)?.name,bankLabel(account(t.accountId))].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
+function pickMenu(){
+ const groups=bankGroupOptions();
+ if(currentBank&&!groups.some(g=>g.key===currentBank)){currentBank='';currentAccount='';}
+ const chosen=groups.find(g=>g.key===currentBank),accounts=accountsInBank();
+ if(currentAccount&&!accounts.some(a=>a.id===currentAccount))currentAccount='';
+ return `<div class="txn-filters" role="group" aria-label="Filtros do extrato bancário">
+ <div class="txn-filter bank-col"><label for="txn-bank">1 · Banco</label><select id="txn-bank" class="select"><option value="">Todos os bancos</option>${groups.map(g=>`<option value="${esc(g.key)}" ${g.key===currentBank?'selected':''}>${esc(g.label)} (${g.accounts.length})</option>`).join('')}</select></div>
+ <div class="txn-filter account-col"><label for="txn-account">2 · Conta / cartão por final</label><select id="txn-account" class="select" ${!chosen?'disabled':''}><option value="">${chosen?'Todas as contas e cartões':'Escolha um banco'}</option>${accounts.map(a=>`<option value="${esc(a.id)}" ${a.id===currentAccount?'selected':''}>${esc(bankAccountFilterLabel(a,chosen.label))}</option>`).join('')}</select></div>
+ <div class="txn-filter search-col"><label for="txn-search">Buscar movimentação</label><input id="txn-search" class="input" type="search" placeholder="Descrição, categoria ou nome…" value="${esc(currentSearch)}"/></div>
+ <div class="txn-filter type-col"><label for="txn-type">Tipo</label><select id="txn-type" class="select"><option value="all">Todos os movimentos</option><option value="card" ${activeTypeFilter==='card'?'selected':''}>Compras no cartão</option><option value="bank" ${activeTypeFilter==='bank'?'selected':''}>Movimentos bancários</option><option value="unlabeled" ${activeTypeFilter==='unlabeled'?'selected':''}>Sem classificação</option></select></div>
+ <button type="button" class="btn sm txn-filter-clear" data-clear-txn-filters>Limpar filtros</button></div>
+ <div class="txn-filter-note">${chosen?`<span class="txn-group-preview">🏦 <strong>${esc(chosen.label)}</strong> · ${chosen.accounts.length} conta(s) e cartão(ões)</span> · Selecione o final para detalhar.`:'Escolha um banco para listar somente as contas e cartões dele. Os nomes podem ser personalizados.'} <button type="button" class="tx-edit-link" data-manage-bank-groups>✎ Organizar bancos</button></div>`;
+}
+function filteredTx(){return transactions().filter(t=>!currentBank||bankGroupKey(bankGroupName(account(t.accountId)))===currentBank).filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,annotation(t).title,annotation(t).category,account(t.accountId)?.name,bankLabel(account(t.accountId))].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
+function refreshTxnResults(){const rows=filteredTx(),list=$('#trans-list'),count=$('#txn-result-count');if(list)list.innerHTML=txTable(rows);if(count)count.textContent=rows.length+' movimentações';}
 function kindPill(kind){if(kind==='cardpayment')return `<span class="pill red">Fatura</span>`;if(kind==='transfer')return `<span class="pill plain">Transferência</span>`;if(kind==='ignore')return `<span class="pill plain">Ignorar</span>`;return '';}
 function txTable(rows,opts={}){
  if(!rows.length)return noData('Nenhuma movimentação encontrada','Mude os filtros ou sincronize os dados do mês.');
@@ -662,7 +740,7 @@ function txTable(rows,opts={}){
  </tr>`;
  }).join('')}</tbody></table></div>`;
 }
-function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Renomeie contas e cartões, ajuste categorias, grupos e tipo financeiro. O extrato original fica intacto.</p></div><div class="wraprows"><span class="pill">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Clique em “Editar tudo” para personalizar uma transação, ou em “Renomear banco” para identificar a conta em todos os lançamentos. A classificação financeira também pode ser alterada diretamente na tabela.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
+function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Renomeie contas e cartões, ajuste categorias, grupos e tipo financeiro. O extrato original fica intacto.</p></div><div class="wraprows"><span class="pill" id="txn-result-count">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Clique em “Editar tudo” para personalizar uma transação, ou em “Renomear banco” para identificar a conta em todos os lançamentos. A classificação financeira também pode ser alterada diretamente na tabela.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
 // -------- Análise de Cartões 3.6: um laboratório para identificar despesas --------
 const CA_GROUP_KEY='pouler-card-groups-open-v36';
 const CA_PREF_KEY='pouler-card-analytics-ui-v36';
@@ -970,11 +1048,16 @@ function pmQuickEdit(field,id,ref,value){const linked=ref==='linked',row=linked?
  if(field==='day'&&!linked){let day=Number(value);if(!Number.isInteger(day)||day<1||day>31){alert('Dia inválido. Informe entre 1 e 31.');render();return;}
   const base=row.recurring?row.date.slice(0,7):period();const y=Number(base.slice(0,4)),m=Number(base.slice(5,7));day=Math.min(day,new Date(y,m,0).getDate());row.date=base+'-'+String(day).padStart(2,'0');}
  scheduleSave();}
+function manageBankGroupsModal(){
+ const accounts=data?.accounts||[];
+ if(!accounts.length){notice('Sincronize seus bancos antes de organizar as contas.','warn');return;}
+ showModal(`<div class="row" style="justify-content:space-between;gap:10px"><div><div class="over">EXTRATO VINCULADO</div><h2>Organizar bancos e contas</h2></div><button class="btn icon" type="button" data-close-modal>✕</button></div><p>Defina o banco de cada conta ou cartão. Contas com o mesmo nome de banco aparecerão juntas no primeiro filtro; o segundo filtro mostra os finais.</p><div class="bankgroup-modal-list">${accounts.map(a=>`<div class="bankgroup-modal-line"><div><strong>${esc(bankGroupName(a))} · ${esc(isCard(a)?'Cartão':'Conta')}${a.lastDigits?' · final '+esc(a.lastDigits):''}</strong><small>${esc(bankName(a))} · ${esc(a.name||'Nome original não informado')}</small></div><button type="button" class="btn sm" data-organize-bank-edit="${esc(a.id)}">✎ Editar</button></div>`).join('')}</div><div class="note">As alterações são somente rótulos no Pouler Finance. Não alteram nomes nem dados nos bancos.</div><div class="footer"><button type="button" class="btn" data-close-modal>Fechar</button></div>`);
+}
 function renameAccountModal(id){
  const a=account(id);if(!a)return;
- const key=accountAliasKey(a),current=String(state().overrides[key]?.title||'');
+ const key=accountAliasKey(a),current=String(state().overrides[key]?.title||''),group=String(state().overrides[key]?.groupName||'');
  const card=isCard(a),original=String(a.name||'Sem nome na Pluggy');
- showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">${card?'CARTÕES · NOME PERSONALIZADO':'BANCOS · NOME PERSONALIZADO'}</div><h2>Renomear ${card?'cartão':'conta'}</h2></div><button type="button" class="btn icon" data-close-modal aria-label="Fechar">✕</button></div><p>Escolha o nome para identificar ${card?'este cartão':'esta conta'} no Pouler Finance Lab. A alteração aparece nos filtros, compras, análises e extratos.</p><div class="note">Nome original na Pluggy: <strong>${esc(original)}</strong>${a.lastDigits?' · final '+esc(a.lastDigits):''}. Nenhuma alteração será feita na instituição financeira.</div><form id="bank-alias-form" data-account-id="${esc(a.id)}"><div class="field"><label for="custom-bank-name">Novo nome exibido no painel (substitui GOLD)</label><input id="custom-bank-name" class="input" name="name" type="text" autocomplete="off" maxlength="80" placeholder="Ex.: ${card?'Nubank Gold / Cartão principal':'Minha conta Nubank'}" value="${esc(current)}" autofocus/></div><p class="miniinfo">Para restaurar o nome original, apague o campo e salve.</p><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button type="submit" class="btn primary">Salvar nome</button></div></form>`);
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">${card?'CARTÕES · NOME PERSONALIZADO':'BANCOS · NOME PERSONALIZADO'}</div><h2>Renomear ${card?'cartão':'conta'}</h2></div><button type="button" class="btn icon" data-close-modal aria-label="Fechar">✕</button></div><p>Escolha o nome para identificar ${card?'este cartão':'esta conta'} no Pouler Finance Lab. A alteração aparece nos filtros, compras, análises e extratos.</p><div class="note">Nome original na Pluggy: <strong>${esc(original)}</strong>${a.lastDigits?' · final '+esc(a.lastDigits):''}. Nenhuma alteração será feita na instituição financeira.</div><form id="bank-alias-form" data-account-id="${esc(a.id)}"><div class="field"><label for="custom-bank-name">Novo nome exibido no painel (substitui GOLD)</label><input id="custom-bank-name" class="input" name="name" type="text" autocomplete="off" maxlength="80" placeholder="Ex.: ${card?'Nubank Gold / Cartão principal':'Minha conta Nubank'}" value="${esc(current)}" autofocus/></div><div class="field" style="margin-top:14px"><label for="custom-bank-group">Banco ao qual esta conta/cartão pertence (agrupamento)</label><input id="custom-bank-group" class="input" name="bankGroup" type="text" maxlength="60" list="bank-names-list" placeholder="Ex.: Nubank, Sicoob, XP, Inter" value="${esc(group)}"/><datalist id="bank-names-list">${[...new Set([...bankGroupOptions().map(g=>g.label),'Nubank','Sicoob','XP','PicPay','Inter'])].map(x=>`<option value="${esc(x)}"></option>`).join('')}</datalist><div class="tx-modal-help">Preencha quando a Pluggy der um nome genérico ou quando quiser juntar contas no mesmo banco. Vazio = identificar automaticamente.</div></div><p class="miniinfo">Para restaurar o nome original, apague o nome personalizado. A instituição nunca é modificada.</p><div class="footer"><button type="button" class="btn" data-close-modal>Cancelar</button><button type="submit" class="btn primary">Salvar alterações</button></div></form>`);
  const field=$('#custom-bank-name');if(field){field.focus();field.select();}
 }
 function banksPage(){const accounts=data?.accounts||[];return `<div class="splithead"><div><h2>Contas conectadas</h2><p>Saldos, cartões e horário da última sincronização disponibilizada pela Pluggy.</p></div><span class="pill">${accounts.length} contas</span></div><div class="col2">${accounts.map(a=>`<div class="card cardpad"><div class="row"><div class="bankicon" style="font-size:22px">${isCard(a)?'▤':'⌂'}</div><div class="grow"><strong>${esc(bankName(a))}</strong><div class="tiny muted">${isCard(a)?'Cartão de crédito':'Conta bancária'} · final ${esc(a.lastDigits||'••••')}</div><div class="bank-alias-note">${esc(a.name)}${bankIsGeneric(a)?' · nome genérico informado pela Pluggy':''}</div></div><button type="button" class="btn sm" data-rename-bank="${esc(a.id)}" title="Apenas um nome de exibição, não altera seu banco">✎ Nomear</button></div><div class="line"></div><div class="mutelabel">${isCard(a)?'Saldo devedor informado':'Saldo disponível informado'}</div><div style="font-size:24px;font-weight:850;margin:5px 0">${a.balance===null?'Não informado':displayedMoney(a.balance)}</div>${isCard(a)?`<span class="miniinfo">Limite total: ${a.creditLimit==null?'—':displayedMoney(a.creditLimit)} · disponível: ${a.availableCreditLimit==null?'—':displayedMoney(a.availableCreditLimit)}</span>`:''}</div>`).join('')||`<div class="card">${noData('Sem contas consultadas')}</div>`}</div><div class="cols"><div class="card cardpad"><div class="charthead"><h3>Faturas</h3></div>${billsUI(40)}</div><div class="card cardpad"><div class="charthead"><h3>Conexões Pluggy</h3></div><div class="accountlist">${(data?.items||[]).map(i=>`<div class="account"><div class="bankicon">↔</div><div class="grow"><strong>${esc(i.institution||'Instituição')}</strong><small>Última sincronização: ${fmtDate(i.lastUpdatedAt)}</small></div><span class="pill ${i.status==='UPDATED'?'good':'plain'}">${esc(i.status||'—')}</span></div>`).join('')||noData('Sem conexões consultadas')}</div></div></div>`;}
@@ -1002,7 +1085,7 @@ function editTransaction(id){
  <form id="tx-form" data-id="${esc(id)}" data-account-id="${esc(acc?.id||'')}">
  <div class="tx-section-label">Identificação e banco</div>
  <div class="fields"><div class="field wide"><label>Nome personalizado da movimentação</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" placeholder="Ex.: Padaria, Aulas particulares, Fatura..." required/></div>
- ${acc?`<div class="field wide"><label>Renomear banco / cartão para todas as movimentações desta conta</label><input name="bankAlias" class="input" maxlength="80" value="${esc(alias)}" placeholder="Ex.: Nubank Principal, Sicoob, Cartão Gold"/><div class="tx-modal-help">Nome de origem: ${esc(bankOrig)}${acc.lastDigits?' · final '+esc(acc.lastDigits):''}. Deixe vazio para mostrar o nome original da Pluggy.</div></div>`:''}
+ ${acc?`<div class="field wide"><label>Renomear banco / cartão para todas as movimentações desta conta</label><input name="bankAlias" class="input" maxlength="80" value="${esc(alias)}" placeholder="Ex.: Nubank Principal, Sicoob, Cartão Gold"/><div class="tx-modal-help">Nome de origem: ${esc(bankOrig)}${acc.lastDigits?' · final '+esc(acc.lastDigits):''}. Deixe vazio para mostrar o nome original da Pluggy.</div></div><div class="field wide"><label>Banco para agrupamento (filtro de instituição)</label><input name="bankGroup" class="input" maxlength="60" value="${esc(state().overrides[accountAliasKey(acc)]?.groupName||'')}" placeholder="Ex.: Nubank, Sicoob, XP"/><div class="tx-modal-help">Todas as contas com o mesmo banco ficarão juntas no primeiro filtro.</div></div>`:''}
  </div><div class="tx-section-label">Organização financeira</div>
  <div class="fields"><div class="field"><label>Categoria detalhada</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" placeholder="Ex.: Padaria, Mercado, Combustível" required/>${categoryList()}</div>
  <div class="field"><label>Grupo personalizado</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Ex.: Aulas, Monte Alvo, Compras online"/>${pmGroupDatalist()}<div class="tx-modal-help">Organiza receitas e despesas nos grupos recolhíveis.</div></div>
@@ -1060,6 +1143,8 @@ $('#view-content').addEventListener('click',async e=>{
    el.setAttribute('aria-expanded',String(shouldOpen));if(el.nextElementSibling)el.nextElementSibling.hidden=!shouldOpen;
   });pmPersistOpen();return;
  }
+ if(btn.hasAttribute('data-manage-bank-groups')){manageBankGroupsModal();return;}
+ if(btn.hasAttribute('data-clear-txn-filters')){currentBank='';currentAccount='';currentSearch='';activeTypeFilter='all';render();return;}
  if(btn.hasAttribute('data-rename-bank')){renameAccountModal(btn.dataset.renameBank);return;}
  if(btn.hasAttribute('data-pm-month')){const next=pmNextMonth(period(),Number(btn.dataset.pmMonth));$('#month').value=next;$('#month').dispatchEvent(new Event('change'));return;}
  if(btn.hasAttribute('data-pm-toggle-paid')){pmPaidControl=!pmPaidControl;pmSaveSettings();render();return;}
@@ -1114,7 +1199,7 @@ $('#view-content').addEventListener('input',e=>{
  if(e.target.id==='ca-search'){caUI.search=e.target.value;const el=$('#ca-results');if(el)el.innerHTML=caListContent();return;}
 });
 $('#view-content').addEventListener('input',e=>{
- if(e.target.id==='txn-search'){currentSearch=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+ if(e.target.id==='txn-search'){currentSearch=e.target.value;refreshTxnResults();}
 });
 $('#view-content').addEventListener('change',e=>{
  if(e.target.id==='ca-sort'){caUI.sort=e.target.value;caSaveUI();render();return;}
@@ -1157,10 +1242,12 @@ $('#view-content').addEventListener('change',e=>{
  if(e.target.hasAttribute('data-pm-amount'))return pmQuickEdit('amount',e.target.dataset.pmAmount,e.target.dataset.pmRef,e.target.value);
  if(e.target.hasAttribute('data-pm-day'))return pmQuickEdit('day',e.target.dataset.pmDay,'manual',e.target.value);
 
- if(e.target.id==='txn-account'){currentAccount=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
- if(e.target.id==='txn-type'){activeTypeFilter=e.target.value;const list=$('#trans-list');if(list)list.innerHTML=txTable(filteredTx());}
+ if(e.target.id==='txn-bank'){currentBank=e.target.value;currentAccount='';render();return;}
+ if(e.target.id==='txn-account'){currentAccount=e.target.value;refreshTxnResults();return;}
+ if(e.target.id==='txn-type'){activeTypeFilter=e.target.value;refreshTxnResults();return;}
 });
 $('#modal-backdrop').addEventListener('click',e=>{
+ const organize=e.target.closest('[data-organize-bank-edit]');if(organize){renameAccountModal(organize.dataset.organizeBankEdit);return;}
  const restore=e.target.closest('[data-pm-restore-income]');if(restore){const id=restore.dataset.pmRestoreIncome,t=transactions().find(x=>txKey(x)===id);if(!t)return;state().overrides[id]={...annotation(t),hideMonthly:false};closeModal();scheduleSave();notice('Provento restaurado no planejamento mensal.','good');return;}
  if(e.target.closest('[data-pm-income-preset]')){
   const selected=e.target.closest('[data-pm-income-preset]');
@@ -1178,12 +1265,12 @@ $('#modal-backdrop').addEventListener('submit',e=>{
  if(e.target.id!=='bank-alias-form')return;
  e.preventDefault();
  const a=account(e.target.dataset.accountId);if(!a)return;
- const input=String(new FormData(e.target).get('name')||'').trim().slice(0,80);
- const key=accountAliasKey(a);
- if(input)state().overrides[key]={...state().overrides[key],title:input};
- else delete state().overrides[key];
- closeModal();scheduleSave();
- notice(input?'Nome personalizado salvo: '+input+'.':'Nome original da Pluggy restaurado.','good');
+ const f=new FormData(e.target),input=String(f.get('name')||'').trim().slice(0,80),group=String(f.get('bankGroup')||'').trim().slice(0,60);
+ const key=accountAliasKey(a),overrides=state().overrides;
+ if(input||group)overrides[key]={...overrides[key],title:input,groupName:group};
+ else delete overrides[key];
+ currentBank='';currentAccount='';closeModal();scheduleSave();
+ notice('Banco organizado. Agora você pode escolher o banco e depois o final da conta no Extrato.','good');
 });
 $('#modal-backdrop').addEventListener('submit',e=>{
  if(e.target.id!=='ca-bulk-form')return;e.preventDefault();const group=String(new FormData(e.target).get('groupName')||'').trim().slice(0,60);
@@ -1223,9 +1310,10 @@ $('#modal-backdrop').addEventListener('submit',e=>{
   state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),kind:['normal','transfer','cardpayment','ignore'].includes(String(f.get('kind')))?String(f.get('kind')):baseKind(t),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
   const acc=account(t.accountId);
   if(acc){
-   const alias=String(f.get('bankAlias')||'').trim().slice(0,80),aliasKey=accountAliasKey(acc);
-   if(alias)state().overrides[aliasKey]={...state().overrides[aliasKey],title:alias};
+   const alias=String(f.get('bankAlias')||'').trim().slice(0,80),bankGroup=String(f.get('bankGroup')||'').trim().slice(0,60),aliasKey=accountAliasKey(acc);
+   if(alias||bankGroup)state().overrides[aliasKey]={...state().overrides[aliasKey],title:alias,groupName:bankGroup};
    else delete state().overrides[aliasKey];
+   currentBank='';currentAccount='';
   }
   closeModal();scheduleSave();notice('Personalizações salvas. Extrato original preservado.','good');return;
  }
