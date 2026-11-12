@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-aaaa<html lang="pt-BR">
+<html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
@@ -375,6 +375,26 @@ aaaa<html lang="pt-BR">
 .bankgroup-modal-line small{display:block;font-size:10px;margin-top:4px;color:#81758f;overflow-wrap:anywhere}
 @media(max-width:1300px){.txn-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.txn-filter-clear{align-self:end}.txn-filter.search-col{grid-column:1/3}}
 @media(max-width:600px){.txn-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.txn-filter.search-col,.txn-filter.type-col{grid-column:1/3}.txn-filter label{font-size:9px}.txn-filter .input,.txn-filter .select{font-size:11px;min-height:42px}.txn-filter-clear{grid-column:1/3;width:100%}.bankgroup-modal-line{align-items:flex-start;flex-wrap:wrap}.bankgroup-modal-line button{width:100%}}
+
+/* Identificação opcional de participantes de PIX (sem documentos pessoais) */
+.tx-pix-party{display:flex;flex-wrap:wrap;gap:4px;align-items:baseline;margin-top:7px;padding:5px 8px;border-radius:7px;background:#f4f9f8;color:#206454;font-size:10.5px;font-weight:680;line-height:1.4;overflow-wrap:anywhere;max-width:max-content}
+.tx-pix-party span{font-weight:550;color:#66837b}
+.tx-pix-party.not-available{background:#f6f4fa;color:#8e88a0;font-weight:500}
+.tx-pix-party.not-available span{color:#8e88a0}
+
+/* Categoria detalhada — seletor real + criação persistente (v4.3) */
+.cat-picker{display:flex;align-items:stretch;gap:7px;flex-wrap:wrap}
+.cat-picker>select{flex:1 1 170px;min-width:0;max-width:none;min-height:45px;background:#fff}
+.cat-new-btn{flex:0 0 auto;min-height:45px;white-space:nowrap;color:#6546aa;background:#f6f1ff;border:1px solid #d9c8f2;border-radius:10px;padding:0 12px;font-size:12px;font-weight:750;cursor:pointer}
+.cat-new-btn:hover{background:#efe5ff}
+.cat-create{margin-top:9px;background:#faf8ff;border:1px solid #e8def8;border-radius:12px;padding:11px}
+.cat-create[hidden]{display:none!important}
+.cat-create-label{display:block;color:#65547f;font-size:11px;margin-bottom:8px;font-weight:700}
+.cat-create-controls{display:flex;flex-wrap:wrap;gap:8px}
+.cat-create-controls input{min-width:150px;flex:1 1 140px;max-width:none}
+.cat-create-controls .btn{min-height:42px}
+.cat-create-msg{font-size:11px;color:#857793;display:block;margin-top:7px}
+@media(max-width:510px){.cat-picker{display:grid;grid-template-columns:1fr}.cat-new-btn{width:100%}}
 </style>
 
 <style id="pouler-unificado-pluggy">
@@ -719,7 +739,16 @@ function pickMenu(){
  <button type="button" class="btn sm txn-filter-clear" data-clear-txn-filters>Limpar filtros</button></div>
  <div class="txn-filter-note">${chosen?`<span class="txn-group-preview">🏦 <strong>${esc(chosen.label)}</strong> · ${chosen.accounts.length} conta(s) e cartão(ões)</span> · Selecione o final para detalhar.`:'Escolha um banco para listar somente as contas e cartões dele. Os nomes podem ser personalizados.'} <button type="button" class="tx-edit-link" data-manage-bank-groups>✎ Organizar bancos</button></div>`;
 }
-function filteredTx(){return transactions().filter(t=>!currentBank||bankGroupKey(bankGroupName(account(t.accountId)))===currentBank).filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,annotation(t).title,annotation(t).category,account(t.accountId)?.name,bankLabel(account(t.accountId))].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
+function pixPartyDetails(t) {
+ const isPix = /\bPIX\b/i.test(String(t?.paymentMethod||'')) || /\bPIX\b/i.test(String(t?.description||''));
+ const type = String(t?.type||'').toUpperCase();
+ const role = type==='CREDIT' ? 'Quem enviou' : type==='DEBIT' ? 'Quem recebeu' : 'Participante';
+ const actualName = String(t?.counterpartyName|| (type==='CREDIT'?t?.payerName:t?.receiverName)||'').trim();
+ if(actualName) return {role,name:actualName,available:true};
+ if(isPix) return {role,name:'Não informado pela instituição',available:false};
+ return null;
+}
+function filteredTx(){return transactions().filter(t=>!currentBank||bankGroupKey(bankGroupName(account(t.accountId)))===currentBank).filter(t=>!currentAccount||t.accountId===currentAccount).filter(t=>activeTypeFilter==='all'||(activeTypeFilter==='card'&&!isBank(t))||(activeTypeFilter==='bank'&&isBank(t))||(activeTypeFilter==='unlabeled'&&!state().overrides[txKey(t)])).filter(t=>!currentSearch||[t.description,t.counterpartyName,t.payerName,t.receiverName,annotation(t).title,annotation(t).category,account(t.accountId)?.name,bankLabel(account(t.accountId))].some(v=>String(v||'').toLocaleLowerCase('pt-BR').includes(currentSearch.toLocaleLowerCase('pt-BR')))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));}
 function refreshTxnResults(){const rows=filteredTx(),list=$('#trans-list'),count=$('#txn-result-count');if(list)list.innerHTML=txTable(rows);if(count)count.textContent=rows.length+' movimentações';}
 function kindPill(kind){if(kind==='cardpayment')return `<span class="pill red">Fatura</span>`;if(kind==='transfer')return `<span class="pill plain">Transferência</span>`;if(kind==='ignore')return `<span class="pill plain">Ignorar</span>`;return '';}
 function txTable(rows,opts={}){
@@ -730,7 +759,7 @@ function txTable(rows,opts={}){
  const kindLabel={normal:'Movimentação',transfer:'Transferência',cardpayment:'Pagamento de fatura',ignore:'Ignorado'}[a.kind]||'Movimentação';
  return `<tr>
  <td data-label="Data">${fmtDate(t.date)}</td>
- <td><div class="desc tx-desc">${esc(a.title)}${a.title!==t.description?`<small>Original: ${esc(t.description)}</small>`:''}</div>${a.note?'<div class="tx-sub">✎ Com observação</div>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</td>
+ <td><div class="desc tx-desc">${esc(a.title)}${a.title!==t.description?`<small>Original: ${esc(t.description)}</small>`:''}</div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>↔ ${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}${a.note?'<div class="tx-sub">✎ Com observação</div>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</td>
  <td data-label="Banco / conta" class="tx-account"><div class="tx-bank-name">${esc(bankLabel(acc))}</div>${alias?`<div class="tx-sub">Original: ${esc(acc?.name||'Conta')}</div>`:''}${acc?`<button class="tx-alias-btn" type="button" data-rename-bank="${esc(acc.id)}" aria-label="Renomear banco ou cartão ${esc(bankLabel(acc))}">✎ Renomear banco</button>`:''}</td>
  <td data-label="Categoria / grupo" class="tx-category-cell"><div class="tx-cat-title">${esc(a.category)}</div><div class="tx-sub">${a.groupName?'Grupo: '+esc(a.groupName):'Grupo automático'}</div><button type="button" class="tx-edit-link" data-edit-tx="${esc(id)}">Editar categoria e grupo</button></td>
  <td data-label="Financeiro" class="tx-finance-cell"><select class="tx-finance-select" data-tx-finance="${esc(id)}" aria-label="Grupo financeiro de ${esc(a.title)}">${FIN_CLASSES.map(([v,label])=>`<option value="${v}" ${v===a.financeClass?'selected':''}>${label}</option>`).join('')}</select><div class="tx-sub">${esc(kindLabel)}</div></td>
@@ -1074,20 +1103,60 @@ function changeView(to){if(!titles[to])return;currentView=to;$('#sidebar').class
 function showModal(content){$('#modal-content').innerHTML=content;$('#modal-backdrop').classList.remove('hidden');$('#modal-backdrop').setAttribute('aria-hidden','false');const inp=$('#modal-content input:not([type=checkbox])');inp?.focus();}
 function closeModal(){$('#modal-content')?.classList.remove('tx-edit-modal');$('#modal-backdrop').classList.add('hidden');$('#modal-backdrop').setAttribute('aria-hidden','true');$('#modal-content').innerHTML='';}
 function choices(items,selected){return items.map(c=>`<option value="${esc(c)}" ${c===selected?'selected':''}>${esc(c)}</option>`).join('');}
-const categoryList=()=>`<datalist id="categories-list">${categories.map(c=>`<option value="${esc(c)}"></option>`).join('')}</datalist>`;
+// Categorias editáveis: opções verdadeiras de <select>, sem depender de datalist
+// (que pode não abrir em alguns navegadores). Categorias criadas são guardadas
+// como entradas especiais em overrides — formato já aceito pelo Worker / FINANCE_KV.
+const CATEGORY_PRESETS = [
+ 'Mercado','Padaria','Restaurantes','Delivery','Combustível','Aplicativos de transporte',
+ 'Estacionamento','Manutenção do carro','Água','Energia','Internet','Telefonia',
+ 'Aluguel','Condomínio','Farmácia','Consultas','Aulas particulares',
+ 'Monte Alvo','SEDU','Novo Milênio','Materiais escolares','Compras online',
+ 'Shopee','Mercado Livre','Streaming','Academia','Seguros','Tarifas bancárias'
+];
+function normalizeCategoryName(v){
+ return String(v||'').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
+}
+function categoryOptions(current=''){
+ const uniques=new Map();
+ const add=name=>{name=String(name||'').trim().slice(0,60);if(name&&!uniques.has(normalizeCategoryName(name)))uniques.set(normalizeCategoryName(name),name);};
+ [current,...categories,...CATEGORY_PRESETS].forEach(add);
+ (data?.transactions||[]).forEach(t=>add(t.category));
+ const s=state();
+ (s.manual||[]).forEach(m=>add(m.category));
+ for(const [key,v] of Object.entries(s.overrides||{})){
+  if(key.startsWith('category:'))add(v.title);
+  else if(!key.startsWith('account:'))add(v.category);
+ }
+ return [...uniques.values()].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+}
+function categoryPicker(current=''){
+ const options=categoryOptions(current);
+ const picked=normalizeCategoryName(current);
+ return `<div class="cat-picker"><select class="select" name="category" aria-label="Escolher categoria detalhada" required>
+  <option value="" disabled ${!current?'selected':''}>Selecione uma categoria...</option>
+  ${options.map(v=>`<option value="${esc(v)}" ${normalizeCategoryName(v)===picked?'selected':''}>${esc(v)}</option>`).join('')}
+ </select><button type="button" class="cat-new-btn" data-cat-new-toggle>＋ Nova categoria</button></div>
+ <div class="cat-create" data-cat-create hidden><span class="cat-create-label">Criar categoria reutilizável</span>
+  <div class="cat-create-controls"><input class="input" data-cat-new-name maxlength="60" placeholder="Ex.: Padaria, Aulas, Saúde..." autocomplete="off"/>
+  <button type="button" class="btn primary" data-cat-new-save>Adicionar</button>
+  <button type="button" class="btn" data-cat-new-cancel>Cancelar</button></div>
+  <span class="cat-create-msg">A nova categoria ficará disponível nas próximas edições, sem alterar o extrato original.</span>
+ </div>`;
+}
+
 function editTransaction(id){
  const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;
  const a=annotation(t),signedV=signed(t),acc=account(t.accountId);
  const alias=acc?String(state().overrides[accountAliasKey(acc)]?.title||'').trim():'';
  const bankOrig=acc?String(acc.name||accountInstitution(acc)||'Conta bancária'):'Conta não identificada';
  showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">EXTRATO VINCULADO · EDIÇÃO</div><h2>Personalizar movimentação</h2></div><button class="btn icon" type="button" data-close-modal aria-label="Fechar editor">✕</button></div>
- <div class="tx-edit-head"><span class="mutelabel">DADOS ORIGINAIS DO BANCO (SOMENTE LEITURA)</span><div class="tx-edit-headgrid"><div><span class="tiny muted">Data e valor</span><strong>${fmtDate(t.date)} · ${displayedMoney(signedV)}</strong></div><div><span class="tiny muted">Conta de origem</span><strong>${esc(bankLabel(acc))}</strong></div></div><div class="tx-sub">Descrição original: ${esc(t.description)}</div></div>
+ <div class="tx-edit-head"><span class="mutelabel">DADOS ORIGINAIS DO BANCO (SOMENTE LEITURA)</span><div class="tx-edit-headgrid"><div><span class="tiny muted">Data e valor</span><strong>${fmtDate(t.date)} · ${displayedMoney(signedV)}</strong></div><div><span class="tiny muted">Conta de origem</span><strong>${esc(bankLabel(acc))}</strong></div></div><div class="tx-sub">Descrição original: ${esc(t.description)}</div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}</div>
  <form id="tx-form" data-id="${esc(id)}" data-account-id="${esc(acc?.id||'')}">
  <div class="tx-section-label">Identificação e banco</div>
  <div class="fields"><div class="field wide"><label>Nome personalizado da movimentação</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" placeholder="Ex.: Padaria, Aulas particulares, Fatura..." required/></div>
  ${acc?`<div class="field wide"><label>Renomear banco / cartão para todas as movimentações desta conta</label><input name="bankAlias" class="input" maxlength="80" value="${esc(alias)}" placeholder="Ex.: Nubank Principal, Sicoob, Cartão Gold"/><div class="tx-modal-help">Nome de origem: ${esc(bankOrig)}${acc.lastDigits?' · final '+esc(acc.lastDigits):''}. Deixe vazio para mostrar o nome original da Pluggy.</div></div><div class="field wide"><label>Banco para agrupamento (filtro de instituição)</label><input name="bankGroup" class="input" maxlength="60" value="${esc(state().overrides[accountAliasKey(acc)]?.groupName||'')}" placeholder="Ex.: Nubank, Sicoob, XP"/><div class="tx-modal-help">Todas as contas com o mesmo banco ficarão juntas no primeiro filtro.</div></div>`:''}
  </div><div class="tx-section-label">Organização financeira</div>
- <div class="fields"><div class="field"><label>Categoria detalhada</label><input name="category" class="input" list="categories-list" maxlength="60" value="${esc(a.category)}" placeholder="Ex.: Padaria, Mercado, Combustível" required/>${categoryList()}</div>
+ <div class="fields"><div class="field"><label>Categoria detalhada</label>${categoryPicker(a.category)}</div>
  <div class="field"><label>Grupo personalizado</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Ex.: Aulas, Monte Alvo, Compras online"/>${pmGroupDatalist()}<div class="tx-modal-help">Organiza receitas e despesas nos grupos recolhíveis.</div></div>
  <div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}<div class="tx-modal-help">Provento, despesa fixa ou gasto geral.</div></div>
  <div class="field"><label>Natureza da movimentação</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select><div class="tx-modal-help">Evite contar transferências e faturas duas vezes.</div></div>
@@ -1100,7 +1169,7 @@ function editTransaction(id){
  $('#modal-content')?.classList.add('tx-edit-modal');
 }
 function editManual(id=null,defaultType='expense'){const m=state().manual.find(x=>x.id===id)||{id:'',title:'',amount:'',type:defaultType,category:defaultType==='income'?'Renda extra':'Moradia',date:period()+'-'+String(Math.min(new Date().getDate(),28)).padStart(2,'0'),status:'pending',recurring:false,note:''};const isNew=!id;
- showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?(defaultType==='income'?'Nova receita manual':'Nova despesa manual'):'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Cadastre proventos, despesas fixas ou gastos gerais. O lançamento é manual, editável e <strong>não cria nenhuma transação bancária</strong>.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><input type="hidden" name="type" value="${esc(m.type)}" /><div class="field"><label>Classificação financeira</label>${finSelect(manualClass(m),'name="financeClass"')}</div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label><input class="input" name="category" list="categories-list" required maxlength="60" value="${esc(m.category)}"/>${categoryList()}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(m.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">MENSAL LIVRE</div><h2>${isNew?(defaultType==='income'?'Nova receita manual':'Nova despesa manual'):'Editar lançamento'}</h2></div><button class="btn icon" data-close-modal>✕</button></div><p>Cadastre proventos, despesas fixas ou gastos gerais. O lançamento é manual, editável e <strong>não cria nenhuma transação bancária</strong>.</p><form id="manual-form" data-id="${esc(id||'')}"><div class="fields"><div class="field wide"><label>Descrição</label><input class="input" name="title" maxlength="160" required value="${esc(m.title)}" placeholder="Ex.: Aluguel, salário, academia..."/></div><input type="hidden" name="type" value="${esc(m.type)}" /><div class="field"><label>Classificação financeira</label>${finSelect(manualClass(m),'name="financeClass"')}</div><div class="field"><label>Valor (R$)</label><input class="input" name="amount" type="number" min="0" max="999999999" step="0.01" required value="${esc(m.amount)}" /></div><div class="field"><label>Data de vencimento/recebimento</label><input class="input" name="date" type="date" required value="${esc(m.date)}" /></div><div class="field"><label>Categoria</label>${categoryPicker(m.category)}</div><div class="field"><label>Grupo no controle mensal</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(m.groupName||'')}" placeholder="Automático (ou escreva seu grupo)"/>${pmGroupDatalist()}</div><div class="field wide"><label class="checkrow"><input type="checkbox" name="recurring" ${m.recurring?'checked':''}/> Repetir em todos os meses seguintes (conta recorrente)</label></div><div class="field wide"><label class="checkrow"><input type="checkbox" name="paid" ${(m.recurring?(m.monthlyStatus?.[period()]||'pending'):m.status)==='paid'?'checked':''}/> Já ${m.type==='income'?'recebi':'paguei'} neste mês</label></div><div class="field wide"><label>Observações (opcional)</label><textarea class="textarea" name="note" maxlength="500">${esc(m.note||'')}</textarea></div></div><div class="note">Se repetir todo mês, marcar como pago vale apenas para o mês atualmente selecionado. Valores e descrição da recorrência são atualizados nos próximos meses também.</div><div class="footer"><button class="btn" type="button" data-close-modal>Cancelar</button><button class="btn primary" type="submit">${isNew?'Adicionar':'Salvar'} lançamento</button></div></form>`);
 }
 function downloadFile(filename,body,mime){const blob=new Blob([body],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
 function exportJson(){const s=state();downloadFile('Pouler-Lab-backup-'+period()+'.json',JSON.stringify({format:'POULER-LAB-FINANCE-V2',exportedAt:new Date().toISOString(),state:s},null,2),'application/json');notice('Backup exportado. Guarde-o em local privado: contém suas anotações e valores planejados.','good');}
@@ -1245,6 +1314,42 @@ $('#view-content').addEventListener('change',e=>{
  if(e.target.id==='txn-bank'){currentBank=e.target.value;currentAccount='';render();return;}
  if(e.target.id==='txn-account'){currentAccount=e.target.value;refreshTxnResults();return;}
  if(e.target.id==='txn-type'){activeTypeFilter=e.target.value;refreshTxnResults();return;}
+});
+// Editor de categorias: criar, reutilizar e sincronizar sem alterar os dados da Pluggy.
+$('#modal-backdrop').addEventListener('click',e=>{
+ const toggle=e.target.closest('[data-cat-new-toggle]');
+ if(toggle){
+  const field=toggle.closest('.field'),box=field?.querySelector('[data-cat-create]');
+  if(box){box.hidden=false;field.querySelector('[data-cat-new-name]')?.focus();}
+  return;
+ }
+ const cancel=e.target.closest('[data-cat-new-cancel]');
+ if(cancel){const box=cancel.closest('[data-cat-create]');if(box)box.hidden=true;return;}
+ const save=e.target.closest('[data-cat-new-save]');
+ if(!save)return;
+ const field=save.closest('.field'),input=field?.querySelector('[data-cat-new-name]');
+ const select=field?.querySelector('select[name="category"]');
+ if(!input||!select)return;
+ const value=String(input.value||'').trim().replace(/\s+/g,' ').slice(0,60);
+ if(value.length<2){input.setCustomValidity('Digite uma categoria com pelo menos 2 caracteres.');input.reportValidity();return;}
+ input.setCustomValidity('');
+ const existing=categoryOptions().find(c=>normalizeCategoryName(c)===normalizeCategoryName(value));
+ const chosen=existing||value;
+ if(!existing){
+  const key='category:'+Date.now().toString(36)+Math.random().toString(36).slice(2,12);
+  state().overrides[key]={title:chosen,category:chosen};
+ }
+ if(!Array.from(select.options).some(op=>op.value===chosen))select.add(new Option(chosen,chosen));
+ select.value=chosen;
+ const box=field.querySelector('[data-cat-create]');if(box)box.hidden=true;
+ input.value='';
+ scheduleSave();
+ notice(existing?'Categoria existente selecionada.':'Categoria "'+chosen+'" criada e disponível para reutilização.','good');
+});
+$('#modal-backdrop').addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&e.target.matches('[data-cat-new-name]')){
+  e.preventDefault();e.target.closest('[data-cat-create]')?.querySelector('[data-cat-new-save]')?.click();
+ }
 });
 $('#modal-backdrop').addEventListener('click',e=>{
  const organize=e.target.closest('[data-organize-bank-edit]');if(organize){renameAccountModal(organize.dataset.organizeBankEdit);return;}
