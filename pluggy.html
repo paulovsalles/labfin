@@ -439,6 +439,13 @@
 .pf-tx-clock>span{font-size:11px;line-height:1}
 .ca-category{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 
+
+/* Indicador de compra parcelada: acompanha a categoria, sem ocupar nova linha. */
+.pf-installment{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;
+ border:1px solid #ded4f2;border-radius:999px;background:#f5f0fc;color:#7654af;
+ font-size:9px;font-weight:750;line-height:1.25;letter-spacing:.01em;
+ font-variant-numeric:tabular-nums;white-space:nowrap;vertical-align:middle}
+.pf-installment .pf-installment-ic{font-size:10px;line-height:1}
 </style>
 
 <style id="pouler-unificado-pluggy">
@@ -657,21 +664,46 @@ const currency=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'
 const fmtDate=v=>{let s=String(v||'').slice(0,10);return /^\d{4}-\d{2}-\d{2}$/.test(s)?s.split('-').reverse().join('/'):s||'—'};
 // Horário REAL da compra, quando a instituição informa via Open Finance.
 // Não usar date, createdAt ou updatedAt: podem representar postagem/sincronização.
+// 00:00 UTC costuma ser apenas a data (sem hora) e apareceria como 21:00 em Brasília.
+// Nesses casos preferimos NÃO exibir o horário, em vez de mostrar um dado enganoso.
 function transactionClock(t){
- const raw=t?.transactionDateTime||t?.creditCardMetadata?.transactionDateTime;
- if(typeof raw!=='string')return '';
- const s=raw.trim().replace(/\[[^\]]+\]$/,'');
- const m=/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d(?:\.\d+)?)?(Z|[+-](?:0\d|1[0-4]):?[0-5]\d)?$/i.exec(s);
- if(!m)return '';
- // Horários sem fuso são mostrados como fornecidos, sem conversão arbitrária.
- if(!m[3])return m[1]+':'+m[2];
- const d=new Date(s);if(!Number.isFinite(d.getTime()))return '';
- return new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(d);
+ const candidates=[t?.transactionDateTime,t?.creditCardMetadata?.transactionDateTime];
+ for(const raw of candidates){
+  if(typeof raw!=='string')continue;
+  const s=raw.trim().replace(/\[[^\]]+\]$/,'');
+  const m=/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d(?:\.\d+)?)?(Z|[+-](?:0\d|1[0-4]):?[0-5]\d)?$/i.exec(s);
+  if(!m)continue;
+  // Evita o horário 21:00 fictício gerado pela meia-noite UTC do dia de lançamento.
+  if(/^\d{4}-\d{2}-\d{2}T00:00(?::[0-5]\d(?:\.\d+)?)?(?:Z|[+-]00:?00)$/i.test(s))continue;
+  // Sem indicação de fuso, mostrar a hora como foi enviada; sem supor UTC.
+  if(!m[3]){
+   // Meia-noite sem fuso também pode ser somente data; não assumir que é compra real.
+   if(m[1]==='00'&&m[2]==='00')continue;
+   return m[1]+':'+m[2];
+  }
+  const d=new Date(s);
+  if(!Number.isFinite(d.getTime()))continue;
+  return new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit',hour12:false}).format(d);
+ }
+ return '';
 }
 function transactionClockBadge(t){
  const hhmm=transactionClock(t);
  return hhmm?`<span class="pf-tx-clock" title="Horário da transação informado pelo banco · horário de Brasília"><span aria-hidden="true">◷</span> ${esc(hhmm)}</span>`:'';
 }
+// O banco deve informar a parcela atual e o total; nunca inferir de valores ou datas.
+function transactionInstallment(t){
+ const meta=t?.creditCardMetadata || t;
+ const number=Number(meta?.installmentNumber);
+ const total=Number(meta?.totalInstallments);
+ if(!Number.isInteger(number)||!Number.isInteger(total)||total<2||total>999||number<1||number>total)return null;
+ return {number,total};
+}
+function transactionInstallmentBadge(t){
+ const x=transactionInstallment(t);
+ return x?`<span class="pf-installment" title="Parcela ${x.number} de ${x.total} informada pela instituição" aria-label="Parcela ${x.number} de ${x.total}"><span class="pf-installment-ic" aria-hidden="true">▤</span> ${x.number}/${x.total}</span>`:'';
+}
+
 
 const monthNow=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit'}).format(new Date());
 const colors=['#7952d2','#d66aa8','#4e8bca','#e8ac5e','#39a78b','#a29bc3','#e2767b','#79a8a2','#ab86e9','#aeb0bb'];
@@ -997,7 +1029,7 @@ function demoData(month){const d=day=>month+'-'+String(day).padStart(2,'0');retu
  {id:'d5',accountId:'bank1',date:d(10),description:'Pagamento da fatura',amount:988.80,type:'DEBIT',category:'Dívidas',status:'POSTED'},
  {id:'d6',accountId:'bank1',date:d(12),description:'Combustível',amount:166.50,type:'DEBIT',category:'Transporte',status:'POSTED'},
  {id:'d7',accountId:'bank2',date:d(12),description:'Rendimento',amount:12.40,type:'CREDIT',category:'Investimentos',status:'POSTED'},
- {id:'d8',accountId:'card1',date:d(3),transactionDateTime:d(3)+'T14:32:00-03:00',description:'Compra 7234',amount:124.90,type:'DEBIT',category:'Compras',status:'POSTED'},
+ {id:'d8',accountId:'card1',date:d(3),transactionDateTime:d(3)+'T14:32:00-03:00',installmentNumber:3,totalInstallments:10,description:'Compra 7234',amount:124.90,type:'DEBIT',category:'Compras',status:'POSTED'},
  {id:'d9',accountId:'card1',date:d(6),description:'Cinema',amount:72.90,type:'DEBIT',category:'Lazer',status:'POSTED'},
  {id:'d10',accountId:'card1',date:d(9),description:'Restaurante',amount:146.70,type:'DEBIT',category:'Alimentação',status:'POSTED'},
  {id:'d11',accountId:'card1',date:d(13),description:'Netflix',amount:44.90,type:'DEBIT',category:'Assinaturas',status:'POSTED'},
@@ -1082,7 +1114,7 @@ function txTable(rows,opts={}){
  <td data-label="Data">${fmtDate(t.date)}${transactionClock(t)?`<div style="margin-top:5px">${transactionClockBadge(t)}</div>`:""}</td>
  <td><div class="desc tx-desc">${esc(a.title)}${a.title!==t.description?`<small>Original: ${esc(t.description)}</small>`:''}</div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>↔ ${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}${a.note?'<div class="tx-sub">✎ Com observação</div>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</td>
  <td data-label="Banco / conta" class="tx-account"><div class="tx-bank-name">${esc(bankLabel(acc))}</div>${alias?`<div class="tx-sub">Original: ${esc(acc?.name||'Conta')}</div>`:''}${acc?`<button class="tx-alias-btn" type="button" data-rename-bank="${esc(acc.id)}" aria-label="Renomear banco ou cartão ${esc(bankLabel(acc))}">✎ Renomear banco</button>`:''}</td>
- <td data-label="Categoria / grupo" class="tx-category-cell"><div class="tx-cat-title">${esc(a.category)}</div><div class="tx-sub">${a.groupName?'Grupo: '+esc(a.groupName):'Grupo automático'}</div><button type="button" class="tx-edit-link" data-edit-tx="${esc(id)}">Editar categoria e grupo</button></td>
+ <td data-label="Categoria / grupo" class="tx-category-cell"><div class="tx-cat-title">${esc(a.category)} ${transactionInstallmentBadge(t)}</div><div class="tx-sub">${a.groupName?'Grupo: '+esc(a.groupName):'Grupo automático'}</div><button type="button" class="tx-edit-link" data-edit-tx="${esc(id)}">Editar categoria e grupo</button></td>
  <td data-label="Financeiro" class="tx-finance-cell"><select class="tx-finance-select" data-tx-finance="${esc(id)}" aria-label="Grupo financeiro de ${esc(a.title)}">${FIN_CLASSES.map(([v,label])=>`<option value="${v}" ${v===a.financeClass?'selected':''}>${label}</option>`).join('')}</select><div class="tx-sub">${esc(kindLabel)}</div></td>
  <td data-label="Valor original" class="money ${signedV<0?'neg':'pos'}">${displayedMoney(signedV)}${a.planValue!==''?`<small style="display:block;font-size:10px;color:var(--muted)">Plano: ${displayedMoney(a.planValue)}</small>`:''}</td>
  <td data-label="Mensal livre"><button class="btn sm tx-inline-btn ${linked?'soft':''}" data-include="${esc(id)}">${linked?'✓ Incluído':'+ Incluir'}</button></td>
@@ -1113,7 +1145,7 @@ function caFiltered(){const q=pmClean(caUI.search);return caSortRows(caScoped().
 function caAmount(rows){return rows.reduce((sum,t)=>sum+valueForPlanning(t),0);}
 function caSelectedCount(){return caUI.selected.size;}
 function caCardRow(t){const a=annotation(t),g=caGroup(t),id=txKey(t),isPicked=caUI.selected.has(id);
- return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''}</span><span class="ca-category"><span>${esc(a.category)}${a.note?' · ✎ Com observação':''}</span>${transactionClockBadge(t)}</span><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
+ return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''}</span><span class="ca-category"><span>${esc(a.category)}${a.note?' · ✎ Com observação':''}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}</span><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
 function caGroupKey(name){return period()+'|'+caUI.card+'|'+name;}
 function caListContent(){const rows=caFiltered();if(!caScoped().length)return noData('Nenhuma compra neste cartão neste mês','Consulte os bancos ou selecione outro cartão. Alguns bancos ainda não enviam todas as compras.');
  if(!rows.length)return noData('Nada encontrado','Limpe a busca ou selecione outro cartão.');
@@ -1543,7 +1575,7 @@ function editTransaction(id){
  const alias=acc?String(state().overrides[accountAliasKey(acc)]?.title||'').trim():'';
  const bankOrig=acc?String(acc.name||accountInstitution(acc)||'Conta bancária'):'Conta não identificada';
  showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">EXTRATO VINCULADO · EDIÇÃO</div><h2>Personalizar movimentação</h2></div><button class="btn icon" type="button" data-close-modal aria-label="Fechar editor">✕</button></div>
- <div class="tx-edit-head"><span class="mutelabel">DADOS ORIGINAIS DO BANCO (SOMENTE LEITURA)</span><div class="tx-edit-headgrid"><div><span class="tiny muted">Data e valor</span><strong>${fmtDate(t.date)} ${transactionClockBadge(t)} · ${displayedMoney(signedV)}</strong></div><div><span class="tiny muted">Conta de origem</span><strong>${esc(bankLabel(acc))}</strong></div></div><div class="tx-sub">Descrição original: ${esc(t.description)}</div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}</div>
+ <div class="tx-edit-head"><span class="mutelabel">DADOS ORIGINAIS DO BANCO (SOMENTE LEITURA)</span><div class="tx-edit-headgrid"><div><span class="tiny muted">Data e valor</span><strong>${fmtDate(t.date)} ${transactionClockBadge(t)} ${transactionInstallmentBadge(t)} · ${displayedMoney(signedV)}</strong></div><div><span class="tiny muted">Conta de origem</span><strong>${esc(bankLabel(acc))}</strong></div></div><div class="tx-sub">Descrição original: ${esc(t.description)}</div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}</div>
  <form id="tx-form" data-id="${esc(id)}" data-account-id="${esc(acc?.id||'')}">
  <div class="tx-section-label">Identificação e banco</div>
  <div class="fields"><div class="field wide"><label>Nome personalizado da movimentação</label><input name="title" class="input" maxlength="160" value="${esc(a.title)}" placeholder="Ex.: Padaria, Aulas particulares, Fatura..." required/></div>
@@ -1958,7 +1990,7 @@ function dcDrilldown(rows){
 }
 function dcItem(t){
  const a=annotation(t),acc=account(t.accountId),isCreditCard=isCard(acc),amount=Math.max(0,valueForPlanning(t));
- return `<article class="dc-item ${isCreditCard?'credit':'debit'}"><span class="dc-item-icon" aria-hidden="true">${isCreditCard?'▤':'↘'}</span><div class="dc-item-main"><strong>${esc(a.title)}</strong><div class="dc-meta"><span>${esc(fmtDate(t.date))}</span><span>· ${esc(bankLabel(acc))}</span><span>· ${esc(a.category)}</span>${transactionClockBadge(t)}${a.subcategory?`<span class="dc-subtag">${esc(a.subcategory)}</span>`:''}${a.groupName?`<span>· ${esc(a.groupName)}</span>`:''}${a.note?'<span>· ✎ Nota</span>':''}${t.status==='PENDING'?'<span>· Pendente</span>':''}</div></div><div class="dc-item-side"><div class="dc-quick-sub"><label for="dc-sub-${esc(txKey(t))}">Subcategoria</label><select class="select" id="dc-sub-${esc(txKey(t))}" aria-label="Subcategoria de ${esc(a.title)}" data-dc-assign-sub="${esc(txKey(t))}">${subOptionHTML(a.category,a.subcategory,true)}</select></div><div class="dc-item-amount">${displayedMoney(amount)}${a.planValue!==''?`<small>Original: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button type="button" class="btn sm dc-edit" data-edit-tx="${esc(txKey(t))}" title="Editar descrição, categoria e observações">✎ Editar</button></div></article>`;
+ return `<article class="dc-item ${isCreditCard?'credit':'debit'}"><span class="dc-item-icon" aria-hidden="true">${isCreditCard?'▤':'↘'}</span><div class="dc-item-main"><strong>${esc(a.title)}</strong><div class="dc-meta"><span>${esc(fmtDate(t.date))}</span><span>· ${esc(bankLabel(acc))}</span><span>· ${esc(a.category)}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}${a.subcategory?`<span class="dc-subtag">${esc(a.subcategory)}</span>`:''}${a.groupName?`<span>· ${esc(a.groupName)}</span>`:''}${a.note?'<span>· ✎ Nota</span>':''}${t.status==='PENDING'?'<span>· Pendente</span>':''}</div></div><div class="dc-item-side"><div class="dc-quick-sub"><label for="dc-sub-${esc(txKey(t))}">Subcategoria</label><select class="select" id="dc-sub-${esc(txKey(t))}" aria-label="Subcategoria de ${esc(a.title)}" data-dc-assign-sub="${esc(txKey(t))}">${subOptionHTML(a.category,a.subcategory,true)}</select></div><div class="dc-item-amount">${displayedMoney(amount)}${a.planValue!==''?`<small>Original: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button type="button" class="btn sm dc-edit" data-edit-tx="${esc(txKey(t))}" title="Editar descrição, categoria e observações">✎ Editar</button></div></article>`;
 }
 function dcItemsList(rows,limit=180){const sorted=dcSorted(rows);return sorted.length?`<div class="dc-list">${sorted.slice(0,limit).map(dcItem).join('')}</div>${sorted.length>limit?`<p class="miniinfo">Mostrando ${limit} de ${sorted.length} movimentações. Refine os filtros para localizar outras.</p>`:''}`:noData('Nenhum lançamento encontrado','Altere os filtros ou consulte outro mês.');}
 function dcPanelBody(){
