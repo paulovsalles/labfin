@@ -437,6 +437,7 @@
  padding:2px 7px;font-size:9px;line-height:1.2;font-weight:650;white-space:nowrap;
  font-variant-numeric:tabular-nums;letter-spacing:.01em}
 .pf-tx-clock>span{font-size:11px;line-height:1}
+.pf-tx-clock-manual{border-style:dashed;color:#766a85;background:#fbf9ff}
 .ca-category{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 
 
@@ -687,9 +688,17 @@ function transactionClock(t){
  }
  return '';
 }
+// Horário inserido pelo usuário: identificado separadamente do horário bancário.
+function manualTransactionClock(t){
+ const value=String(state().overrides[txKey(t)]?.timeManual||'').trim();
+ return /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value)?value:'';
+}
 function transactionClockBadge(t){
- const hhmm=transactionClock(t);
- return hhmm?`<span class="pf-tx-clock" title="Horário da transação informado pelo banco · horário de Brasília"><span aria-hidden="true">◷</span> ${esc(hhmm)}</span>`:'';
+ const manual=manualTransactionClock(t);
+ const hhmm=manual||transactionClock(t);
+ if(!hhmm)return '';
+ const tooltip=manual?'Horário informado manualmente por você':'Horário enviado pelo banco · horário de Brasília';
+ return `<span class="pf-tx-clock${manual?' pf-tx-clock-manual':''}" title="${tooltip}"><span aria-hidden="true">${manual?'✎':'◷'}</span> ${esc(hhmm)}</span>`;
 }
 // O banco deve informar a parcela atual e o total; nunca inferir de valores ou datas.
 function transactionInstallment(t){
@@ -813,7 +822,7 @@ function baseKind(t){
 }
 function annotation(t){
  const v=state().overrides[txKey(t)]||{};
- return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',subcategory:v.subcategory||'',groupName:v.groupName||'',note:v.note||'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,hideMonthly:!!v.hideMonthly,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
+ return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',subcategory:v.subcategory||'',groupName:v.groupName||'',note:v.note||'',timeManual:/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(String(v.timeManual||''))?v.timeManual:'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,hideMonthly:!!v.hideMonthly,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
 }
 function valueForPlanning(t){const a=annotation(t);return a.planValue===''?Math.abs(signed(t)):a.planValue;}
 const moveType=t=>signed(t)>=0?'income':'expense';
@@ -1122,7 +1131,7 @@ function txTable(rows,opts={}){
  </tr>`;
  }).join('')}</tbody></table></div>`;
 }
-function extractView(){const rows=filteredTx();return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Renomeie contas e cartões, ajuste categorias, grupos e tipo financeiro. O extrato original fica intacto.</p></div><div class="wraprows"><span class="pill" id="txn-result-count">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Clique em “Editar tudo” para personalizar uma transação, ou em “Renomear banco” para identificar a conta em todos os lançamentos. A classificação financeira também pode ser alterada diretamente na tabela.</span></div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
+function extractView(){const rows=filteredTx();const all=transactions();const bankCount=all.filter(t=>!!transactionClock(t)).length;const manualCount=all.filter(t=>!!manualTransactionClock(t)).length;return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Renomeie contas e cartões, ajuste categorias, grupos e tipo financeiro. O extrato original fica intacto.</p></div><div class="wraprows"><span class="pill" id="txn-result-count">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Clique em “Editar tudo” para personalizar uma transação, ou em “Renomear banco” para identificar a conta em todos os lançamentos. A classificação financeira também pode ser alterada diretamente na tabela.</span></div><div class="miniinfo" style="margin:0 0 13px 0"><strong>◷ Horários neste mês:</strong> ${bankCount} de ${all.length} movimentações têm horário informado pelo banco${manualCount?' · '+manualCount+' com horário manual':''}. ${bankCount===0?'O banco pode informar apenas a data. Para incluir uma hora que você conhece, clique em <strong>Editar tudo</strong> e use o campo “Horário da compra”.':'Os horários ausentes não são estimados.'}</div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
 // -------- Análise de Cartões 3.6: um laboratório para identificar despesas --------
 const CA_GROUP_KEY='pouler-card-groups-open-v36';
 const CA_PREF_KEY='pouler-card-analytics-ui-v36';
@@ -1587,6 +1596,7 @@ function editTransaction(id){
  <div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}<div class="tx-modal-help">Provento, despesa fixa ou gasto geral.</div></div>
  <div class="field"><label>Natureza da movimentação</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select><div class="tx-modal-help">Evite contar transferências e faturas duas vezes.</div></div>
  <div class="field"><label>Valor para o planejamento (opcional)</label><input name="planValue" class="input" type="number" min="0" step="0.01" max="999999999" value="${a.planValue===''?'':a.planValue}" placeholder="${Math.abs(signedV).toFixed(2)}"/><div class="tx-modal-help">Vazio = usar o valor original do banco.</div></div>
+ <div class="field"><label>Horário da compra (manual, opcional)</label><input name="timeManual" class="input" type="time" step="60" value="${esc(a.timeManual||'')}"/><div class="tx-modal-help">${transactionClock(t)?'O banco informou '+esc(transactionClock(t))+'. Preencha apenas se precisar corrigir.':'O banco não informou uma hora confiável. Se souber, informe você mesmo.'} Horários manuais aparecem com ✎. Deixe vazio para usar apenas a fonte bancária.</div></div>
  <div class="field" style="justify-content:center"><label class="checkrow"><input name="includeFree" type="checkbox" ${a.includeFree?'checked':''}/> Incluir no Mensal livre</label></div>
  <div class="field wide"><label class="checkrow"><input name="hideMonthly" type="checkbox" ${a.hideMonthly?'checked':''}/> Ocultar do Controle mensal (sem apagar do extrato)</label></div>
  <div class="field wide"><label>Observações</label><textarea class="textarea" name="note" maxlength="500" placeholder="Ex.: parcela 2/3, reembolso, compra compartilhada...">${esc(a.note)}</textarea></div></div>
@@ -1880,8 +1890,10 @@ $('#modal-backdrop').addEventListener('submit',e=>{
  if(e.target.id==='tx-form'){
   e.preventDefault();const f=new FormData(e.target),id=e.target.dataset.id;const t=data?.transactions?.find(t=>txKey(t)===id);if(!t)return;
   const val=String(f.get('planValue')??'').trim();const num=val===''?null:Number(val);
+  const manualTime=String(f.get('timeManual')||'').trim();
+  if(manualTime&&!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(manualTime)){alert('Horário inválido. Use HH:MM.');return;}
   if(num!==null&&(!Number.isFinite(num)||num<0||num>999999999)){alert('Informe um valor válido.');return;}
-  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',subcategory:subClean(f.get('subcategory')),groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),kind:['normal','transfer','cardpayment','ignore'].includes(String(f.get('kind')))?String(f.get('kind')):baseKind(t),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
+  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',subcategory:subClean(f.get('subcategory')),groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),timeManual:manualTime,kind:['normal','transfer','cardpayment','ignore'].includes(String(f.get('kind')))?String(f.get('kind')):baseKind(t),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
   const acc=account(t.accountId);
   if(acc){
    const alias=String(f.get('bankAlias')||'').trim().slice(0,80),bankGroup=String(f.get('bankGroup')||'').trim().slice(0,60),aliasKey=accountAliasKey(acc);
