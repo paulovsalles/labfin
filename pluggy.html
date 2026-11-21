@@ -484,6 +484,40 @@
 .pf-soma-history-row small{display:block;font-size:11px;color:#70657c;margin-top:4px;overflow-wrap:anywhere}
 @media(max-width:700px){.pf-soma{padding:13px}.pf-soma-grid{grid-template-columns:1fr}.pf-soma-history-row{flex-wrap:wrap}.pf-soma-candidate{gap:7px}}
 
+/* 4.0 — filtros e classificação inteligente da análise de cartões */
+.ca-filter-panel{padding:19px 20px;background:linear-gradient(130deg,#fff,#fbf9ff);border-color:#e6ddf4}
+.ca-filter-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.ca-filter-top strong{font-size:15px;color:#3d2e63}.ca-filter-top p{font-size:12px;color:var(--muted);line-height:1.5;margin:5px 0 0}
+.ca-filter-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ca-filter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.ca-filter-grid>div{min-width:0}.ca-filter-grid label{display:block;color:#615478;font-size:12px;font-weight:700;margin-bottom:6px}
+.ca-filter-grid .select,.ca-filter-grid .input{width:100%;min-width:0;min-height:39px;font-size:13px;background:#fff}
+.ca-filter-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:13px;padding-top:12px;border-top:1px solid #eee7f6}
+.ca-filter-foot span{font-size:11px;color:#7c7290;max-width:670px;line-height:1.55}
+.pf-method{display:inline-flex;align-items:center;white-space:nowrap;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800;color:#6d4bb0;background:#f0e9fd;border:1px solid #e7dafa;vertical-align:middle}
+.pf-method-debito{color:#176b95;background:#e6f4fb;border-color:#c9e9f5}.pf-method-pix{color:#12826f;background:#e7f8f2;border-color:#c6eede}
+.pf-method-desconhecido{color:#7d7586;background:#f2f0f5;border-color:#e3deea}.pf-method-boleto,.pf-method-transferencia,.pf-method-conta{color:#675d81;background:#f5f2fa}
+.pf-payment-line{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}.pf-payment-line small{font-size:10px;color:#777188}
+.ca-row .ca-sub{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:11px}.ca-row .ca-category{display:flex;flex-wrap:wrap;gap:7px}
+.ca-source-label{font-size:10px;color:#736184;background:#f5f1fb;border-radius:5px;padding:2px 6px}.ca-category-editor{margin-top:2px}
+.ca-category-pick{width:min(100%,260px);min-height:33px;padding:7px 24px 7px 9px;font:inherit;font-size:12px;font-weight:700;border:1px solid #dcd3ef;background:#faf8ff;border-radius:9px;color:#554078;cursor:pointer}
+.ca-category-pick:focus-visible{outline:2px solid #8663c7;outline-offset:2px}
+.ca-merchant-list,.ca-compare{display:grid;gap:8px}.ca-merchant{display:flex;align-items:center;text-align:left;gap:10px;padding:8px 3px;border:0;border-bottom:1px solid #eee8f5;background:transparent;color:var(--ink);cursor:pointer;font:inherit;min-width:0}
+.ca-merchant:hover{background:#faf7ff}.ca-merchant-index{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:#f1eafa;font-size:12px;color:#7658ba;font-weight:800;flex:none}
+.ca-merchant-data{min-width:0;flex:1;display:grid;gap:5px}.ca-merchant-data strong{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ca-merchant-data small{color:var(--muted);font-size:10px}
+.ca-merchant>b{font-size:12px;white-space:nowrap}.ca-merchant .ca-track{height:5px;display:block;overflow:hidden}.ca-merchant .ca-fill{display:block}
+.ca-compare-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #eee8f5}
+.ca-compare-title{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.ca-compare-title strong{font-size:12px;overflow-wrap:anywhere}.ca-compare-title span{font-size:10px;color:var(--muted)}
+.ca-compare-item .ca-track{height:9px}.ca-compare-item>b{font-size:12px;white-space:nowrap}
+.ca-commit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ca-commit{background:#f9f6ff;border:1px solid #e8def5;border-radius:12px;padding:16px;display:grid;gap:8px;min-width:0}
+.ca-commit span{color:#70628a;font-size:12px}.ca-commit strong{font-size:21px;color:#453169;overflow-wrap:anywhere}.ca-commit small{color:#7c7391;font-size:11px;line-height:1.5}
+.ca-rule-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;align-items:center}.ca-rules-list{display:grid;gap:8px;max-height:320px;overflow:auto;padding-top:8px}
+.ca-rule{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid #ece5f6;border-radius:10px;background:#fcfaff}
+.ca-rule>div{min-width:0}.ca-rule strong{font-size:12px;overflow-wrap:anywhere}.ca-rule small{display:block;margin-top:5px;font-size:11px;color:#7f738e;line-height:1.5}
+.ca-remember{background:#faf8ff;border:1px solid #e9e0f6;border-radius:11px;padding:12px}.ca-remember .checkrow{margin-bottom:10px;font-size:12px}.ca-remember>label:not(.checkrow){font-size:11px;font-weight:700}
+@media(max-width:850px){.ca-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ca-filter-panel{padding:15px}}
+@media(max-width:550px){.ca-filter-grid{grid-template-columns:1fr}.ca-filter-actions{width:100%}.ca-filter-foot .btn{width:100%}.ca-filter-top strong{font-size:14px}.ca-commit-grid{grid-template-columns:1fr}.ca-rule-actions .btn{width:100%}.ca-merchant>b{font-size:11px}.ca-row .ca-main{width:100%}}
+
 </style>
 <style id="pf-debito-credito-styles">
 
@@ -816,13 +850,75 @@ const finSelect=(selected, attrs='')=>`<select ${attrs} class="pm-class-select" 
 
 function baseKind(t){
  const label=String(t.description||'').toLocaleLowerCase('pt-BR');
+ if(String(t.operationType||'').toUpperCase()==='PAGAMENTO_FATURA')return 'cardpayment';
  if(/pagamento (de |da |do )?fatura|pagamento (do |de )?cart[aã]o|pgto.*fatura|fatura.*pagamento/.test(label))return 'cardpayment';
  if(/transfer[eê]ncia entre contas|aplica[cç][aã]o financeira|resgate de investimento|transferencia interna/.test(label))return 'transfer';
  return 'normal';
 }
+// A modalidade de pagamento NÃO é o campo Pluggy type (DEBIT=saída, CREDIT=entrada).
+// A falta de evidência explícita fica como "Não identificado", sem inventar débito.
+const PAYMENT_MODES={credito:'Crédito',debito:'Débito',pix:'Pix',boleto:'Boleto',transferencia:'Transferência',conta:'Conta bancária',desconhecido:'Não identificado'};
+function cleanMerchantText(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');}
+function paymentMode(t){
+ const override=String(state().overrides[txKey(t)]?.paymentMethod||'');
+ if(PAYMENT_MODES[override])return override;
+ if(isCard(account(t.accountId)))return 'credito';
+ const raw=cleanMerchantText([t.operationType,t.paymentData?.paymentMethod,t.paymentMethod,t.description].join(' '));
+ if(/\bpix\b/.test(raw))return 'pix';
+ if(/\b(boleto|convenio arrecadacao)\b/.test(raw))return 'boleto';
+ if(/\b(cartao de debito|cartao debito|debito no cartao|compra no debito|debit card|debito cartao)\b/.test(raw)||cleanMerchantText(t.operationType)==='cartao'&&signed(t)<0)return 'debito';
+ if(/\b(ted|doc|transferencia mesma instituicao|transferencia bancaria)\b/.test(raw))return 'transferencia';
+ return 'desconhecido';
+}
+function paymentBadge(t){const mode=paymentMode(t);return `<span class="pf-method pf-method-${mode}" title="Forma de pagamento ${mode==='desconhecido'?'não confirmada pela instituição':'identificada ou ajustada no Pouler'}">${esc(PAYMENT_MODES[mode])}</span>`;}
+const MERCHANT_PATTERNS=[
+ ['Delivery',/\b(uber eats|ifood|i food|rappi|ze delivery|aiqfome)\b/],
+ ['Aplicativos de transporte',/\b(uber|99 app|99pop|99 taxi|99 tecnologia|cabify|in driver|indriver)\b/],
+ ['Mercado',/\b(supermercado|hipermercado|atacadao|assai|carone|extrabom|multishow supermercado|atacado|hortifruti|horti fruti|sacolao|mercearia)\b/],
+ ['Padaria',/\b(padaria|panificadora|panificacao|confeitaria|boulangerie)\b/],
+ ['Restaurantes',/\b(restaurante|hamburgueria|pizzaria|lanchonete|churrascaria|cafeteria|sushi|burger king|mcdonald|habib)\b/],
+ ['Farmácia',/\b(drogasil|droga raia|drogaria|farmacia|pague menos|panvel|ultrafarma)\b/],
+ ['Combustível',/\b(posto de|posto |posto$|combustivel|abastecimento|shell|ipiranga|petrobras distribuidora|br mania)\b/],
+ ['Estacionamento',/\b(estacionamento|parking|zona azul|parquimetro)\b/],
+ ['Streaming',/\b(netflix|spotify|deezer|disney plus|disneyplus|prime video|hbo max|max streaming|globoplay|youtube premium)\b/],
+ ['Academia',/\b(smart fit|smartfit|bluefit|academia|bodytech)\b/],
+ ['Compras online',/\b(shopee|shein|aliexpress|ali express|mercado livre|mercadolivre|amazon marketplace|magalu|magazine luiza)\b/],
+ ['Telefonia',/\b(claro movel|vivo movel|tim celular|recarga celular)\b/],
+ ['Internet',/\b(provedor internet|fibra otica|banda larga)\b/],
+ ['Energia',/\b(energia eletrica|edp energia|enel distribuidora)\b/],
+ ['Água',/\b(saneamento|cesan|conta de agua)\b/],
+ ['Tarifas bancárias',/\b(tarifa bancaria|anuidade cartao|juros rotativo|pacote de servicos)\b/]
+];
+const MERCHANT_RULE_PREFIX='merchant-rule:';
+function merchantLabel(t){return String(t?.merchant?.name||t?.merchant?.businessName||t?.description||'Estabelecimento não informado').trim().slice(0,90);}
+function merchantRuleTerm(t){
+ const preferred=String(t?.merchant?.name||t?.merchant?.businessName||'').trim();
+ const raw=preferred||String(t?.description||'').replace(/^(compra\s+(?:no|na|de|do)?\s*(?:cart[aã]o|d[eé]bito|cr[eé]dito)?\s*|pagamento\s+(?:em|no)\s+)/i,'').trim();
+ const term=raw.replace(/\s+\d{5,}.*$/,'').replace(/\s*\*\s*/g,' ').trim().slice(0,70);
+ return cleanMerchantText(term).length>=4&&!/^(compra|pagamento|cartao|debito|credito|pix|outros|transferencia)$/.test(cleanMerchantText(term))?term:'';
+}
+function savedMerchantRules(){return Object.entries(state().overrides||{}).filter(([k,v])=>k.startsWith(MERCHANT_RULE_PREFIX)&&typeof v?.title==='string'&&typeof v?.category==='string'&&cleanMerchantText(v.title).length>=4).map(([key,value])=>({key,...value}));}
+function saveMerchantRule(t,category,providedTerm=''){
+ const term=String(providedTerm||merchantRuleTerm(t)).trim().slice(0,70),norm=cleanMerchantText(term);
+ if(norm.length<4||/^(compra|pagamento|cartao|debito|credito|pix|outros|transferencia)$/.test(norm))return false;
+ const rules=savedMerchantRules();const old=rules.find(r=>cleanMerchantText(r.title)===norm);
+ state().overrides[old?.key||MERCHANT_RULE_PREFIX+uniqueId()]={title:term,category:String(category||'Outros').slice(0,60)};
+ return true;
+}
+function suggestedCategory(t){
+ const original=String(t.category||'').trim();
+ if(signed(t)>=0||baseKind(t)!=='normal')return {category:original||'Outros',source:original?'pluggy':'indefinida'};
+ const text=cleanMerchantText([t.merchant?.name,t.merchant?.businessName,t.description].filter(Boolean).join(' '));
+ const rule=savedMerchantRules().filter(r=>text.includes(cleanMerchantText(r.title))).sort((a,b)=>b.title.length-a.title.length)[0];
+ if(rule)return {category:rule.category,source:'regra'};
+ for(const [category,pattern] of MERCHANT_PATTERNS)if(pattern.test(text))return {category,source:'automatico'};
+ if(original&&normalizeCategoryName(original)!=='outros')return {category:original,source:'pluggy'};
+ return {category:original||'Outros',source:'indefinida'};
+}
+function categorySource(t){if(String(state().overrides[txKey(t)]?.category||'').trim())return 'manual';return suggestedCategory(t).source;}
 function annotation(t){
- const v=state().overrides[txKey(t)]||{};
- return {title:v.title||t.description||'Movimentação',category:v.category||t.category||'Outros',subcategory:v.subcategory||'',groupName:v.groupName||'',note:v.note||'',timeManual:/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(String(v.timeManual||''))?v.timeManual:'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,hideMonthly:!!v.hideMonthly,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
+ const v=state().overrides[txKey(t)]||{},auto=suggestedCategory(t);
+ return {title:v.title||t.description||'Movimentação',category:v.category||auto.category,subcategory:v.subcategory||'',groupName:v.groupName||'',note:v.note||'',paymentMethod:PAYMENT_MODES[v.paymentMethod]?v.paymentMethod:'',timeManual:/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(String(v.timeManual||''))?v.timeManual:'',kind:v.kind||baseKind(t),financeClass:FIN_CLASSES.some(([key])=>key===v.financeClass)?v.financeClass:suggestedClass(t),includeFree:!!v.includeFree,hideMonthly:!!v.hideMonthly,planValue:(v.planValue==null||v.planValue==='')?'':Number(v.planValue)};
 }
 function valueForPlanning(t){const a=annotation(t);return a.planValue===''?Math.abs(signed(t)):a.planValue;}
 const moveType=t=>signed(t)>=0?'income':'expense';
@@ -1121,9 +1217,9 @@ function txTable(rows,opts={}){
  const kindLabel={normal:'Movimentação',transfer:'Transferência',cardpayment:'Pagamento de fatura',ignore:'Ignorado'}[a.kind]||'Movimentação';
  return `<tr>
  <td data-label="Data">${fmtDate(t.date)}${transactionClock(t)?`<div style="margin-top:5px">${transactionClockBadge(t)}</div>`:""}</td>
- <td><div class="desc tx-desc">${esc(a.title)}${a.title!==t.description?`<small>Original: ${esc(t.description)}</small>`:''}</div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>↔ ${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}${a.note?'<div class="tx-sub">✎ Com observação</div>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</td>
+ <td><div class="desc tx-desc">${esc(a.title)}${a.title!==t.description?`<small>Original: ${esc(t.description)}</small>`:''}</div><div class="pf-payment-line">${paymentBadge(t)}<small>${esc(signed(t)<0?'Saída':'Entrada')}</small></div>${(()=>{const p=pixPartyDetails(t);return p?`<div class="tx-pix-party ${p.available?'has-name':'not-available'}"><span>↔ ${esc(p.role)}:</span> ${esc(p.name)}</div>`:'';})()}${a.note?'<div class="tx-sub">✎ Com observação</div>':''}${t.status==='PENDING'?'<span class="pill plain">Pendente</span>':''}</td>
  <td data-label="Banco / conta" class="tx-account"><div class="tx-bank-name">${esc(bankLabel(acc))}</div>${alias?`<div class="tx-sub">Original: ${esc(acc?.name||'Conta')}</div>`:''}${acc?`<button class="tx-alias-btn" type="button" data-rename-bank="${esc(acc.id)}" aria-label="Renomear banco ou cartão ${esc(bankLabel(acc))}">✎ Renomear banco</button>`:''}</td>
- <td data-label="Categoria / grupo" class="tx-category-cell"><div class="tx-cat-title">${esc(a.category)} ${transactionInstallmentBadge(t)}</div><div class="tx-sub">${a.groupName?'Grupo: '+esc(a.groupName):'Grupo automático'}</div><button type="button" class="tx-edit-link" data-edit-tx="${esc(id)}">Editar categoria e grupo</button></td>
+ <td data-label="Categoria / grupo" class="tx-category-cell"><div class="tx-cat-title">${esc(a.category)} ${transactionInstallmentBadge(t)}</div><div class="tx-sub">${esc(caSourceLabel(categorySource(t)))} · ${a.groupName?'Grupo: '+esc(a.groupName):'Grupo automático'}</div><button type="button" class="tx-edit-link" data-edit-tx="${esc(id)}">Editar categoria e grupo</button></td>
  <td data-label="Financeiro" class="tx-finance-cell"><select class="tx-finance-select" data-tx-finance="${esc(id)}" aria-label="Grupo financeiro de ${esc(a.title)}">${FIN_CLASSES.map(([v,label])=>`<option value="${v}" ${v===a.financeClass?'selected':''}>${label}</option>`).join('')}</select><div class="tx-sub">${esc(kindLabel)}</div></td>
  <td data-label="Valor original" class="money ${signedV<0?'neg':'pos'}">${displayedMoney(signedV)}${a.planValue!==''?`<small style="display:block;font-size:10px;color:var(--muted)">Plano: ${displayedMoney(a.planValue)}</small>`:''}</td>
  <td data-label="Mensal livre"><button class="btn sm tx-inline-btn ${linked?'soft':''}" data-include="${esc(id)}">${linked?'✓ Incluído':'+ Incluir'}</button></td>
@@ -1134,14 +1230,14 @@ function txTable(rows,opts={}){
 function extractView(){const rows=filteredTx();const all=transactions();const bankCount=all.filter(t=>!!transactionClock(t)).length;const manualCount=all.filter(t=>!!manualTransactionClock(t)).length;return `<div class="splithead"><div><h2>Seu extrato, com suas próprias descrições</h2><p>Renomeie contas e cartões, ajuste categorias, grupos e tipo financeiro. O extrato original fica intacto.</p></div><div class="wraprows"><span class="pill" id="txn-result-count">${rows.length} movimentações</span><button class="btn sm soft" data-include-all>+ Incluir extratos no Mensal Livre</button></div></div><div class="banner"><span>✦</span><span>Clique em “Editar tudo” para personalizar uma transação, ou em “Renomear banco” para identificar a conta em todos os lançamentos. A classificação financeira também pode ser alterada diretamente na tabela.</span></div><div class="miniinfo" style="margin:0 0 13px 0"><strong>◷ Horários neste mês:</strong> ${bankCount} de ${all.length} movimentações têm horário informado pelo banco${manualCount?' · '+manualCount+' com horário manual':''}. ${bankCount===0?'O banco pode informar apenas a data. Para incluir uma hora que você conhece, clique em <strong>Editar tudo</strong> e use o campo “Horário da compra”.':'Os horários ausentes não são estimados.'}</div>${pickMenu()}<div id="trans-list">${txTable(rows)}</div>`;}
 // -------- Análise de Cartões 3.6: um laboratório para identificar despesas --------
 const CA_GROUP_KEY='pouler-card-groups-open-v36';
-const CA_PREF_KEY='pouler-card-analytics-ui-v36';
-const caUI={card:'all',sort:'date-desc',search:'',layout:'groups',selected:new Set()};
+const CA_PREF_KEY='pouler-card-analytics-ui-v40';
+const caUI={card:'all',sort:'date-desc',search:'',layout:'groups',category:'all',payment:'all',status:'all',installment:'all',min:'',max:'',selected:new Set()};
 let caOpenGroups=new Set();
-try{const v=JSON.parse(localStorage.getItem(CA_PREF_KEY)||'{}');if(typeof v.card==='string')caUI.card=v.card;if(['date-desc','date-asc','value-desc','value-asc','name-asc'].includes(v.sort))caUI.sort=v.sort;if(['groups','list'].includes(v.layout))caUI.layout=v.layout;}catch{}
+try{const v=JSON.parse(localStorage.getItem(CA_PREF_KEY)||localStorage.getItem('pouler-card-analytics-ui-v36')||'{}');if(typeof v.card==='string')caUI.card=v.card;if(['date-desc','date-asc','value-desc','value-asc','name-asc'].includes(v.sort))caUI.sort=v.sort;if(['groups','list'].includes(v.layout))caUI.layout=v.layout;if(typeof v.category==='string')caUI.category=v.category;if(typeof v.payment==='string')caUI.payment=v.payment;if(typeof v.status==='string')caUI.status=v.status;if(typeof v.installment==='string')caUI.installment=v.installment;}catch{}
 try{const v=JSON.parse(localStorage.getItem(CA_GROUP_KEY)||'[]');if(Array.isArray(v))caOpenGroups=new Set(v.filter(x=>typeof x==='string').slice(-200));}catch{}
-function caSaveUI(){try{localStorage.setItem(CA_PREF_KEY,JSON.stringify({card:caUI.card,sort:caUI.sort,layout:caUI.layout}));localStorage.setItem(CA_GROUP_KEY,JSON.stringify([...caOpenGroups].slice(-200)));}catch{}}
-function caCards(){return (data?.accounts||[]).filter(isCard);}
-function caPurchases(){return transactions().filter(t=>isCard(account(t.accountId))&&isDebit(t)&&annotation(t).kind==='normal');}
+function caSaveUI(){try{localStorage.setItem(CA_PREF_KEY,JSON.stringify({card:caUI.card,sort:caUI.sort,layout:caUI.layout,category:caUI.category,payment:caUI.payment,status:caUI.status,installment:caUI.installment}));localStorage.setItem(CA_GROUP_KEY,JSON.stringify([...caOpenGroups].slice(-200)));}catch{}}
+function caPurchases(){return transactions().filter(t=>isDebit(t)&&annotation(t).kind==='normal'&&(isCard(account(t.accountId))||paymentMode(t)==='debito'));}
+function caCards(){const sourceIds=new Set(caPurchases().map(t=>t.accountId));return (data?.accounts||[]).filter(a=>isCard(a)||sourceIds.has(a.id));}
 function caScoped(){const active=caCards().some(a=>a.id===caUI.card)?caUI.card:'all';return caPurchases().filter(t=>active==='all'||t.accountId===active);}
 function caGroup(t){const a=annotation(t);return pmGroupOf({title:a.title,category:a.category,groupName:a.groupName,transaction:t});}
 function caGroupNames(){const names=new Map();for(const name of PM_SUGGESTIONS){names.set(pmClean(name),name);}for(const value of Object.values(state().overrides||{})){const n=String(value?.groupName||'').trim();if(n)names.set(pmClean(n),n);}return [...names.values()];}
@@ -1150,18 +1246,29 @@ function caGroupSelect(t){const current=String(annotation(t).groupName||'').trim
 function caSortRows(rows){const list=[...rows];return list.sort((a,b)=>{const aa=annotation(a),bb=annotation(b),va=valueForPlanning(a),vb=valueForPlanning(b);let k=0;
  if(caUI.sort==='value-desc')k=vb-va;else if(caUI.sort==='value-asc')k=va-vb;else if(caUI.sort==='date-asc')k=String(a.date||'').localeCompare(String(b.date||''));else if(caUI.sort==='date-desc')k=String(b.date||'').localeCompare(String(a.date||''));else k=String(aa.title).localeCompare(String(bb.title),'pt-BR');
  return k||String(b.date||'').localeCompare(String(a.date||''))||String(a.id||'').localeCompare(String(b.id||''));});}
-function caFiltered(){const q=pmClean(caUI.search);return caSortRows(caScoped().filter(t=>!q||pmClean([annotation(t).title,t.description,annotation(t).category,caGroup(t).name,bankLabel(account(t.accountId))].join(' ')).includes(q)));}
+function caFiltered(){const q=pmClean(caUI.search),min=caUI.min===''?null:Number(caUI.min),max=caUI.max===''?null:Number(caUI.max);
+ return caSortRows(caScoped().filter(t=>{
+  const a=annotation(t),value=valueForPlanning(t);
+  return (caUI.category==='all'||normalizeCategoryName(a.category)===caUI.category)
+   &&(caUI.payment==='all'||paymentMode(t)===caUI.payment)
+   &&(caUI.status==='all'||t.status===caUI.status)
+   &&(caUI.installment==='all'||(caUI.installment==='installment'?!!transactionInstallment(t):!transactionInstallment(t)))
+   &&(min===null||!Number.isFinite(min)||value>=min)&&(max===null||!Number.isFinite(max)||value<=max)
+   &&(!q||pmClean([a.title,t.description,a.category,a.subcategory,caGroup(t).name,merchantLabel(t),bankLabel(account(t.accountId))].join(' ')).includes(q));
+ }));}
 function caAmount(rows){return rows.reduce((sum,t)=>sum+valueForPlanning(t),0);}
 function caSelectedCount(){return caUI.selected.size;}
+function caSourceLabel(source){return {manual:'Editada',regra:'Minha regra',automatico:'Automática',pluggy:'Banco',indefinida:'A revisar'}[source]||'A revisar';}
+function caCategorySelect(t){const value=annotation(t).category;return `<select class="ca-category-pick" data-ca-category="${esc(txKey(t))}" aria-label="Alterar categoria de ${esc(annotation(t).title)}">${categoryOptions(value).map(name=>`<option value="${esc(name)}" ${name===value?'selected':''}>${esc(name)}</option>`).join('')}</select>`;}
 function caCardRow(t){const a=annotation(t),g=caGroup(t),id=txKey(t),isPicked=caUI.selected.has(id);
- return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''}</span><span class="ca-category"><span>${esc(a.category)}${a.note?' · ✎ Com observação':''}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}</span><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
+ return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''} ${paymentBadge(t)}</span><span class="ca-category"><span class="ca-source-label" title="Origem da categoria: ${esc(caSourceLabel(categorySource(t)))}">${esc(caSourceLabel(categorySource(t)))}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}${a.note?'<span>✎ Observação</span>':''}</span><div class="ca-category-editor">${caCategorySelect(t)}</div><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
 function caGroupKey(name){return period()+'|'+caUI.card+'|'+name;}
-function caListContent(){const rows=caFiltered();if(!caScoped().length)return noData('Nenhuma compra neste cartão neste mês','Consulte os bancos ou selecione outro cartão. Alguns bancos ainda não enviam todas as compras.');
+function caListContent(){const rows=caFiltered();if(!caScoped().length)return noData('Nenhuma compra identificada para esta seleção','Consulte os bancos ou escolha outro cartão/conta. Apenas operações de débito confirmadas entram como compras de débito.');
  if(!rows.length)return noData('Nada encontrado','Limpe a busca ou selecione outro cartão.');
  if(caUI.layout==='list')return `<div class="ca-list">${rows.map(caCardRow).join('')}</div>`;
  const groups=new Map();for(const t of rows){const g=caGroup(t);const key=pmClean(g.name);if(!groups.has(key))groups.set(key,{...g,items:[]});groups.get(key).items.push(t);}
  const gs=[...groups.values()].sort((a,b)=>caAmount(b.items)-caAmount(a.items)||a.name.localeCompare(b.name,'pt-BR'));
- return gs.map(g=>{const key=caGroupKey(g.name),open=caOpenGroups.has(key);
+ return gs.map(g=>{const key=caGroupKey(g.name),open=caOpenGroups.has(key)||!!caUI.search;
  return `<section class="ca-group"><button type="button" class="ca-group-head" data-ca-toggle="${esc(key)}" aria-expanded="${open}" aria-label="${open?'Fechar':'Abrir'} grupo ${esc(g.name)}"><span class="ca-group-icon">${g.icon||'◈'}</span><span class="ca-group-title"><strong>${esc(g.name)}</strong><small>${g.items.length} ${g.items.length===1?'compra':'compras'}</small></span><b>${displayedMoney(caAmount(g.items))}</b><span class="ca-arrow">⌄</span></button><div class="ca-group-rows" ${open?'':'hidden'}>${g.items.map(caCardRow).join('')}</div></section>`;}).join('');}
 function caBars(rows){const groups=new Map();for(const t of rows){const k=caGroup(t).name;groups.set(k,(groups.get(k)||0)+valueForPlanning(t));}
  const ordered=[...groups.entries()].sort((a,b)=>b[1]-a[1]);const total=caAmount(rows);if(!ordered.length)return noData('Sem grupos para analisar','As compras do mês aparecerão aqui.');
@@ -1178,18 +1285,62 @@ function caInsights(rows,cards){if(!rows.length)return `<div class="ca-insight">
  return tips.join('');}
 function caBills(){const filtered=(data?.bills||[]).filter(b=>(caUI.card==='all'||b.accountId===caUI.card)&&String(b.dueDate||'').slice(0,7)===period());if(!filtered.length)return `<div class="ca-help">Nenhuma fatura informada para o mês selecionado. Isso depende do banco conectado.</div>`;
  return filtered.map(b=>`<div class="ca-bill"><div><strong>${esc(bankLabel(account(b.accountId)))}</strong><small>Vence em ${esc(fmtDate(b.dueDate))} · fecha em ${esc(fmtDate(b.closingDate))}</small></div><b>${displayedMoney(b.totalAmount)}</b></div>`).join('');}
-function cardsView(){const cards=caCards();if(!cards.some(a=>a.id===caUI.card))caUI.card='all';const all=caScoped(),total=caAmount(all),n=all.length,average=n?total/n:0,large=[...all].sort((a,b)=>valueForPlanning(b)-valueForPlanning(a))[0];
- const limits=cards.filter(a=>caUI.card==='all'||a.id===caUI.card);const cardLimit=limits.length===1?limits[0]:null;const billValue=(data?.bills||[]).filter(b=>(caUI.card==='all'||b.accountId===caUI.card)&&String(b.dueDate||'').slice(0,7)===period()).reduce((s,b)=>s+Number(b.totalAmount||0),0);
- return `<div class="ca-page"><div class="ca-heading"><div><div class="over">CENTRAL DE CARTÕES</div><h2>Análise de cartões</h2><p>Entenda o que comprou, renomeie lançamentos, crie grupos e compare cartões. Os valores originais do banco permanecem preservados.</p></div><span class="pill">${esc(pmMonthName(period()))}</span></div>
- <div class="ca-card-tabs"><button type="button" class="ca-card-tab ${caUI.card==='all'?'active':''}" data-ca-card="all"><span>◎ Todos os cartões</span><small>${cards.length} conectado(s) · ${displayedMoney(caAmount(caPurchases()))}</small></button>${cards.map(card=>`<div class="ca-card-choice"><button type="button" class="ca-card-tab ${caUI.card===card.id?'active':''}" data-ca-card="${esc(card.id)}" aria-label="Selecionar ${esc(bankName(card))}, final ${esc(card.lastDigits||'não informado')}"><span>▤ ${esc(bankName(card))} <small>••${esc(card.lastDigits||'')}</small></span><small>${displayedMoney(caAmount(caPurchases().filter(t=>t.accountId===card.id)))} em compras</small></button><button type="button" class="ca-card-rename" data-rename-bank="${esc(card.id)}" title="Alterar o nome que aparece neste cartão" aria-label="Editar nome de ${esc(bankName(card))}">✎ Renomear cartão</button></div>`).join('')}</div><div class="ca-card-alias-help">Para trocar <b>gold</b> ou <b>GOLD</b> por outro nome, clique em <b>Renomear cartão</b> abaixo do cartão desejado. O número final continua identificando o cartão; a Pluggy não é alterada.</div>
- ${cards.length===0?`<div class="banner warn">Nenhum cartão de crédito encontrado nesta consulta. Abra o modo Exemplo para visualizar o painel, ou confira se o banco disponibiliza cartões pela Pluggy.</div>`:''}
- <div class="ca-stats"><div class="ca-stat"><span>Compras no mês</span><b>${displayedMoney(total)}</b><small>Somente compras identificadas no cartão</small></div><div class="ca-stat"><span>Transações</span><b>${n}</b><small>Compras identificadas neste período</small></div><div class="ca-stat"><span>Compra média</span><b>${displayedMoney(average)}</b><small>Valor médio das compras</small></div><div class="ca-stat"><span>${billValue?'Faturas com vencimento no mês':'Maior compra'}</span><b>${displayedMoney(billValue|| (large?valueForPlanning(large):0))}</b><small>${billValue?'Valor informado nas faturas':'Maior valor de uma transação'}</small></div></div>
- ${cardLimit?`<div class="ca-limit"><span><b>${esc(bankLabel(cardLimit))}</b><small>Limite total: ${cardLimit.creditLimit==null?'não informado':displayedMoney(cardLimit.creditLimit)}</small></span><div class="ca-limit-actions"><span><small>Disponível informado pela Pluggy</small><b>${cardLimit.availableCreditLimit==null?'Não informado':displayedMoney(cardLimit.availableCreditLimit)}</b></span><button type="button" class="btn sm soft" data-rename-bank="${esc(cardLimit.id)}" title="Nome personalizado, sem alterar o cartão no banco">✎ Renomear cartão</button></div></div>`:''}
- <div class="ca-analytics"><section class="card cardpad"><div class="charthead"><div><h3>Para onde foi o dinheiro?</h3><div class="chartcap">Distribuição pelos grupos das suas compras</div></div></div>${caBars(all)}</section><section class="card cardpad"><div class="charthead"><div><h3>Ritmo dos gastos no mês</h3><div class="chartcap">Compras lançadas por período</div></div></div>${all.length?caWeeks(all):noData('Sem compras neste mês')}</section></div>
- <div class="ca-analytics ca-low"><section class="card cardpad"><div class="charthead"><div><h3>Leituras para decidir melhor</h3><div class="chartcap">Indicadores descritivos baseados no extrato, não recomendações de crédito</div></div></div><div class="ca-insights">${caInsights(all,limits)}</div></section><section class="card cardpad"><div class="charthead"><div><h3>Faturas informadas</h3><div class="chartcap">Faturas disponíveis na Pluggy para o mês selecionado</div></div></div>${caBills()}<div class="ca-help">Pagar a fatura pela conta não é outra compra. Este painel mostra as compras do cartão separadas do fluxo bancário.</div></section></div>
- <section class="card ca-purchases"><div class="ca-purchases-head"><div><h3>Compras para organizar</h3><p>Abra grupos, renomeie compras e escolha onde cada uma pertence.</p></div><div class="row"><span class="pill plain" id="ca-selected-label">${caSelectedCount()} selecionada(s)</span><button type="button" class="btn soft" data-ca-bulk>🗂 Agrupar selecionadas</button></div></div><div class="ca-toolbar"><div class="ca-search-wrap"><span>⌕</span><input class="input" id="ca-search" value="${esc(caUI.search)}" aria-label="Buscar compras" placeholder="Buscar loja, descrição, grupo…"/></div><select class="select ca-sort" id="ca-sort" aria-label="Ordenar compras">${PM_SORT_OPTIONS.map(([key,label])=>`<option value="${key}" ${caUI.sort===key?'selected':''}>${label}</option>`).join('')}</select><select class="select ca-layout" id="ca-layout" aria-label="Exibição das compras"><option value="groups" ${caUI.layout==='groups'?'selected':''}>Grupos recolhíveis</option><option value="list" ${caUI.layout==='list'?'selected':''}>Lista contínua</option></select><button type="button" class="btn sm" data-ca-expand="1">Abrir todos</button><button type="button" class="btn sm" data-ca-expand="0">Fechar todos</button></div>
- <div class="ca-table-hint">Selecione compras e clique em <strong>Agrupar selecionadas</strong> para criar um grupo como “Padaria”, “Mercado Livre” ou “Casa”. Também dá para mudar uma compra individual pelo seletor <strong>Grupo</strong> ou pelo botão <strong>Editar</strong>.</div><div id="ca-results">${caListContent()}</div></section>
- <div class="ca-disclaimer">🔒 A edição vale para o Pouler Lab, não para o cartão ou banco. Os totais de compras consideram valores ajustados no planejamento; a Pluggy pode disponibilizar dados com atraso ou sem todas as faturas.</div></div>`;}
+function caFiltersPanel(){const available=[...new Set(caScoped().map(t=>annotation(t).category))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+ const count=caFiltered().length;
+ return `<section class="card ca-filter-panel" aria-label="Filtros de análise de compras"><div class="ca-filter-top"><div><strong>Explorar suas compras</strong><p>Combine filtros. Todos os gráficos e indicadores consideram a seleção abaixo.</p></div><div class="ca-filter-actions"><span class="pill plain">${count} de ${caScoped().length} compras</span><button type="button" class="btn sm" data-ca-clear>Limpar filtros</button></div></div>
+ <div class="ca-filter-grid">
+ <div><label for="ca-category">Categoria</label><select id="ca-category" class="select"><option value="all">Todas as categorias</option>${available.map(name=>`<option value="${esc(normalizeCategoryName(name))}" ${caUI.category===normalizeCategoryName(name)?'selected':''}>${esc(name)}</option>`).join('')}</select></div>
+ <div><label for="ca-payment">Pagamento</label><select id="ca-payment" class="select"><option value="all">Crédito e débito</option>${[['credito','Crédito'],['debito','Débito']].map(([key,label])=>`<option value="${key}" ${caUI.payment===key?'selected':''}>${label}</option>`).join('')}</select></div>
+ <div><label for="ca-status">Situação</label><select id="ca-status" class="select"><option value="all">Todas</option><option value="POSTED" ${caUI.status==='POSTED'?'selected':''}>Confirmadas</option><option value="PENDING" ${caUI.status==='PENDING'?'selected':''}>Pendentes</option></select></div>
+ <div><label for="ca-installment">Parcelamento</label><select id="ca-installment" class="select"><option value="all">Todas as compras</option><option value="installment" ${caUI.installment==='installment'?'selected':''}>Parceladas</option><option value="single" ${caUI.installment==='single'?'selected':''}>Sem parcelas identificadas</option></select></div>
+ <div><label for="ca-min">Valor mínimo (R$)</label><input id="ca-min" class="input" type="number" min="0" step="0.01" placeholder="0,00" value="${esc(caUI.min)}"/></div>
+ <div><label for="ca-max">Valor máximo (R$)</label><input id="ca-max" class="input" type="number" min="0" step="0.01" placeholder="Sem limite" value="${esc(caUI.max)}"/></div>
+ </div><div class="ca-filter-foot"><span>Compras em crédito e despesas feitas em cartão de débito quando identificadas pelo banco ou ajustadas por você. Pix e boletos ficam no Extrato.</span><button type="button" class="btn sm soft" data-ca-rules>⚙ Regras de categorização (${savedMerchantRules().length})</button></div></section>`;
+}
+function caCategoryBars(rows){if(!rows.length)return noData('Sem categorias nesta seleção');
+ const totals=new Map();for(const t of rows){const cat=annotation(t).category;totals.set(cat,(totals.get(cat)||0)+valueForPlanning(t));}
+ const ordered=[...totals].sort((a,b)=>b[1]-a[1]),max=Math.max(1,...ordered.map(x=>x[1])),total=caAmount(rows);
+ return `<div class="ca-bars">${ordered.slice(0,8).map(([category,value],i)=>`<div class="ca-bar"><div class="ca-bar-label"><span>${esc(category)}</span><b>${displayedMoney(value)}</b></div><div class="ca-track"><div class="ca-fill" style="width:${100*value/max}%;background:${['#7658c7','#3e91bc','#e7a75b','#3daa89','#e17b9e','#9f8dd8','#98a5b7','#8e74b3'][i]}"></div></div><small>${total?(100*value/total).toFixed(1).replace('.',','):0}% das compras</small></div>`).join('')}</div>`;
+}
+function caPaymentChart(rows){if(!rows.length)return noData('Sem compras identificadas nesta seleção');
+ const modes=[['credito','Crédito','#7658c7'],['debito','Débito','#3e91bc']];const total=caAmount(rows);
+ return `<div class="ca-bars">${modes.map(([mode,label,color])=>{const items=rows.filter(t=>paymentMode(t)===mode),value=caAmount(items);return `<div class="ca-bar"><div class="ca-bar-label"><span>${esc(label)} · ${items.length} compra(s)</span><b>${displayedMoney(value)}</b></div><div class="ca-track"><div class="ca-fill" style="width:${total?100*value/total:0}%;background:${color}"></div></div><small>${total?(100*value/total).toFixed(1).replace('.',','):0}% da seleção</small></div>`;}).join('')}</div><p class="ca-chart-caption">Entradas, Pix, boletos e pagamentos de fatura não são classificados como compra de cartão.</p>`;
+}
+function caMerchantRanking(rows){if(!rows.length)return noData('Sem estabelecimentos nesta seleção');
+ const groups=new Map();for(const t of rows){const name=merchantLabel(t),key=cleanMerchantText(name),entry=groups.get(key)||{name,total:0,count:0};entry.total+=valueForPlanning(t);entry.count++;groups.set(key,entry);}
+ const sorted=[...groups.values()].sort((a,b)=>b.total-a.total).slice(0,7),max=Math.max(1,...sorted.map(r=>r.total));
+ return `<div class="ca-merchant-list">${sorted.map((r,i)=>`<button type="button" class="ca-merchant" data-ca-find-merchant="${esc(r.name)}" title="Buscar compras deste estabelecimento"><span class="ca-merchant-index">${i+1}</span><span class="ca-merchant-data"><strong>${esc(r.name)}</strong><small>${r.count} ${r.count===1?'compra':'compras'}</small><span class="ca-track"><span class="ca-fill" style="width:${100*r.total/max}%"></span></span></span><b>${displayedMoney(r.total)}</b></button>`).join('')}</div><p class="ca-chart-caption">Clique em um estabelecimento para filtrar a análise.</p>`;
+}
+function caAccountComparison(rows){if(!rows.length)return noData('Sem contas com compras no filtro');const group=new Map();for(const t of rows){const key=t.accountId,entry=group.get(key)||{account:account(key),value:0,count:0};entry.value+=valueForPlanning(t);entry.count++;group.set(key,entry);}
+ const sorted=[...group.values()].sort((a,b)=>b.value-a.value),max=Math.max(1,...sorted.map(r=>r.value));
+ return `<div class="ca-compare">${sorted.map(r=>`<div class="ca-compare-item"><div class="ca-compare-title"><strong>${esc(bankLabel(r.account))}</strong><span>${esc(isCard(r.account)?'Crédito':'Débito')} · ${r.count} compras</span></div><div class="ca-track"><div class="ca-fill" style="width:${100*r.value/max}%"></div></div><b>${displayedMoney(r.value)}</b></div>`).join('')}</div>`;
+}
+function caCommitments(rows){const parceladas=rows.filter(t=>!!transactionInstallment(t)),assinaturas=rows.filter(t=>/assinaturas?|streaming|aplicativos digitais/i.test(annotation(t).category)||/\b(netflix|spotify|deezer|disneyplus|youtube premium|globoplay)\b/.test(cleanMerchantText(merchantLabel(t))));
+ return `<div class="ca-commit-grid"><div class="ca-commit"><span>Compras parceladas identificadas</span><strong>${parceladas.length}</strong><small>${displayedMoney(caAmount(parceladas))} em parcelas presentes neste mês</small></div><div class="ca-commit"><span>Assinaturas e streaming</span><strong>${displayedMoney(caAmount(assinaturas))}</strong><small>${assinaturas.length} lançamento(s) classificados neste mês</small></div></div><p class="ca-chart-caption">Apenas movimentações presentes no extrato selecionado. Não é uma previsão de cobranças futuras ou confirmação de assinatura recorrente.</p>`;
+}
+function caExportCsv(){const rows=[['Data','Banco ou cartão','Modalidade','Estabelecimento','Descrição','Categoria','Origem da categoria','Grupo','Parcelamento','Status','Valor original','Valor do planejamento','Observação'],...caFiltered().map(t=>{const a=annotation(t),p=transactionInstallment(t);return [String(t.date||'').slice(0,10),bankLabel(account(t.accountId)),PAYMENT_MODES[paymentMode(t)],merchantLabel(t),a.title,a.category,caSourceLabel(categorySource(t)),caGroup(t).name,p?p.number+'/'+p.total:'',t.status,Math.abs(signed(t)),valueForPlanning(t),a.note||''];})];
+ const csv=rows.map(row=>row.map(x=>'"'+String(x??'').replace(/^([=+@\-\t\r])/,'\'$1').replace(/"/g,'""')+'"').join(';')).join('\r\n');
+ downloadFile('Pouler-Analise-Cartoes-'+period()+'.csv','\ufeff'+csv,'text/csv;charset=utf-8');notice('Análise filtrada exportada para CSV.','good');}
+function caRuleManager(){const rules=savedMerchantRules().sort((a,b)=>a.title.localeCompare(b.title,'pt-BR'));
+ showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">CLASSIFICAÇÃO INTELIGENTE</div><h2>Minhas regras automáticas</h2></div><button type="button" class="btn icon" data-close-modal aria-label="Fechar">✕</button></div><p>Ao alterar a categoria de uma compra, você pode memorizar o estabelecimento. Regras pessoais têm prioridade sobre as sugestões automáticas e sobre a categoria da Pluggy. As movimentações originais permanecem intactas.</p>${rules.length?`<div class="ca-rules-list">${rules.map(r=>`<div class="ca-rule"><div><strong>${esc(r.title)}</strong><small>Categoria: ${esc(r.category)} · Reconhecer quando a descrição contiver esse texto</small></div><button type="button" class="btn sm danger" data-ca-delete-rule="${esc(r.key)}">Excluir</button></div>`).join('')}</div>`:noData('Nenhuma regra pessoal ainda','Edite uma categoria e mantenha marcada a opção de memorizar o estabelecimento.')}
+ <div class="note">As sugestões integradas continuam funcionando sem regras pessoais. Quando a identificação for incerta, a classificação original do banco será mantida.</div><div class="footer"><button class="btn primary" type="button" data-close-modal>Concluir</button></div>`);
+}
+function cardsView(){const cards=caCards();if(!cards.some(a=>a.id===caUI.card))caUI.card='all';const all=caFiltered(),total=caAmount(all),n=all.length,average=n?total/n:0,large=[...all].sort((a,b)=>valueForPlanning(b)-valueForPlanning(a))[0];
+ const limits=cards.filter(a=>isCard(a)&&(caUI.card==='all'||a.id===caUI.card));const cardLimit=limits.length===1&&caUI.card!=='all'?limits[0]:null;
+ return `<div class="ca-page"><div class="ca-heading"><div><div class="over">CENTRAL DE PAGAMENTOS</div><h2>Análise de cartões</h2><p>Explore compras no crédito e no débito identificado, use filtros combinados e crie suas próprias regras de categorias. Os dados originais permanecem preservados.</p></div><span class="pill">${esc(pmMonthName(period()))}</span></div>
+ <div class="ca-card-tabs"><button type="button" class="ca-card-tab ${caUI.card==='all'?'active':''}" data-ca-card="all"><span>◎ Todos os meios</span><small>${cards.length} conta(s) e cartão(ões) · ${displayedMoney(caAmount(caPurchases()))}</small></button>${cards.map(card=>`<div class="ca-card-choice"><button type="button" class="ca-card-tab ${caUI.card===card.id?'active':''}" data-ca-card="${esc(card.id)}" aria-label="Selecionar ${esc(bankName(card))}, final ${esc(card.lastDigits||'não informado')}"><span>${isCard(card)?'▤':'▣'} ${esc(bankName(card))} <small>••${esc(card.lastDigits||'')}</small></span><small>${esc(isCard(card)?'Crédito':'Débito')} · ${displayedMoney(caAmount(caPurchases().filter(t=>t.accountId===card.id)))}</small></button><button type="button" class="ca-card-rename" data-rename-bank="${esc(card.id)}" title="Alterar o nome exibido" aria-label="Renomear ${esc(bankName(card))}">✎ Renomear ${isCard(card)?'cartão':'conta'}</button></div>`).join('')}</div><div class="ca-card-alias-help">Você pode renomear as contas e os cartões sem alterar seus dados na Pluggy. A modalidade “Débito” somente aparece quando identificada ou indicada por você.</div>
+ ${cards.length===0?`<div class="banner warn">Nenhum cartão ou compra de débito identificada nesta consulta. Experimente o modo Exemplo ou confira a conexão bancária.</div>`:''}
+ ${caFiltersPanel()}
+ <div class="ca-stats"><div class="ca-stat"><span>Compras filtradas</span><b>${displayedMoney(total)}</b><small>Crédito e débito, conforme os filtros</small></div><div class="ca-stat"><span>Transações</span><b>${n}</b><small>Compras nesta seleção</small></div><div class="ca-stat"><span>Compra média</span><b>${displayedMoney(average)}</b><small>Ticket médio filtrado</small></div><div class="ca-stat"><span>Maior compra</span><b>${displayedMoney(large?valueForPlanning(large):0)}</b><small>${large?esc(annotation(large).title):'Sem compras selecionadas'}</small></div></div>
+ ${cardLimit?`<div class="ca-limit"><span><b>${esc(bankLabel(cardLimit))}</b><small>Limite total: ${cardLimit.creditLimit==null?'não informado':displayedMoney(cardLimit.creditLimit)}</small></span><div class="ca-limit-actions"><span><small>Disponível informado pela Pluggy</small><b>${cardLimit.availableCreditLimit==null?'Não informado':displayedMoney(cardLimit.availableCreditLimit)}</b></span><button type="button" class="btn sm soft" data-rename-bank="${esc(cardLimit.id)}">✎ Renomear cartão</button></div></div>`:''}
+ <div class="ca-analytics"><section class="card cardpad"><div class="charthead"><div><h3>Gastos por categoria</h3><div class="chartcap">Como suas despesas estão classificadas</div></div></div>${caCategoryBars(all)}</section><section class="card cardpad"><div class="charthead"><div><h3>Ritmo dos gastos</h3><div class="chartcap">Compras do período selecionado</div></div></div>${all.length?caWeeks(all):noData('Sem compras nesta seleção')}</section></div>
+ <div class="ca-analytics"><section class="card cardpad"><div class="charthead"><div><h3>Grupos personalizados</h3><div class="chartcap">Quanto cada grupo representa no orçamento</div></div></div>${caBars(all)}</section><section class="card cardpad"><div class="charthead"><div><h3>Débito x crédito</h3><div class="chartcap">Comparação de formas de pagamento identificadas</div></div></div>${caPaymentChart(all)}</section></div>
+ <div class="ca-analytics"><section class="card cardpad"><div class="charthead"><div><h3>Ranking de estabelecimentos</h3><div class="chartcap">Onde você mais gastou e quantas vezes comprou</div></div></div>${caMerchantRanking(all)}</section><section class="card cardpad"><div class="charthead"><div><h3>Comparar contas e cartões</h3><div class="chartcap">Participação de cada meio nas despesas filtradas</div></div></div>${caAccountComparison(all)}</section></div>
+ <div class="ca-analytics"><section class="card cardpad"><div class="charthead"><div><h3>Parcelamentos e assinaturas</h3><div class="chartcap">Compromissos identificados no extrato, sem projeções inventadas</div></div></div>${caCommitments(all)}</section><section class="card cardpad"><div class="charthead"><div><h3>Leituras para decidir melhor</h3><div class="chartcap">Indicadores descritivos baseados nas compras</div></div></div><div class="ca-insights">${caInsights(all,limits)}</div></section></div>
+ <div class="ca-analytics ca-low"><section class="card cardpad"><div class="charthead"><div><h3>Faturas informadas</h3><div class="chartcap">Vencimentos do mês do cartão, independentes dos filtros de compra</div></div></div>${caBills()}<div class="ca-help">O valor de uma fatura pode corresponder a compras de meses anteriores. Pagar uma fatura não cria outra compra.</div></section><section class="card cardpad"><div class="charthead"><div><h3>Minhas regras inteligentes</h3><div class="chartcap">Classificação automática com controle manual</div></div></div><p class="ca-help">A categoria é sugerida pela descrição ou pelo comerciante. Você pode corrigir qualquer compra e memorizar a correção para lançamentos semelhantes.</p><div class="ca-rule-actions"><span class="pill plain">${savedMerchantRules().length} regra(s) personalizada(s)</span><button type="button" class="btn soft" data-ca-rules>Gerenciar regras</button><button type="button" class="btn" data-ca-export>↓ Exportar CSV filtrado</button></div></section></div>
+ <section class="card ca-purchases"><div class="ca-purchases-head"><div><h3>Compras para organizar</h3><p>Altere a categoria diretamente ou abra o editor para memorizar um estabelecimento.</p></div><div class="row"><span class="pill plain" id="ca-selected-label">${caSelectedCount()} selecionada(s)</span><button type="button" class="btn soft" data-ca-bulk>🗂 Agrupar selecionadas</button></div></div><div class="ca-toolbar"><div class="ca-search-wrap"><span>⌕</span><input class="input" id="ca-search" value="${esc(caUI.search)}" aria-label="Buscar compras" placeholder="Buscar loja, descrição, categoria, grupo…"/></div><select class="select ca-sort" id="ca-sort" aria-label="Ordenar compras">${PM_SORT_OPTIONS.map(([key,label])=>`<option value="${key}" ${caUI.sort===key?'selected':''}>${label}</option>`).join('')}</select><select class="select ca-layout" id="ca-layout" aria-label="Exibição das compras"><option value="groups" ${caUI.layout==='groups'?'selected':''}>Grupos recolhíveis</option><option value="list" ${caUI.layout==='list'?'selected':''}>Lista contínua</option></select><button type="button" class="btn sm" data-ca-expand="1">Abrir todos</button><button type="button" class="btn sm" data-ca-expand="0">Fechar todos</button></div>
+ <div class="ca-table-hint">Cada compra mostra a modalidade, a categoria e a origem da classificação. A categoria é editável pelo seletor; o botão <b>Editar</b> permite adicionar regras de comerciante, descrição, grupo e observações.</div><div id="ca-results">${caListContent()}</div></section>
+ <div class="ca-disclaimer">🔒 Nenhuma mudança é enviada à instituição. As categorias e regras são ajustes separados, sincronizados pelo mecanismo de planejamento já existente quando disponível. Valores exibidos podem refletir ajustes manuais; a Pluggy pode informar transações e faturas em datas diferentes.</div></div>`;}
 function linkedMonthly(){const t=linkedTotals(),rows=transactions().sort((a,b)=>String(a.date).localeCompare(String(b.date)));return `<div class="splithead"><div><h2>Mensal Pluggy</h2><p>Somente valores provenientes dos extratos. Sem lançamentos manuais.</p></div><span class="pill good">✓ Vinculado</span></div>
 <div class="grid4">${kpi('Entradas bancárias',t.bankIn,'Créditos reconhecidos nas contas','↗')}${kpi('Saídas de caixa',t.bankOut,'Inclui pagamento de faturas','↘')}${kpi('Compras no cartão',t.cards,'Não somadas às saídas bancárias','▤')}${kpi('Saldo de caixa do mês',t.cashFlow,'Entradas menos saídas bancárias','◈')}</div>
 <div class="cols"><div class="card cardpad"><div class="charthead"><div><h3>Consumo reconhecido</h3><div class="chartcap">Compras da conta e do cartão; fatura paga não conta duas vezes</div></div><strong>${displayedMoney(t.consumption)}</strong></div>${categoryBars(8)}<div class="line"></div><div class="chartnote">Saídas de caixa incluem ${displayedMoney(t.cardPayments)} de pagamentos de faturas identificados. Você pode corrigir essa classificação no Extrato.</div></div>
@@ -1581,6 +1732,7 @@ function categoryPicker(current=''){
 function editTransaction(id){
  const t=(data?.transactions||[]).find(t=>txKey(t)===id);if(!t)return;
  const a=annotation(t),signedV=signed(t),acc=account(t.accountId);
+ const rememberedTerm=merchantRuleTerm(t);
  const alias=acc?String(state().overrides[accountAliasKey(acc)]?.title||'').trim():'';
  const bankOrig=acc?String(acc.name||accountInstitution(acc)||'Conta bancária'):'Conta não identificada';
  showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">EXTRATO VINCULADO · EDIÇÃO</div><h2>Personalizar movimentação</h2></div><button class="btn icon" type="button" data-close-modal aria-label="Fechar editor">✕</button></div>
@@ -1592,6 +1744,8 @@ function editTransaction(id){
  </div><div class="tx-section-label">Organização financeira</div>
  <div class="fields"><div class="field"><label>Categoria detalhada</label>${categoryPicker(a.category)}</div>
  <div class="field"><label>Subcategoria</label>${subPicker(a.category,a.subcategory)}</div>
+ <div class="field"><label>Forma de pagamento (etiqueta)</label><select name="paymentMethod" class="select"><option value="" ${!a.paymentMethod?'selected':''}>Identificar automaticamente · ${esc(PAYMENT_MODES[paymentMode(t)])}</option>${Object.entries(PAYMENT_MODES).map(([key,name])=>`<option value="${key}" ${a.paymentMethod===key?'selected':''}>${esc(name)}</option>`).join('')}</select><div class="tx-modal-help">Entrada/saída é diferente de crédito/débito como forma de pagamento. Quando o banco não confirma a modalidade, mostramos “Não identificado”.</div></div>
+ ${rememberedTerm&&signedV<0?`<div class="field wide ca-remember"><label class="checkrow"><input name="rememberMerchant" type="checkbox" checked/> Memorizar esta categoria para compras semelhantes</label><label for="merchantMatch">Texto para identificar o estabelecimento</label><input id="merchantMatch" name="merchantMatch" class="input" maxlength="70" value="${esc(rememberedTerm)}"/><div class="tx-modal-help">A regra será aplicada a descrições que contenham esse texto, inclusive em futuras sincronizações. Ajuste para evitar identificar estabelecimentos diferentes. Você pode excluir a regra depois.</div></div>`:''}
  <div class="field"><label>Grupo personalizado</label><input name="groupName" class="input" maxlength="60" list="pm-group-names" value="${esc(a.groupName||'')}" placeholder="Ex.: Aulas, Monte Alvo, Compras online"/>${pmGroupDatalist()}<div class="tx-modal-help">Organiza receitas e despesas nos grupos recolhíveis.</div></div>
  <div class="field"><label>Grupo financeiro</label>${finSelect(a.financeClass,'name="financeClass"')}<div class="tx-modal-help">Provento, despesa fixa ou gasto geral.</div></div>
  <div class="field"><label>Natureza da movimentação</label><select name="kind" class="select">${[['normal','Despesa ou receita real'],['transfer','Transferência entre contas'],['cardpayment','Pagamento de fatura'],['ignore','Ignorar nos cálculos']].map(([v,l])=>`<option value="${v}" ${v===a.kind?'selected':''}>${l}</option>`).join('')}</select><div class="tx-modal-help">Evite contar transferências e faturas duas vezes.</div></div>
@@ -1614,6 +1768,10 @@ function uniqueId(){return 'm_'+(crypto.randomUUID?crypto.randomUUID():Date.now(
 // Ações dinâmicas do painel.
 $('#view-content').addEventListener('click',async e=>{
  const btn=e.target.closest('button');if(!btn)return;
+ if(btn.hasAttribute('data-ca-clear')){Object.assign(caUI,{card:'all',category:'all',payment:'all',status:'all',installment:'all',min:'',max:'',search:''});caUI.selected.clear();caSaveUI();render();return;}
+ if(btn.hasAttribute('data-ca-rules')){caRuleManager();return;}
+ if(btn.hasAttribute('data-ca-export')){caExportCsv();return;}
+ if(btn.hasAttribute('data-ca-find-merchant')){caUI.search=btn.dataset.caFindMerchant;caUI.selected.clear();render();$('#ca-search')?.focus({preventScroll:true});return;}
  if(btn.hasAttribute('data-pm-start-group')){pmBulkIncome();const inp=$('#pm-bulk-income-form input[name="groupName"]');if(inp)inp.value=btn.dataset.pmStartGroup;return;}
  if(btn.hasAttribute('data-ca-card')){caUI.card=btn.dataset.caCard;caUI.selected.clear();caSaveUI();render();return;}
  if(btn.hasAttribute('data-ca-edit')){editTransaction(btn.dataset.caEdit);return;}
@@ -1708,14 +1866,17 @@ $('#view-content').addEventListener('click',async e=>{
  }
 });
 $('#view-content').addEventListener('input',e=>{
- if(e.target.id==='ca-search'){caUI.search=e.target.value;const el=$('#ca-results');if(el)el.innerHTML=caListContent();return;}
+ if(e.target.id==='ca-search'){const pos=e.target.selectionStart;caUI.search=e.target.value;render();const next=$('#ca-search');if(next){next.focus({preventScroll:true});try{next.setSelectionRange(pos,pos);}catch{}}return;}
 });
 $('#view-content').addEventListener('input',e=>{
  if(e.target.id==='txn-search'){currentSearch=e.target.value;refreshTxnResults();}
 });
 $('#view-content').addEventListener('change',e=>{
+ const caFilter={"ca-category":"category","ca-payment":"payment","ca-status":"status","ca-installment":"installment","ca-min":"min","ca-max":"max"}[e.target.id];
+ if(caFilter){caUI[caFilter]=e.target.value;caUI.selected.clear();caSaveUI();render();return;}
  if(e.target.id==='ca-sort'){caUI.sort=e.target.value;caSaveUI();render();return;}
  if(e.target.id==='ca-layout'){caUI.layout=e.target.value;caSaveUI();render();return;}
+ if(e.target.hasAttribute('data-ca-category')){const id=e.target.dataset.caCategory,t=(data?.transactions||[]).find(x=>txKey(x)===id),category=String(e.target.value||'').slice(0,60);if(!t||!category)return;state().overrides[id]={...annotation(t),category};const remembered=saveMerchantRule(t,category);scheduleSave();notice('Categoria alterada para '+category+(remembered?' e memorizada para compras semelhantes.':'.'),'good');return;}
  if(e.target.hasAttribute('data-ca-select')){const key=e.target.dataset.caSelect;if(e.target.checked)caUI.selected.add(key);else caUI.selected.delete(key);const label=$('#ca-selected-label');if(label)label.textContent=caSelectedCount()+' selecionada(s)';return;}
  if(e.target.hasAttribute('data-ca-group')){const id=e.target.dataset.caGroup,t=(data?.transactions||[]).find(x=>txKey(x)===id);if(!t)return;let group=e.target.value;
   if(group==='__new__'){const v=prompt('Novo grupo para esta compra (ex.: Padaria, Compras online):','');if(v===null){render();return;}group=String(v).trim().slice(0,60);if(!group){notice('Digite o nome de um grupo.','warn');render();return;}}
@@ -1762,6 +1923,8 @@ $('#view-content').addEventListener('change',e=>{
 });
 // Editor de categorias: criar, reutilizar e sincronizar sem alterar os dados da Pluggy.
 $('#modal-backdrop').addEventListener('click',e=>{
+ const removeRule=e.target.closest('[data-ca-delete-rule]');
+ if(removeRule){const key=removeRule.dataset.caDeleteRule;if(key.startsWith(MERCHANT_RULE_PREFIX)&&state().overrides[key]){delete state().overrides[key];caRuleManager();scheduleSave();notice('Regra removida; a classificação automática padrão volta a valer.','good');}return;}
  const toggle=e.target.closest('[data-cat-new-toggle]');
  if(toggle){
   const field=toggle.closest('.field'),box=field?.querySelector('[data-cat-create]');
@@ -1893,7 +2056,9 @@ $('#modal-backdrop').addEventListener('submit',e=>{
   const manualTime=String(f.get('timeManual')||'').trim();
   if(manualTime&&!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(manualTime)){alert('Horário inválido. Use HH:MM.');return;}
   if(num!==null&&(!Number.isFinite(num)||num<0||num>999999999)){alert('Informe um valor válido.');return;}
-  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:String(f.get('category')).trim().slice(0,60)||'Outros',subcategory:subClean(f.get('subcategory')),groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),timeManual:manualTime,kind:['normal','transfer','cardpayment','ignore'].includes(String(f.get('kind')))?String(f.get('kind')):baseKind(t),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
+  const nextCategory=String(f.get('category')).trim().slice(0,60)||'Outros';
+  state().overrides[id]={title:String(f.get('title')).trim().slice(0,160)||t.description,category:nextCategory,subcategory:subClean(f.get('subcategory')),groupName:String(f.get('groupName')||'').trim().slice(0,60),note:String(f.get('note')).trim().slice(0,500),paymentMethod:PAYMENT_MODES[String(f.get('paymentMethod'))]?String(f.get('paymentMethod')):'',timeManual:manualTime,kind:['normal','transfer','cardpayment','ignore'].includes(String(f.get('kind')))?String(f.get('kind')):baseKind(t),financeClass:FIN_CLASSES.some(([k])=>k===f.get('financeClass'))?String(f.get('financeClass')):suggestedClass(t),includeFree:f.get('includeFree')==='on',hideMonthly:f.get('hideMonthly')==='on',planValue:num};
+  if(f.get('rememberMerchant')==='on')saveMerchantRule(t,nextCategory,String(f.get('merchantMatch')||''));
   const acc=account(t.accountId);
   if(acc){
    const alias=String(f.get('bankAlias')||'').trim().slice(0,80),bankGroup=String(f.get('bankGroup')||'').trim().slice(0,60),aliasKey=accountAliasKey(acc);
@@ -2002,7 +2167,7 @@ function dcDrilldown(rows){
 }
 function dcItem(t){
  const a=annotation(t),acc=account(t.accountId),isCreditCard=isCard(acc),amount=Math.max(0,valueForPlanning(t));
- return `<article class="dc-item ${isCreditCard?'credit':'debit'}"><span class="dc-item-icon" aria-hidden="true">${isCreditCard?'▤':'↘'}</span><div class="dc-item-main"><strong>${esc(a.title)}</strong><div class="dc-meta"><span>${esc(fmtDate(t.date))}</span><span>· ${esc(bankLabel(acc))}</span><span>· ${esc(a.category)}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}${a.subcategory?`<span class="dc-subtag">${esc(a.subcategory)}</span>`:''}${a.groupName?`<span>· ${esc(a.groupName)}</span>`:''}${a.note?'<span>· ✎ Nota</span>':''}${t.status==='PENDING'?'<span>· Pendente</span>':''}</div></div><div class="dc-item-side"><div class="dc-quick-sub"><label for="dc-sub-${esc(txKey(t))}">Subcategoria</label><select class="select" id="dc-sub-${esc(txKey(t))}" aria-label="Subcategoria de ${esc(a.title)}" data-dc-assign-sub="${esc(txKey(t))}">${subOptionHTML(a.category,a.subcategory,true)}</select></div><div class="dc-item-amount">${displayedMoney(amount)}${a.planValue!==''?`<small>Original: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button type="button" class="btn sm dc-edit" data-edit-tx="${esc(txKey(t))}" title="Editar descrição, categoria e observações">✎ Editar</button></div></article>`;
+ return `<article class="dc-item ${isCreditCard?'credit':'debit'}"><span class="dc-item-icon" aria-hidden="true">${isCreditCard?'▤':'↘'}</span><div class="dc-item-main"><strong>${esc(a.title)}</strong><div class="dc-meta"><span>${esc(fmtDate(t.date))}</span><span>· ${esc(bankLabel(acc))}</span>${paymentBadge(t)}<span>· ${esc(a.category)}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}${a.subcategory?`<span class="dc-subtag">${esc(a.subcategory)}</span>`:''}${a.groupName?`<span>· ${esc(a.groupName)}</span>`:''}${a.note?'<span>· ✎ Nota</span>':''}${t.status==='PENDING'?'<span>· Pendente</span>':''}</div></div><div class="dc-item-side"><div class="dc-quick-sub"><label for="dc-sub-${esc(txKey(t))}">Subcategoria</label><select class="select" id="dc-sub-${esc(txKey(t))}" aria-label="Subcategoria de ${esc(a.title)}" data-dc-assign-sub="${esc(txKey(t))}">${subOptionHTML(a.category,a.subcategory,true)}</select></div><div class="dc-item-amount">${displayedMoney(amount)}${a.planValue!==''?`<small>Original: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button type="button" class="btn sm dc-edit" data-edit-tx="${esc(txKey(t))}" title="Editar descrição, categoria e observações">✎ Editar</button></div></article>`;
 }
 function dcItemsList(rows,limit=180){const sorted=dcSorted(rows);return sorted.length?`<div class="dc-list">${sorted.slice(0,limit).map(dcItem).join('')}</div>${sorted.length>limit?`<p class="miniinfo">Mostrando ${limit} de ${sorted.length} movimentações. Refine os filtros para localizar outras.</p>`:''}`:noData('Nenhum lançamento encontrado','Altere os filtros ou consulte outro mês.');}
 function dcPanelBody(){
