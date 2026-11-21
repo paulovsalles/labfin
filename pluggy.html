@@ -396,6 +396,24 @@
 .cat-create-msg{font-size:11px;color:#857793;display:block;margin-top:7px}
 @media(max-width:510px){.cat-picker{display:grid;grid-template-columns:1fr}.cat-new-btn{width:100%}}
 
+/* 4.5 — PIX próprios: ocultar do consumo, restaurar e acompanhar salvamento */
+.ca-own-transfer{border:1px solid #c9e7df;background:#f1faf6;color:#14765d;border-radius:9px;font-size:10px;font-weight:800;padding:8px 10px;white-space:normal;line-height:1.25;max-width:142px;cursor:pointer}
+.ca-own-transfer:hover{background:#dff5e9}
+.ca-own-section{border:1px solid #d9ece5;background:#fbfefd;border-radius:15px;padding:16px 19px}
+.ca-own-section .ca-own-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ca-own-section h3{margin:0;font-size:14px}
+.ca-own-section p{font-size:11px;color:var(--muted);line-height:1.55;margin:7px 0 0}
+.ca-own-items{display:grid;gap:9px;margin-top:13px}
+.ca-own-item{display:flex;align-items:center;gap:11px;justify-content:space-between;padding:12px;background:#fff;border:1px solid #e7eee9;border-radius:11px;flex-wrap:wrap}
+.ca-own-item strong{display:block;font-size:12px;color:#302b42}
+.ca-own-item small{font-size:10px;color:var(--muted);display:block;margin-top:5px;line-height:1.45}
+.ca-own-item .ca-own-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.ca-own-save{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.ca-own-save .pill{font-size:10px}
+.ca-own-status{font-size:11px;color:#5c5276;display:inline-flex;align-items:center;gap:5px}
+.ca-own-empty{color:var(--muted);font-size:11px}
+@media(max-width:680px){.ca-own-section{padding:13px}.ca-own-save{justify-content:flex-start}.ca-own-transfer{max-width:none}.ca-row .ca-own-transfer{width:100%}}
+
 /* 4.3 — Conciliação de transferências próprias, com confirmação e reversão */
 .rec-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}
 .rec-kpi{border:1px solid var(--line);background:white;border-radius:14px;padding:17px 18px;min-width:0}
@@ -700,6 +718,9 @@ window.addEventListener('unhandledrejection', function(ev){console.error('[Poule
 const WORKER='https://pouler-pluggy-lab.paulossray.workers.dev';
 const TOKEN_KEY='pouler-pluggy-lab-login-v1';
 const STATE_KEY='pouler-lab-v2-ajustes-locais';
+const SAVE_PENDING_KEY=STATE_KEY+'-envio-pendente';
+const LAST_SYNC_KEY=STATE_KEY+'-ultima-sincronia';
+const CONFLICT_BACKUP_KEY=STATE_KEY+'-copia-antes-da-mesclagem';
 const $=q=>document.querySelector(q);
 const $$=q=>Array.from(document.querySelectorAll(q));
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -760,7 +781,7 @@ const monthNow=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo'
 const colors=['#7952d2','#d66aa8','#4e8bca','#e8ac5e','#39a78b','#a29bc3','#e2767b','#79a8a2','#ab86e9','#aeb0bb'];
 const categories=['Alimentação','Moradia','Transporte','Saúde','Educação','Lazer','Assinaturas','Compras','Salário','Renda extra','Investimentos','Dívidas','Impostos','Família','Presentes','Dízimo','Doações','Outros'];
 const emptyState=()=>({version:2,manual:[],overrides:{}});
-let finance=emptyState(), demoFinance=emptyState(), data=null, mode='none', currentView='dashboard', token='', sessionEmail='', cloudEnabled=false, saveTimer=null, saveInFlight=false, savedLocally=false, busy=false, hiddenValues=false, activeTypeFilter='all', currentSearch='', currentAccount='', currentBank='', stateRead=false;
+let finance=emptyState(), demoFinance=emptyState(), data=null, mode='none', currentView='dashboard', token='', sessionEmail='', cloudEnabled=false, saveTimer=null, saveInFlight=false, saveRequested=false, saveDirty=false, savedLocally=false, busy=false, hiddenValues=false, activeTypeFilter='all', currentSearch='', currentAccount='', currentBank='', stateRead=false;
 const displayedMoney=n=>hiddenValues?'R$ •••••':currency(n);
 const state=()=>mode==='demo'?demoFinance:finance;
 const period=()=>$('#month').value;
@@ -860,7 +881,7 @@ function baseKind(t){
  const label=String(t.description||'').toLocaleLowerCase('pt-BR');
  if(String(t.operationType||'').toUpperCase()==='PAGAMENTO_FATURA')return 'cardpayment';
  if(/pagamento (de |da |do )?fatura|pagamento (do |de )?cart[aã]o|pgto.*fatura|fatura.*pagamento/.test(label))return 'cardpayment';
- if(/transfer[eê]ncia entre contas|aplica[cç][aã]o financeira|resgate de investimento|transferencia interna/.test(label))return 'transfer';
+ if(/transfer[eê]ncia entre contas|aplica[cç][aã]o financeira|resgate de investimento|transferencia interna|(?:pix|transfer[eê]ncia).{0,85}(?:mesma titularidade|minha conta|conta pr[oó]pria|entre minhas contas)/.test(label))return 'transfer';
  return 'normal';
 }
 // A modalidade de pagamento NÃO é o campo Pluggy type (DEBIT=saída, CREDIT=entrada).
@@ -1091,29 +1112,108 @@ function freeTotals(){const list=monthlyEntries().filter(counted);
 function notice(msg,kind='info'){
  const el=$('#status-banner'); if(!el)return; el.className='banner'+(kind==='info'?'':' '+kind);$('#status-text').textContent=msg;
 }
-function localSave(){try{localStorage.setItem(STATE_KEY,JSON.stringify(finance));savedLocally=true;return true}catch{notice('Não foi possível salvar no navegador. Exporte um backup JSON para não perder as alterações.','bad');return false}}
-function localRead(){try{const raw=localStorage.getItem(STATE_KEY);if(raw){const f=JSON.parse(raw);if(f&&Array.isArray(f.manual)&&f.overrides)finance={version:2,manual:f.manual,overrides:f.overrides};}}catch{}}
-function savedStatus(){const el=$('#save-indicator');if(el)el.textContent=mode==='demo'?'Exemplo · não salvo':cloudEnabled?'☁ Sincronizado com Cloudflare KV':'▣ Salvo neste navegador';}
+function localSave(){
+ try{localStorage.setItem(STATE_KEY,JSON.stringify(finance));savedLocally=true;return true;}
+ catch{notice('Não foi possível salvar no navegador. Exporte agora seu backup JSON para não perder as alterações.','bad');return false;}
+}
+function localRead(){
+ try{const raw=localStorage.getItem(STATE_KEY);if(raw){const f=JSON.parse(raw);if(f&&Array.isArray(f.manual)&&f.overrides&&typeof f.overrides==='object')finance={version:2,manual:f.manual,overrides:f.overrides};}}
+ catch{notice('A cópia local não pôde ser lida. Se tiver um backup JSON, restaure-o em Configurações.','warn');}
+ try{saveDirty=localStorage.getItem(SAVE_PENDING_KEY)==='1';}catch{}
+}
+function hasEdits(s){return !!(s&&((Array.isArray(s.manual)&&s.manual.length)||(s.overrides&&Object.keys(s.overrides).length)));}
+function markPending(){
+ saveDirty=true;
+ try{localStorage.setItem(SAVE_PENDING_KEY,'1');}catch{notice('Seu navegador não conseguiu registrar a pendência de sincronização. Exporte um backup JSON.','warn');}
+ savedStatus();
+}
+function savedStatus(){
+ const message=mode==='demo'?'Prévia · não salvo':saveDirty?(savedLocally?'● Salvo neste navegador · aguardando nuvem':'● Alterações pendentes'):(cloudEnabled?'✓ Salvo na Cloudflare e neste navegador':'▣ Salvo neste navegador');
+ const el=$('#save-indicator');if(el)el.textContent=message;
+ const top=$('#ca-save-status');if(top)top.textContent=message;
+}
 function scheduleSave(){
  if(mode==='demo'){notice('Alteração feita nos dados fictícios. Ela não será salva na nuvem.','info');setTimeout(render,0);return;}
- localSave();savedStatus();clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,2200);setTimeout(render,0);
+ markPending();localSave();savedStatus();
+ clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,900);
+ setTimeout(render,0);
 }
 async function persistCloud(){
- if(!token||!cloudEnabled||saveInFlight)return;
- saveInFlight=true;const snapshot=JSON.stringify(finance);
- try{const ans=await api('/finance-state',true,{body:{state:JSON.parse(snapshot)}});if(ans.success)notice('Seu planejamento foi salvo na Cloudflare. O extrato bancário original não foi alterado.','good');}
- catch(e){notice('Suas edições estão salvas neste navegador, mas a nuvem não confirmou: '+e.message,'warn');}
- finally{saveInFlight=false; if(JSON.stringify(finance)!==snapshot){clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,2500);}}
+ if(mode!=='real'||!token||!cloudEnabled){savedStatus();return false;}
+ if(saveInFlight){saveRequested=true;return false;}
+ saveInFlight=true;
+ const snapshot=JSON.stringify(finance);
+ try{
+  const ans=await api('/finance-state',true,{body:{state:JSON.parse(snapshot)}});
+  if(ans.success!==true)throw Error('A Cloudflare não confirmou o salvamento.');
+  if(JSON.stringify(finance)===snapshot){
+   saveDirty=false;
+   try{localStorage.setItem(LAST_SYNC_KEY,snapshot);localStorage.removeItem(SAVE_PENDING_KEY);}catch{}
+   notice('✓ Classificações e transferências salvas na Cloudflare e neste navegador.','good');
+  }else{markPending();saveRequested=true;}
+  savedStatus();return true;
+ }catch(e){
+  markPending();
+  notice('Salvo neste navegador, mas pendente na nuvem: '+e.message+'. Use Salvar agora ou exporte um backup.','warn');
+  return false;
+ }finally{
+  saveInFlight=false;
+  if(saveRequested){saveRequested=false;clearTimeout(saveTimer);saveTimer=setTimeout(persistCloud,1000);}
+ }
+}
+// Quando existe uma edição local não sincronizada, a cópia mais antiga do servidor
+// jamais pode substituí-la. Na primeira migração, una chaves e faça uma cópia de segurança.
+function mergeFinance(remote,local){
+ const merged={version:2,manual:[],overrides:{...(remote?.overrides||{}),...(local?.overrides||{})}};
+ const manualMap=new Map();
+ for(const m of remote?.manual||[])if(m&&m.id!=null)manualMap.set(String(m.id),m);
+ for(const m of local?.manual||[])if(m&&m.id!=null)manualMap.set(String(m.id),m);
+ merged.manual=[...manualMap.values()];
+ return merged;
 }
 async function loadStoredState(){
- localRead(); if(!token){savedStatus();return;}
- try{const r=await api('/finance-state',true);cloudEnabled=!!r.available;
-  if(r.available&&r.state&&Array.isArray(r.state.manual)&&r.state.overrides){finance={version:2,manual:r.state.manual,overrides:r.state.overrides};localSave();}
-  else if(r.available&&(finance.manual.length||Object.keys(finance.overrides).length)){setTimeout(persistCloud,2300);}
+ // Sempre ler PRIMEIRO a cópia local, incluindo o aviso de alterações pendentes.
+ localRead();savedStatus();
+ if(!token){stateRead=true;return;}
+ const localSnapshot=JSON.stringify(finance),pendingLocal=saveDirty;
+ try{
+  const r=await api('/finance-state',true);cloudEnabled=!!r.available;
+  const validRemote=r.available&&r.state&&Array.isArray(r.state.manual)&&r.state.overrides&&typeof r.state.overrides==='object';
+  if(validRemote){
+   const remote={version:2,manual:r.state.manual,overrides:r.state.overrides};
+   const remoteSnapshot=JSON.stringify(remote);
+   if(pendingLocal){
+    // NUNCA sobrescrever organização local que ainda não foi enviada.
+    if(remoteSnapshot===localSnapshot){
+     saveDirty=false;try{localStorage.removeItem(SAVE_PENDING_KEY);localStorage.setItem(LAST_SYNC_KEY,remoteSnapshot);}catch{}
+    }else{setTimeout(persistCloud,450);}
+   }else if(remoteSnapshot===localSnapshot){
+    try{localStorage.setItem(LAST_SYNC_KEY,remoteSnapshot);}catch{}
+   }else if(!hasEdits(finance)){
+    finance=remote;localSave();try{localStorage.setItem(LAST_SYNC_KEY,remoteSnapshot);}catch{}
+   }else{
+    let lastSync='';try{lastSync=localStorage.getItem(LAST_SYNC_KEY)||'';}catch{}
+    if(lastSync&&lastSync===localSnapshot){
+     // Este navegador não tem mudanças próprias: acolhe ajustes mais recentes da nuvem.
+     finance=remote;localSave();try{localStorage.setItem(LAST_SYNC_KEY,remoteSnapshot);}catch{}
+    }else{
+     // Migração da versão antiga: preservar o conteúdo local e não perder o remoto.
+     const combined=mergeFinance(remote,finance);
+     try{localStorage.setItem(CONFLICT_BACKUP_KEY,localSnapshot);}catch{}
+     finance=combined;localSave();markPending();setTimeout(persistCloud,450);
+     notice('Ajustes locais preservados e mesclados com a nuvem. Fizemos uma cópia de segurança antes da mesclagem.','warn');
+    }
+   }
+  }else if(r.available&&hasEdits(finance)){
+   markPending();setTimeout(persistCloud,450);
+  }
   stateRead=true;savedStatus();
-  if(!r.available)notice('Salvamento local ativo. Para manter as edições também no celular, vincule FINANCE_KV na Cloudflare.','warn');
- }catch(e){cloudEnabled=false;stateRead=true;notice('Ajustes carregados deste navegador. KV indisponível: '+e.message,'warn');}
+  if(!r.available)notice('Alterações salvas neste navegador. Para manter tudo em outros aparelhos, vincule FINANCE_KV na Cloudflare e exporte um backup.','warn');
+ }catch(e){cloudEnabled=false;stateRead=true;savedStatus();notice('Ajustes locais preservados. Nuvem indisponível: '+e.message,'warn');}
 }
+window.addEventListener('online',()=>{if(saveDirty&&token&&cloudEnabled)persistCloud();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&saveDirty&&token&&cloudEnabled)persistCloud();});
+window.addEventListener('pagehide',()=>{if(mode==='real'&&saveDirty)localSave();});
 async function api(path,authorized=false,options={}){
  const h={Accept:'application/json'};if(authorized){if(!token)throw Error('Entre novamente para acessar os bancos.');h.Authorization='Bearer '+token;}
  if(options.body)h['Content-Type']='application/json';
@@ -1239,11 +1339,11 @@ function extractView(){const rows=filteredTx();const all=transactions();const ba
 // -------- Análise de Cartões 3.6: um laboratório para identificar despesas --------
 const CA_GROUP_KEY='pouler-card-groups-open-v36';
 const CA_PREF_KEY='pouler-card-analytics-ui-v40';
-const caUI={card:'all',sort:'date-desc',search:'',layout:'groups',category:'all',payment:'all',status:'all',installment:'all',min:'',max:'',selected:new Set()};
+const caUI={card:'all',sort:'date-desc',search:'',layout:'groups',category:'all',payment:'all',status:'all',installment:'all',min:'',max:'',showOwnTransfers:false,selected:new Set()};
 let caOpenGroups=new Set();
-try{const v=JSON.parse(localStorage.getItem(CA_PREF_KEY)||localStorage.getItem('pouler-card-analytics-ui-v36')||'{}');if(typeof v.card==='string')caUI.card=v.card;if(['date-desc','date-asc','value-desc','value-asc','name-asc'].includes(v.sort))caUI.sort=v.sort;if(['groups','list'].includes(v.layout))caUI.layout=v.layout;if(typeof v.category==='string')caUI.category=v.category;if(typeof v.payment==='string')caUI.payment=v.payment;if(typeof v.status==='string')caUI.status=v.status;if(typeof v.installment==='string')caUI.installment=v.installment;}catch{}
+try{const v=JSON.parse(localStorage.getItem(CA_PREF_KEY)||localStorage.getItem('pouler-card-analytics-ui-v36')||'{}');if(typeof v.card==='string')caUI.card=v.card;if(['date-desc','date-asc','value-desc','value-asc','name-asc'].includes(v.sort))caUI.sort=v.sort;if(['groups','list'].includes(v.layout))caUI.layout=v.layout;if(typeof v.category==='string')caUI.category=v.category;if(typeof v.payment==='string')caUI.payment=v.payment;if(typeof v.status==='string')caUI.status=v.status;if(typeof v.installment==='string')caUI.installment=v.installment;if(typeof v.showOwnTransfers==='boolean')caUI.showOwnTransfers=v.showOwnTransfers;}catch{}
 try{const v=JSON.parse(localStorage.getItem(CA_GROUP_KEY)||'[]');if(Array.isArray(v))caOpenGroups=new Set(v.filter(x=>typeof x==='string').slice(-200));}catch{}
-function caSaveUI(){try{localStorage.setItem(CA_PREF_KEY,JSON.stringify({card:caUI.card,sort:caUI.sort,layout:caUI.layout,category:caUI.category,payment:caUI.payment,status:caUI.status,installment:caUI.installment}));localStorage.setItem(CA_GROUP_KEY,JSON.stringify([...caOpenGroups].slice(-200)));}catch{}}
+function caSaveUI(){try{localStorage.setItem(CA_PREF_KEY,JSON.stringify({card:caUI.card,sort:caUI.sort,layout:caUI.layout,category:caUI.category,payment:caUI.payment,status:caUI.status,installment:caUI.installment,showOwnTransfers:caUI.showOwnTransfers}));localStorage.setItem(CA_GROUP_KEY,JSON.stringify([...caOpenGroups].slice(-200)));}catch{}}
 // Despesas bancárias e compras no cartão: Pix, boleto e modalidades incertas são
 // mostrados separadamente. A natureza 'transfer'/'cardpayment'/'ignore' não entra
 // no consumo — e o campo type=DEBIT da Pluggy significa apenas saída da conta.
@@ -1272,7 +1372,7 @@ function caSelectedCount(){return caUI.selected.size;}
 function caSourceLabel(source){return {manual:'Editada',regra:'Minha regra',automatico:'Automática',pluggy:'Banco',indefinida:'A revisar'}[source]||'A revisar';}
 function caCategorySelect(t){const value=annotation(t).category;return `<select class="ca-category-pick" data-ca-category="${esc(txKey(t))}" aria-label="Alterar categoria de ${esc(annotation(t).title)}">${categoryOptions(value).map(name=>`<option value="${esc(name)}" ${name===value?'selected':''}>${esc(name)}</option>`).join('')}</select>`;}
 function caCardRow(t){const a=annotation(t),g=caGroup(t),id=txKey(t),isPicked=caUI.selected.has(id);
- return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''} ${paymentBadge(t)}</span><span class="ca-category"><span class="ca-source-label" title="Origem da categoria: ${esc(caSourceLabel(categorySource(t)))}">${esc(caSourceLabel(categorySource(t)))}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}${a.note?'<span>✎ Observação</span>':''}</span><div class="ca-category-editor">${caCategorySelect(t)}</div><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div><button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
+ return `<div class="ca-row"><label class="ca-check" title="Selecionar para agrupar"><input type="checkbox" data-ca-select="${esc(id)}" ${isPicked?'checked':''}/><span class="sr-only">Selecionar ${esc(a.title)}</span></label><div class="ca-main"><strong title="${esc(a.title)}">${esc(a.title)}</strong><span class="ca-sub">${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} ${t.status==='PENDING'?'· Pendente':''} ${paymentBadge(t)}</span><span class="ca-category"><span class="ca-source-label" title="Origem da categoria: ${esc(caSourceLabel(categorySource(t)))}">${esc(caSourceLabel(categorySource(t)))}</span>${transactionClockBadge(t)}${transactionInstallmentBadge(t)}${a.note?'<span>✎ Observação</span>':''}</span><div class="ca-category-editor">${caCategorySelect(t)}</div><div class="ca-mobile-group">${caGroupSelect(t)}</div></div><div class="ca-desktop-group">${caGroupSelect(t)}</div><div class="ca-amount"><strong>${displayedMoney(valueForPlanning(t))}</strong>${a.planValue!==''?`<small>Extrato: ${displayedMoney(Math.abs(signed(t)))}</small>`:''}</div>${paymentMode(t)==='pix'&&isBank(t)?`<button class="ca-own-transfer" type="button" data-ca-own-transfer="${esc(id)}" title="Excluir este Pix dos gastos por ser entre suas próprias contas">⇄ Minha conta</button>`:''}<button class="btn sm ca-edit" type="button" data-ca-edit="${esc(id)}" title="Renomear, classificar ou adicionar observação">✎ <span>Editar</span></button></div>`;}
 function caGroupKey(name){return period()+'|'+caUI.card+'|'+name;}
 function caListContent(){const rows=caFiltered();if(!caScoped().length)return noData('Nenhuma despesa identificada nesta seleção','Consulte os bancos ou selecione outra conta. Pagamentos de fatura e transferências próprias reconhecidas ficam fora dos gastos.');
  if(!rows.length)return noData('Nada encontrado','Limpe a busca ou selecione outro cartão.');
@@ -1340,14 +1440,43 @@ function caRuleManager(){const rules=savedMerchantRules().sort((a,b)=>a.title.lo
  showModal(`<div class="row" style="justify-content:space-between"><div><div class="over">CLASSIFICAÇÃO INTELIGENTE</div><h2>Minhas regras automáticas</h2></div><button type="button" class="btn icon" data-close-modal aria-label="Fechar">✕</button></div><p>Ao alterar a categoria de uma compra, você pode memorizar o estabelecimento. Regras pessoais têm prioridade sobre as sugestões automáticas e sobre a categoria da Pluggy. As movimentações originais permanecem intactas.</p>${rules.length?`<div class="ca-rules-list">${rules.map(r=>`<div class="ca-rule"><div><strong>${esc(r.title)}</strong><small>Categoria: ${esc(r.category)} · Reconhecer quando a descrição contiver esse texto</small></div><button type="button" class="btn sm danger" data-ca-delete-rule="${esc(r.key)}">Excluir</button></div>`).join('')}</div>`:noData('Nenhuma regra pessoal ainda','Edite uma categoria e mantenha marcada a opção de memorizar o estabelecimento.')}
  <div class="note">As sugestões integradas continuam funcionando sem regras pessoais. Quando a identificação for incerta, a classificação original do banco será mantida.</div><div class="footer"><button class="btn primary" type="button" data-close-modal>Concluir</button></div>`);
 }
+function caOwnTransferRows(){
+ return transactions().filter(t=>isBank(t)&&annotation(t).kind==='transfer')
+  .filter(t=>caUI.card==='all'||t.accountId===caUI.card)
+  .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+}
+function caOwnTransferPanel(){
+ const rows=caOwnTransferRows(),total=rows.filter(isDebit).reduce((v,t)=>v+valueForPlanning(t),0);
+ return `<section class="ca-own-section"><div class="ca-own-head"><div><h3>⇄ Transferências entre minhas contas</h3><p>Não entram no total gasto nem nas categorias. Continuam no extrato original. <b>${rows.length}</b> movimento(s) identificados · ${displayedMoney(total)} em saídas.</p></div><button type="button" class="btn sm soft" data-ca-own-toggle>${caUI.showOwnTransfers?'Ocultar lista':'Ver e restaurar ocultadas'}</button></div>
+ ${caUI.showOwnTransfers?`<div class="ca-own-items">${rows.length?rows.map(t=>{const pair=reconRecords().find(p=>p.from===txKey(t)||p.to===txKey(t));return `<div class="ca-own-item"><div><strong>${esc(annotation(t).title)} · ${displayedMoney(valueForPlanning(t))}</strong><small>${esc(fmtDate(t.date))} · ${esc(bankLabel(account(t.accountId)))} · ${isDebit(t)?'Saída':'Entrada'} ${paymentBadge(t)}</small></div><div class="ca-own-actions">${pair?`<button type="button" class="btn sm soft" data-open="conciliacao">Ver par conciliado</button>`:`<button type="button" class="btn sm" data-ca-restore-own="${esc(txKey(t))}">↶ Voltar aos cálculos</button>`}</div></div>`;}).join(''):`<div class="ca-own-empty">Nenhuma transferência interna classificada neste mês.</div>`}</div>`:''}
+ <p>Somente marque como transferência própria quando o destinatário também for você. Se a entrada aparecer em outra conta conectada, use <button type="button" class="btn sm soft" data-open="conciliacao">Conciliar saída e entrada</button> para excluir os dois lados dos cálculos.</p></section>`;
+}
+function caMarkOwnTransfer(id){
+ const t=(data?.transactions||[]).find(row=>txKey(row)===id);
+ if(!t||!isBank(t)||!isDebit(t)||paymentMode(t)!=='pix'||annotation(t).kind!=='normal')return;
+ if(!confirm('Este Pix foi enviado para uma conta que também é sua?\n\nSe confirmar, ele deixará de ser contado como despesa, mas continuará no extrato. Se o recebimento aparecer em outra conta conectada, concilie também essa entrada.'))return;
+ const a=annotation(t);
+ state().overrides[id]={...a,kind:'transfer',includeFree:false};
+ caUI.selected.delete(id);scheduleSave();
+ notice('Pix identificado como transferência própria. Não entra mais nos gastos. Você pode restaurá-lo na seção “Transferências entre minhas contas”.','good');
+}
+function caRestoreOwnTransfer(id){
+ const t=(data?.transactions||[]).find(row=>txKey(row)===id);
+ if(!t||annotation(t).kind!=='transfer')return;
+ if(reconRecords().some(p=>p.from===id||p.to===id)){notice('Essa transferência faz parte de um par. Desfaça a conciliação no painel de transferências.','warn');return;}
+ if(!confirm('Voltar a contar esta movimentação como receita ou despesa real? Faça isso apenas se ela NÃO foi uma transferência entre suas contas.'))return;
+ const a=annotation(t);state().overrides[id]={...a,kind:'normal',includeFree:false};
+ scheduleSave();notice('Movimentação restaurada. Seus gastos foram recalculados.','good');
+}
 function cardsView(){const cards=caCards();if(!cards.some(a=>a.id===caUI.card))caUI.card='all';const all=caFiltered(),total=caAmount(all),n=all.length,average=n?total/n:0,large=[...all].sort((a,b)=>valueForPlanning(b)-valueForPlanning(a))[0];
  const limits=cards.filter(a=>isCard(a)&&(caUI.card==='all'||a.id===caUI.card));const cardLimit=limits.length===1&&caUI.card!=='all'?limits[0]:null;
- return `<div class="ca-page"><div class="ca-heading"><div><div class="over">CENTRAL DE PAGAMENTOS</div><h2>Cartões e pagamentos</h2><p>Crédito, cartão de débito, Pix e boleto: compare os gastos separadamente ou visualize todas as despesas juntas, com categorias editáveis. O extrato bancário original permanece preservado.</p></div><span class="pill">${esc(pmMonthName(period()))}</span></div>
+ return `<div class="ca-page"><div class="ca-heading"><div><div class="over">CENTRAL DE PAGAMENTOS</div><h2>Cartões e pagamentos</h2><p>Crédito, cartão de débito, Pix e boleto: compare os gastos separadamente ou visualize todas as despesas juntas, com categorias editáveis. O extrato bancário original permanece preservado.</p></div><div class="ca-own-save"><span class="pill">${esc(pmMonthName(period()))}</span><span class="ca-own-status" id="ca-save-status" role="status">${saveDirty?'● Aguardando salvar na nuvem':cloudEnabled?'✓ Salvo na nuvem':'▣ Salvo no navegador'}</span><button type="button" class="btn sm soft" data-save-now>☁ Salvar agora</button><button type="button" class="btn sm" data-export-json>↓ Backup</button></div></div>
  <div class="ca-card-tabs"><button type="button" class="ca-card-tab ${caUI.card==='all'?'active':''}" data-ca-card="all"><span>◎ Todas as contas e cartões</span><small>${cards.length} origem(ns) · ${displayedMoney(caAmount(caPurchases()))}</small></button>${cards.map(card=>`<div class="ca-card-choice"><button type="button" class="ca-card-tab ${caUI.card===card.id?'active':''}" data-ca-card="${esc(card.id)}" aria-label="Selecionar ${esc(bankName(card))}, final ${esc(card.lastDigits||'não informado')}"><span>${isCard(card)?'▤':'▣'} ${esc(bankName(card))} <small>••${esc(card.lastDigits||'')}</small></span><small>${esc(isCard(card)?'Cartão de crédito':'Conta bancária')} · ${displayedMoney(caAmount(caPurchases().filter(t=>t.accountId===card.id)))}</small></button><button type="button" class="ca-card-rename" data-rename-bank="${esc(card.id)}" title="Alterar o nome exibido" aria-label="Renomear ${esc(bankName(card))}">✎ Renomear ${isCard(card)?'cartão':'conta'}</button></div>`).join('')}</div><div class="ca-card-alias-help">Selecione uma origem para detalhar despesas de uma conta ou cartão. Em seguida, use “Meio de pagamento” para ver apenas Pix, débito, crédito ou boleto.</div>
  ${cards.length===0?`<div class="banner warn">Nenhuma conta ou cartão com despesa disponível nesta consulta. Experimente o modo Exemplo ou confira a conexão bancária.</div>`:''}
  ${caFiltersPanel()}
  ${caScoped().some(t=>paymentMode(t)==='desconhecido')?`<div class="ca-review-banner"><span>◇ <strong>${caScoped().filter(t=>paymentMode(t)==='desconhecido').length} despesa(s) sem modalidade confirmada.</strong> O sistema não as considera automaticamente como débito.</span><button type="button" class="btn sm" data-ca-review>Revisar essas despesas</button></div>`:''}
  ${reconCounts().pending?`<div class="banner warn"><span>⇄</span><span>Há ${reconCounts().pending} possível(is) transferência(s) entre suas próprias contas aguardando revisão. Elas podem afetar o total até serem conciliadas. <button type="button" class="btn sm" data-open="conciliacao">Revisar transferências</button></span></div>`:''}
+ ${caOwnTransferPanel()}
  <div class="ca-stats"><div class="ca-stat"><span>Total gasto (filtrado)</span><b>${displayedMoney(total)}</b><small>Despesas reconhecidas, sem faturas pagas em duplicidade</small></div><div class="ca-stat"><span>Movimentações</span><b>${n}</b><small>Despesas nesta seleção</small></div><div class="ca-stat"><span>Gasto médio</span><b>${displayedMoney(average)}</b><small>Valor médio por despesa</small></div><div class="ca-stat"><span>Maior despesa</span><b>${displayedMoney(large?valueForPlanning(large):0)}</b><small>${large?esc(annotation(large).title):'Sem despesas selecionadas'}</small></div></div>
  ${caPaymentSummary(all)}
  ${cardLimit?`<div class="ca-limit"><span><b>${esc(bankLabel(cardLimit))}</b><small>Limite total: ${cardLimit.creditLimit==null?'não informado':displayedMoney(cardLimit.creditLimit)}</small></span><div class="ca-limit-actions"><span><small>Disponível informado pela Pluggy</small><b>${cardLimit.availableCreditLimit==null?'Não informado':displayedMoney(cardLimit.availableCreditLimit)}</b></span><button type="button" class="btn sm soft" data-rename-bank="${esc(cardLimit.id)}">✎ Renomear cartão</button></div></div>`:''}
@@ -1621,7 +1750,7 @@ function renameAccountModal(id){
  const field=$('#custom-bank-name');if(field){field.focus();field.select();}
 }
 function banksPage(){const accounts=data?.accounts||[];return `<div class="splithead"><div><h2>Contas conectadas</h2><p>Saldos, cartões e horário da última sincronização disponibilizada pela Pluggy.</p></div><span class="pill">${accounts.length} contas</span></div><div class="col2">${accounts.map(a=>`<div class="card cardpad"><div class="row"><div class="bankicon" style="font-size:22px">${isCard(a)?'▤':'⌂'}</div><div class="grow"><strong>${esc(bankName(a))}</strong><div class="tiny muted">${isCard(a)?'Cartão de crédito':'Conta bancária'} · final ${esc(a.lastDigits||'••••')}</div><div class="bank-alias-note">${esc(a.name)}${bankIsGeneric(a)?' · nome genérico informado pela Pluggy':''}</div></div><button type="button" class="btn sm" data-rename-bank="${esc(a.id)}" title="Apenas um nome de exibição, não altera seu banco">✎ Nomear</button></div><div class="line"></div><div class="mutelabel">${isCard(a)?'Saldo devedor informado':'Saldo disponível informado'}</div><div style="font-size:24px;font-weight:850;margin:5px 0">${a.balance===null?'Não informado':displayedMoney(a.balance)}</div>${isCard(a)?`<span class="miniinfo">Limite total: ${a.creditLimit==null?'—':displayedMoney(a.creditLimit)} · disponível: ${a.availableCreditLimit==null?'—':displayedMoney(a.availableCreditLimit)}</span>`:''}</div>`).join('')||`<div class="card">${noData('Sem contas consultadas')}</div>`}</div><div class="cols"><div class="card cardpad"><div class="charthead"><h3>Faturas</h3></div>${billsUI(40)}</div><div class="card cardpad"><div class="charthead"><h3>Conexões Pluggy</h3></div><div class="accountlist">${(data?.items||[]).map(i=>`<div class="account"><div class="bankicon">↔</div><div class="grow"><strong>${esc(i.institution||'Instituição')}</strong><small>Última sincronização: ${fmtDate(i.lastUpdatedAt)}</small></div><span class="pill ${i.status==='UPDATED'?'good':'plain'}">${esc(i.status||'—')}</span></div>`).join('')||noData('Sem conexões consultadas')}</div></div></div>`;}
-function settingsPage(){return `<div class="cols"><section class="card cardpad"><div class="splithead"><div><h2>Seus dados e segurança</h2><p>O banco original é somente leitura; salvamos ajustes, seleções e lançamentos manuais, não o extrato completo.</p></div></div><div class="subhead">Armazenamento do planejamento</div><div class="row"><span class="pill ${cloudEnabled?'good':'plain'}" id="save-indicator">${cloudEnabled?'Cloudflare KV':'Local'}</span><button class="btn sm" data-sync-settings>Verificar nuvem</button></div><p class="miniinfo">${cloudEnabled?'Cloudflare KV conectado. Seus ajustes podem ser vistos em outro dispositivo com o mesmo login.':'Você está usando armazenamento local neste navegador. Para sincronizar as edições no celular e no computador, vincule FINANCE_KV ao Worker na Cloudflare.'}</p><div class="divider"></div><div class="subhead">Segurança financeira</div><p class="miniinfo">Seu login é validado no Cloudflare Worker. Não salve o Client Secret no HTML ou GitHub. Os extratos completos são consultados na Pluggy e não são gravados pelo painel. Alguns nomes de operações podem constar nos ajustes salvos.</p><button class="btn" data-toggle-values>${hiddenValues?'◉ Mostrar valores':'◉ Ocultar valores'}</button><div class="divider"></div><div class="subhead">Edição</div><p class="miniinfo">${state().manual.length} lançamentos manuais • ${Object.keys(state().overrides).length} transações ajustadas • ${monthlyEntries().filter(e=>e.ref==='linked').length} importações neste mês.</p></section><section class="card cardpad"><h2 style="font-size:18px;margin:0">Backup e testes</h2><p class="miniinfo">Faça cópia das suas anotações e lançamentos para não depender de um único dispositivo.</p><div class="stack" style="margin-top:18px"><button class="btn primary w100" data-export-json>↓ Exportar meu planejamento (JSON)</button><button class="btn w100" data-export-csv>↓ Exportar lançamentos do mês (CSV)</button><button class="btn w100" data-import-json>↑ Restaurar backup (JSON)</button><button class="btn w100" data-demo>✨ Abrir dados fictícios</button><button class="btn w100" data-refresh>↻ Consultar Pluggy novamente</button><button class="btn danger w100" data-clear-planning>Limpar meus lançamentos e ajustes</button></div><div class="line"></div><p class="compact">Este laboratório não modifica o Pouler Finance original. No plano Cloudflare Workers Free e KV Free, chamadas acima dos limites deixam de funcionar até a renovação da cota, sem cobrança automática pelo plano Free.</p></section></div>`;}
+function settingsPage(){return `<div class="cols"><section class="card cardpad"><div class="splithead"><div><h2>Seus dados e segurança</h2><p>O banco original é somente leitura; salvamos ajustes, seleções e lançamentos manuais, não o extrato completo.</p></div></div><div class="subhead">Armazenamento do planejamento</div><div class="row"><span class="pill ${cloudEnabled&&!saveDirty?'good':'plain'}" id="save-indicator">${saveDirty?'Salvo localmente · pendente':cloudEnabled?'Cloudflare KV confirmado':'Local'}</span><button class="btn sm primary" data-save-now>☁ Salvar agora</button><button class="btn sm" data-sync-settings>Verificar nuvem</button></div><p class="miniinfo">${cloudEnabled?'Cloudflare KV conectado. Seus ajustes podem ser vistos em outro dispositivo com o mesmo login.':'Você está usando armazenamento local neste navegador. Para sincronizar as edições no celular e no computador, vincule FINANCE_KV ao Worker na Cloudflare.'}</p><div class="divider"></div><div class="subhead">Segurança financeira</div><p class="miniinfo">Seu login é validado no Cloudflare Worker. Não salve o Client Secret no HTML ou GitHub. Os extratos completos são consultados na Pluggy e não são gravados pelo painel. Alguns nomes de operações podem constar nos ajustes salvos.</p><button class="btn" data-toggle-values>${hiddenValues?'◉ Mostrar valores':'◉ Ocultar valores'}</button><div class="divider"></div><div class="subhead">Edição</div><p class="miniinfo">${state().manual.length} lançamentos manuais • ${Object.keys(state().overrides).length} transações ajustadas • ${monthlyEntries().filter(e=>e.ref==='linked').length} importações neste mês.</p></section><section class="card cardpad"><h2 style="font-size:18px;margin:0">Backup e testes</h2><p class="miniinfo">Faça cópia das suas anotações e lançamentos para não depender de um único dispositivo.</p><div class="stack" style="margin-top:18px"><button class="btn primary w100" data-export-json>↓ Exportar meu planejamento (JSON)</button><button class="btn w100" data-export-conflict>↓ Backup anterior à mesclagem (se existir)</button><button class="btn w100" data-export-csv>↓ Exportar lançamentos do mês (CSV)</button><button class="btn w100" data-import-json>↑ Restaurar backup (JSON)</button><button class="btn w100" data-demo>✨ Abrir dados fictícios</button><button class="btn w100" data-refresh>↻ Consultar Pluggy novamente</button><button class="btn danger w100" data-clear-planning>Limpar meus lançamentos e ajustes</button></div><div class="line"></div><p class="compact">Este laboratório não modifica o Pouler Finance original. No plano Cloudflare Workers Free e KV Free, chamadas acima dos limites deixam de funcionar até a renovação da cota, sem cobrança automática pelo plano Free.</p></section></div>`;}
 function render(){
  if($('#app').classList.contains('hidden'))return;
  const [title,sub]=titles[currentView]||titles.dashboard;$('#page-title').textContent=title;$('#page-sub').textContent=sub;
@@ -1794,6 +1923,9 @@ $('#view-content').addEventListener('click',async e=>{
  if(btn.hasAttribute('data-pm-start-group')){pmBulkIncome();const inp=$('#pm-bulk-income-form input[name="groupName"]');if(inp)inp.value=btn.dataset.pmStartGroup;return;}
  if(btn.hasAttribute('data-ca-card')){caUI.card=btn.dataset.caCard;caUI.selected.clear();caSaveUI();render();return;}
  if(btn.hasAttribute('data-ca-edit')){editTransaction(btn.dataset.caEdit);return;}
+ if(btn.hasAttribute('data-ca-own-transfer')){caMarkOwnTransfer(btn.dataset.caOwnTransfer);return;}
+ if(btn.hasAttribute('data-ca-restore-own')){caRestoreOwnTransfer(btn.dataset.caRestoreOwn);return;}
+ if(btn.hasAttribute('data-ca-own-toggle')){caUI.showOwnTransfers=!caUI.showOwnTransfers;caSaveUI();render();return;}
  if(btn.hasAttribute('data-ca-toggle')){const k=btn.dataset.caToggle,open=btn.getAttribute('aria-expanded')!=='true';if(open)caOpenGroups.add(k);else caOpenGroups.delete(k);caSaveUI();btn.setAttribute('aria-expanded',String(open));if(btn.nextElementSibling)btn.nextElementSibling.hidden=!open;return;}
  if(btn.hasAttribute('data-ca-expand')){const open=btn.dataset.caExpand==='1';$$('[data-ca-toggle]').forEach(el=>{const k=el.dataset.caToggle;if(open)caOpenGroups.add(k);else caOpenGroups.delete(k);el.setAttribute('aria-expanded',String(open));if(el.nextElementSibling)el.nextElementSibling.hidden=!open;});caSaveUI();return;}
  if(btn.hasAttribute('data-ca-bulk')){const rows=caScoped().filter(t=>caUI.selected.has(txKey(t)));if(!rows.length){notice('Marque as compras usando as caixas de seleção antes de agrupar.','warn');return;}
@@ -1872,6 +2004,18 @@ $('#view-content').addEventListener('click',async e=>{
   const s=state();s.manual=s.manual.filter(v=>v.id!==btn.dataset.deleteManual);scheduleSave();return;
  }
  if(btn.hasAttribute('data-toggle-values')){hiddenValues=!hiddenValues;render();return;}
+ if(btn.hasAttribute('data-save-now')){
+  if(mode==='demo'){notice('Prévia: não há dados reais para salvar.','info');return;}
+  if(!localSave()){notice('A cópia local falhou. Exporte um backup JSON.','bad');return;}
+  if(!token||!cloudEnabled){notice('Salvo neste navegador. A sincronização na Cloudflare não está disponível. Exporte um backup para segurança.','warn');return;}
+  if(saveDirty)await persistCloud();else notice('Tudo salvo na Cloudflare e neste navegador.','good');
+  savedStatus();return;
+ }
+ if(btn.hasAttribute('data-export-conflict')){
+  let raw='';try{raw=localStorage.getItem(CONFLICT_BACKUP_KEY)||'';}catch{}
+  if(!raw){notice('Não há cópia de conflito armazenada neste navegador. Exporte o backup atual para se proteger.','info');return;}
+  downloadFile('Pouler-copia-local-anterior.json',JSON.stringify({format:'POULER-LAB-FINANCE-V2',exportedAt:new Date().toISOString(),state:JSON.parse(raw)},null,2),'application/json');return;
+ }
  if(btn.hasAttribute('data-export-json'))return exportJson();
  if(btn.hasAttribute('data-export-csv'))return exportCsv();
  if(btn.hasAttribute('data-include-all')){let count=0;for(const t of transactions()){const a=annotation(t);if(a.kind!=='normal'||a.includeFree)continue;state().overrides[txKey(t)]={...a,includeFree:true};count++;}scheduleSave();notice(count+' movimentações normais incluídas no Mensal Livre. Transferências e faturas foram ignoradas.','good');return;}
